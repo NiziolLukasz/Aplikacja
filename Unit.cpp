@@ -19,22 +19,22 @@ __fastcall TForm1::TForm1(TComponent* Owner)
    Pierwsza podtablica to arr[l..m]
    Druga podtablica to arr[m+1..r]
 */
-template <typename T>
-   void merge(T arr[], int l, int m, int r) /* l - left, m - middle, r- right */
+//template <typename T>
+   void TForm1::mergeShape(TShape *arr[], int l, int m, int r) /* l - left, m - middle, r- right */
 {
     int i, j, k;
     int n1 = m - l + 1; /* iloœæ elementów w pierwszej podtablicy */
     int n2 =  r - m; /* iloœæ elementów w drugiej podtablicy */
 
     /* Tworzenie pomocniczych tablic */
-    T * L = new T [n1];
-    T * R = new T [n2];
+    int *L = new int [n1];
+    int *R = new int [n2];
 
     /* Skopiowanie danych do pomocniczych tablic L[] i R[] */
     for (i = 0; i < n1; i++)
-        L[i] = arr[l + i];
+        L[i] = arr[l + i]->Height;
     for (j = 0; j < n2; j++)
-        R[j] = arr[m + 1+ j];
+        R[j] = arr[m + 1+ j]->Height;
 
     /* £¹czenie pomocniczych tablic spowrotem do arr[l..r]*/
     i = 0; /* Pocz¹tkowy indeks pierwszej podtablicy */
@@ -44,12 +44,13 @@ template <typename T>
     {
         if (L[i] <= R[j])
         {
-            arr[k] = L[i];
+            //arr[k] = L[i];
+            arr[k]->Height = L[i];
             i++;
         }
         else
         {
-            arr[k] = R[j];
+            arr[k]->Height = R[j];
             j++;
         }
         k++;
@@ -58,7 +59,7 @@ template <typename T>
     /* Skopiowanie pozosta³ych elementów podtablicy L[], jeœli jakieœ istniej¹ */
     while (i < n1)
     {
-        arr[k] = L[i];
+        arr[k]->Height = L[i];
         i++;
         k++;
     }
@@ -66,7 +67,7 @@ template <typename T>
     /* Skopiowanie pozosta³ych elementów podtablicy R[], jeœli jakieœ istniej¹ */
     while (j < n2)
     {
-        arr[k] = R[j];
+        arr[k]->Height = R[j];
         j++;
         k++;
     }
@@ -74,8 +75,8 @@ template <typename T>
     delete [] R;
 }
 
-template <typename T>
-void mergeSort(T arr[], int l, int r)
+//template <typename T>
+void TForm1::mergeShapeSort(TShape *arr[], int l, int r)
 {
     if (l < r)
     {
@@ -83,10 +84,10 @@ void mergeSort(T arr[], int l, int r)
         int m = l+(r-l)/2;
 
         /* Sortowanie pierwszej i drugiej po³owy teblicy arr*/
-        mergeSort(arr, l, m);
-        mergeSort(arr, m+1, r);
+        mergeShapeSort(arr, l, m);
+        mergeShapeSort(arr, m+1, r);
 
-        merge(arr, l, m, r);
+        mergeShape(arr, l, m, r);
     }
 }
 //---------------------------------------------------------------------------
@@ -116,4 +117,13 @@ void __fastcall TForm1::Button2Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+
+
+
+
+void __fastcall TForm1::Button3Click(TObject *Sender)
+{
+        mergeShapeSort(tab, 0, n-1);
+}
+//---------------------------------------------------------------------------
 

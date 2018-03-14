@@ -38,10 +38,11 @@ __published:	// IDE-managed Components
         TImage *Image1;
         TImage *Image2;
         void __fastcall Button2Click(TObject *Sender);
+        void __fastcall Button3Click(TObject *Sender);
 private:	// User declarations
         TShape *tab[100];
-        TShape *L;
-        TShape *R;
+        void mergeShape(TShape *arr[], int l, int m, int r);
+        void mergeShapeSort(TShape *arr[], int l, int r);
 public:		// User declarations
         __fastcall TForm1(TComponent* Owner);
 };

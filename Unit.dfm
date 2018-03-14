@@ -1,8 +1,7 @@
-object Form1: TForm1
-  Left = 512
-  Top = 192
+object TForm1
+  Left = 818
+  Top = 183
   BorderStyle = bsDialog
-  Caption = 'Form1'
   ClientHeight = 654
   ClientWidth = 946
   Color = clBtnFace
@@ -322,6 +321,7 @@ object Form1: TForm1
       Height = 42
       Caption = 'Start'
       TabOrder = 3
+      OnClick = Button3Click
     end
     object Button4: TButton
       Left = 61

@@ -1,9 +1,10 @@
 object Form1: TForm1
-  Left = 593
-  Top = 171
-  Width = 1086
-  Height = 751
+  Left = 512
+  Top = 192
+  BorderStyle = bsDialog
   Caption = 'Form1'
+  ClientHeight = 654
+  ClientWidth = 946
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -14,11 +15,11 @@ object Form1: TForm1
   PixelsPerInch = 96
   TextHeight = 13
   object Panel3: TPanel
-    Left = 0
-    Top = 601
-    Width = 1070
+    Left = 224
+    Top = 543
+    Width = 505
     Height = 111
-    Align = alBottom
+    Align = alCustom
     Caption = 'Panel3'
     TabOrder = 2
   end
@@ -26,7 +27,7 @@ object Form1: TForm1
     Left = 0
     Top = 0
     Width = 231
-    Height = 601
+    Height = 654
     Align = alLeft
     TabOrder = 0
     object Label1: TLabel
@@ -312,6 +313,7 @@ object Form1: TForm1
       Height = 35
       Caption = 'Generate numbers'
       TabOrder = 2
+      OnClick = Button2Click
     end
     object Button3: TButton
       Left = 61
@@ -331,10 +333,10 @@ object Form1: TForm1
     end
   end
   object Panel2: TPanel
-    Left = 850
+    Left = 726
     Top = 0
     Width = 220
-    Height = 601
+    Height = 654
     Align = alRight
     TabOrder = 1
     object GroupBox1: TGroupBox
