@@ -37,8 +37,11 @@ __published:	// IDE-managed Components
         TPanel *Panel3;
         TImage *Image1;
         TImage *Image2;
+        void __fastcall Button2Click(TObject *Sender);
 private:	// User declarations
         TShape *tab[100];
+        TShape *L;
+        TShape *R;
 public:		// User declarations
         __fastcall TForm1(TComponent* Owner);
 };
