@@ -7,21 +7,23 @@
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
-TForm1 *Form1;
+TFDidactic *FDidactic;
 int n = 20;
 //---------------------------------------------------------------------------
-__fastcall TForm1::TForm1(TComponent* Owner)
+__fastcall TFDidactic::TFDidactic(TComponent* Owner)
         : TForm(Owner)
 {
 
 }
+
 /* £¹czy dwie podtablice arr[].
    Pierwsza podtablica to arr[l..m]
    Druga podtablica to arr[m+1..r]
 */
-//template <typename T>
-   void TForm1::mergeShape(TShape *arr[], int l, int m, int r) /* l - left, m - middle, r- right */
+
+   void TFDidactic::mergeShape(TShape *arr[], int l, int m, int r) /* l - left, m - middle, r- right */
 {
+
     int i, j, k;
     int n1 = m - l + 1; /* iloœæ elementów w pierwszej podtablicy */
     int n2 =  r - m; /* iloœæ elementów w drugiej podtablicy */
@@ -73,10 +75,10 @@ __fastcall TForm1::TForm1(TComponent* Owner)
     }
     delete [] L;
     delete [] R;
+    Timer1->Enabled = true;
 }
 
-//template <typename T>
-void TForm1::mergeShapeSort(TShape *arr[], int l, int r)
+void TFDidactic::mergeShapeSort(TShape *arr[], int l, int r)
 {
     if (l < r)
     {
@@ -94,7 +96,7 @@ void TForm1::mergeShapeSort(TShape *arr[], int l, int r)
 
 
 
-void __fastcall TForm1::Button2Click(TObject *Sender)
+void __fastcall TFDidactic::BGenerateClick(TObject *Sender)
 {
         tab[0] = new TShape((TComponent*)(NULL));
         tab[0]->Parent = this;
@@ -117,13 +119,39 @@ void __fastcall TForm1::Button2Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-
-
-
-
-void __fastcall TForm1::Button3Click(TObject *Sender)
+void __fastcall TFDidactic::BStartClick(TObject *Sender)
 {
+        Timer1->Enabled = false;
+        Timer1->Enabled = true;
         mergeShapeSort(tab, 0, n-1);
 }
 //---------------------------------------------------------------------------
+
+
+
+void __fastcall TFDidactic::SBAmountChange(TObject *Sender)
+{
+        EAmount->Text = SBAmount->Position;
+}
+//---------------------------------------------------------------------------
+
+
+
+void __fastcall TFDidactic::EAmountChange(TObject *Sender)
+{
+        if(EAmount->Text >= '1' && EAmount->Text <= '100')
+                SBAmount->Position = EAmount->Text.ToInt();
+
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TFDidactic::SBDelayChange(TObject *Sender)
+{
+        AnsiString caption = ((SBDelay->Position) / 1000.0);
+        caption += " sec";
+        LDelayNumber->Caption = caption;
+
+}
+//---------------------------------------------------------------------------
+
 
