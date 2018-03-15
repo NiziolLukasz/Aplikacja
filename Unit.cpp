@@ -4,6 +4,7 @@
 #pragma hdrstop
 
 #include "Unit.h"
+#include <dos.h>
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
@@ -13,6 +14,7 @@ int n = 20;
 __fastcall TFDidactic::TFDidactic(TComponent* Owner)
         : TForm(Owner)
 {
+
 
 }
 
@@ -46,49 +48,63 @@ __fastcall TFDidactic::TFDidactic(TComponent* Owner)
     {
         if (L[i] <= R[j])
         {
-            //arr[k] = L[i];
             arr[k]->Height = L[i];
             i++;
+
         }
         else
         {
             arr[k]->Height = R[j];
             j++;
         }
+        arr[k]->Repaint();
         k++;
     }
- 
     /* Skopiowanie pozosta³ych elementów podtablicy L[], jeœli jakieœ istniej¹ */
     while (i < n1)
     {
         arr[k]->Height = L[i];
+        arr[k]->Repaint();
+        
         i++;
         k++;
     }
-
     /* Skopiowanie pozosta³ych elementów podtablicy R[], jeœli jakieœ istniej¹ */
     while (j < n2)
     {
         arr[k]->Height = R[j];
+        arr[k]->Repaint();
+        
         j++;
         k++;
     }
     delete [] L;
     delete [] R;
-    Timer1->Enabled = true;
+    Sleep(1000);
 }
 
 void TFDidactic::mergeShapeSort(TShape *arr[], int l, int r)
 {
+    for(int i=0; i < n; i++)
+    {
+        arr[i]->Brush->Color = clWhite;
+        arr[i]->Repaint();
+    }
+
     if (l < r)
     {
+
         /* To samo co (l+r)/2, ale unika przepe³nienia dla du¿ego l i r */
         int m = l+(r-l)/2;
+        for(int i=0; i < m; i++)
+        {
+                arr[i]->Brush->Color = clBlack;
+                arr[i]->Repaint();
+        }
 
-        /* Sortowanie pierwszej i drugiej po³owy teblicy arr*/
+        /* Sortowanie pierwszej i drugiej po³owy tablicy arr*/
         mergeShapeSort(arr, l, m);
         mergeShapeSort(arr, m+1, r);
-
         mergeShape(arr, l, m, r);
     }
 }
@@ -98,6 +114,10 @@ void TFDidactic::mergeShapeSort(TShape *arr[], int l, int r)
 
 void __fastcall TFDidactic::BGenerateClick(TObject *Sender)
 {
+        for(int i=0; i < n; i++)
+        {
+                delete tab[i];
+        }
         tab[0] = new TShape((TComponent*)(NULL));
         tab[0]->Parent = this;
         tab[0]->Width = 15;
@@ -105,6 +125,7 @@ void __fastcall TFDidactic::BGenerateClick(TObject *Sender)
         tab[0]->Left = 300;
         tab[0]->Top = 400;
         tab[0]->Brush->Color = clWhite;
+        tab[0]->Repaint();
 
         for(int i=1; i<n; i++)
         {
@@ -115,27 +136,22 @@ void __fastcall TFDidactic::BGenerateClick(TObject *Sender)
                 tab[i]->Left = tab[0]->Width + tab[i-1]->Left;
                 tab[i]->Top = tab[0]->Top;
                 tab[i]->Brush->Color = clWhite;
+                tab[i]->Repaint();
         }
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TFDidactic::BStartClick(TObject *Sender)
 {
-        Timer1->Enabled = false;
-        Timer1->Enabled = true;
         mergeShapeSort(tab, 0, n-1);
 }
 //---------------------------------------------------------------------------
-
-
 
 void __fastcall TFDidactic::SBAmountChange(TObject *Sender)
 {
         EAmount->Text = SBAmount->Position;
 }
 //---------------------------------------------------------------------------
-
-
 
 void __fastcall TFDidactic::EAmountChange(TObject *Sender)
 {
@@ -153,5 +169,6 @@ void __fastcall TFDidactic::SBDelayChange(TObject *Sender)
 
 }
 //---------------------------------------------------------------------------
+
 
 

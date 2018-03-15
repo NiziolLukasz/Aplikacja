@@ -496,10 +496,6 @@ object FDidactic: TFDidactic
       TabOrder = 1
     end
   end
-  object Timer1: TTimer
-    Enabled = False
-    Left = 696
-  end
   object MainMenu1: TMainMenu
     Left = 664
     object File1: TMenuItem

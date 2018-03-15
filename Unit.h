@@ -39,7 +39,6 @@ __published:	// IDE-managed Components
         TImage *Image1;
         TImage *Image2;
         TLabel *Label3;
-        TTimer *Timer1;
         TMainMenu *MainMenu1;
         TMenuItem *File1;
         TMenuItem *Exit1;
@@ -58,8 +57,9 @@ __published:	// IDE-managed Components
         void __fastcall SBAmountChange(TObject *Sender);
         void __fastcall EAmountChange(TObject *Sender);
         void __fastcall SBDelayChange(TObject *Sender);
+
 private:	// User declarations
-        TShape *tab[100];
+        TShape *tab[20];
         void mergeShape(TShape *arr[], int l, int m, int r);
         void mergeShapeSort(TShape *arr[], int l, int r);
 public:		// User declarations
