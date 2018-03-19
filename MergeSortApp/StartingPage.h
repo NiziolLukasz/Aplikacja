@@ -8,14 +8,20 @@
 #include <StdCtrls.hpp>
 #include <Forms.hpp>
 //---------------------------------------------------------------------------
-class TForm1 : public TForm
+class TfStartingPage : public TForm
 {
 __published:	// IDE-managed Components
+        TButton *bDidacticPage;
+        TButton *bAdvancedPage;
+        TButton *bEducationPage;
+        void __fastcall bDidacticPageClick(TObject *Sender);
+        void __fastcall bEducationPageClick(TObject *Sender);
+        void __fastcall bAdvancedPageClick(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
-        __fastcall TForm1(TComponent* Owner);
+        __fastcall TfStartingPage(TComponent* Owner);
 };
 //---------------------------------------------------------------------------
-extern PACKAGE TForm1 *Form1;
+extern PACKAGE TfStartingPage *fStartingPage;
 //---------------------------------------------------------------------------
 #endif

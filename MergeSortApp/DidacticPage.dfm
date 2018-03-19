@@ -1,74 +1,75 @@
-object FDidactic: TFDidactic
-  Left = 854
-  Top = 216
+object fDidacticPage: TfDidacticPage
+  Left = 962
+  Top = 85
   BorderStyle = bsToolWindow
   Caption = 'Project'
-  ClientHeight = 634
-  ClientWidth = 946
+  ClientHeight = 641
+  ClientWidth = 944
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -9
   Font.Name = 'MS Sans Serif'
   Font.Style = []
-  Menu = MainMenu1
+  Menu = MainMenu
   OldCreateOrder = False
   PixelsPerInch = 96
   TextHeight = 13
-  object Panel3: TPanel
+  object PanelBottom: TPanel
     Left = 224
     Top = 543
     Width = 505
     Height = 111
     Align = alCustom
     TabOrder = 2
-    object LDelayName: TLabel
+    object lDelayName: TLabel
       Left = 200
       Top = 56
       Width = 33
       Height = 13
       Caption = 'Delay: '
     end
-    object LDelayNumber: TLabel
+    object lDelayNumber: TLabel
       Left = 240
       Top = 56
       Width = 26
       Height = 13
-      Caption = '0 sec'
+      Caption = '1 sec'
     end
-    object SBDelay: TScrollBar
+    object sbDelay: TScrollBar
       Left = 88
       Top = 16
       Width = 345
       Height = 25
       Max = 2000
       PageSize = 0
+      Position = 1000
       TabOrder = 0
-      OnChange = SBDelayChange
+      OnChange = sbDelayChange
     end
   end
-  object Panel1: TPanel
+  object PanelLeft: TPanel
     Left = 0
     Top = 0
     Width = 231
-    Height = 634
+    Height = 641
     Align = alLeft
     TabOrder = 0
     object Label1: TLabel
-      Left = 27
-      Top = 34
+      Left = 19
+      Top = 10
       Width = 73
       Height = 13
       Caption = 'Sorting Algoritm'
     end
     object Label2: TLabel
-      Left = 20
-      Top = 209
+      Left = 84
+      Top = 225
       Width = 59
       Height = 13
       Caption = 'Step by step'
     end
-    object Image3: TImage
+    object ImageRight: TImage
       Left = 154
       Top = 250
       Width = 63
@@ -168,7 +169,7 @@ object FDidactic: TFDidactic
         3AEF480BEC85031818AFFE738D9458A008653880C2F4CD0F7D41036248B0885F
         8ABAA0000FC5FFD9}
     end
-    object Image1: TImage
+    object ImagePause: TImage
       Left = 90
       Top = 258
       Width = 49
@@ -251,8 +252,9 @@ object FDidactic: TFDidactic
         AAAA2222A46888A01EC9FDBD79FF003F125154E8A002A4B4FF008FA8FF00DF1F
         CE8A2803F0FBFE0EEDFF0091CED7FEBC22FF00D06BE7FF00F8353BFE4EAB44FF
         00AF8A28A00FE9275EFF0090C5C7FBD54E8A2800A28A2803FFD9}
+      OnClick = ImagePauseClick
     end
-    object Image2: TImage
+    object ImageLeft: TImage
       Left = 10
       Top = 250
       Width = 63
@@ -350,7 +352,95 @@ object FDidactic: TFDidactic
       Height = 13
       Caption = 'Label3'
     end
-    object SBAmount: TScrollBar
+    object ImagePlay: TImage
+      Left = 90
+      Top = 258
+      Width = 49
+      Height = 49
+      Picture.Data = {
+        0A544A504547496D616765CF090000FFD8FFE000104A46494600010101006000
+        600000FFE100224578696600004D4D002A000000080001011200030000000100
+        01000000000000FFFE003C43524541544F523A2067642D6A7065672076312E30
+        20287573696E6720494A47204A50454720763830292C207175616C697479203D
+        2039300A00FFDB00430002010102010102020202020202020305030303030306
+        04040305070607070706070708090B0908080A0807070A0D0A0A0B0C0C0C0C07
+        090E0F0D0C0E0B0C0C0CFFDB004301020202030303060303060C0807080C0C0C
+        0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C
+        0C0C0C0C0C0C0C0C0C0C0C0C0C0C0CFFC0001108003100310301220002110103
+        1101FFC4001F0000010501010101010100000000000000000102030405060708
+        090A0BFFC400B5100002010303020403050504040000017D0102030004110512
+        2131410613516107227114328191A1082342B1C11552D1F02433627282090A16
+        1718191A25262728292A3435363738393A434445464748494A53545556575859
+        5A636465666768696A737475767778797A838485868788898A92939495969798
+        999AA2A3A4A5A6A7A8A9AAB2B3B4B5B6B7B8B9BAC2C3C4C5C6C7C8C9CAD2D3D4
+        D5D6D7D8D9DAE1E2E3E4E5E6E7E8E9EAF1F2F3F4F5F6F7F8F9FAFFC4001F0100
+        030101010101010101010000000000000102030405060708090A0BFFC400B511
+        0002010204040304070504040001027700010203110405213106124151076171
+        1322328108144291A1B1C109233352F0156272D10A162434E125F11718191A26
+        2728292A35363738393A434445464748494A535455565758595A636465666768
+        696A737475767778797A82838485868788898A92939495969798999AA2A3A4A5
+        A6A7A8A9AAB2B3B4B5B6B7B8B9BAC2C3C4C5C6C7C8C9CAD2D3D4D5D6D7D8D9DA
+        E2E3E4E5E6E7E8E9EAF2F3F4F5F6F7F8F9FAFFDA000C03010002110311003F00
+        FDB0F1578AF4BF02785F52D735CD4AC347D1747B596FAFEFEFAE12DED6C6DE24
+        2F24D2C8E42A4688A5999880A0124802BF05BFE0A1FF00F07527C44F8F1F1497
+        E18FEC7BE1FD4235BEBE3A7597891B463A96B9E22977AAC634FB074611249870
+        04B1C933AC88765BBA9149FF0007527FC143FC55F1E3F689D03F63DF862BAA5F
+        2C77560DE24B2D38B99BC45ABDD18DEC34C11AA8F312312412ED0CCAF34D1E55
+        5EDD4D7EA2FF00C10EBFE0879E09FF00824C7C10B5BEBEB5D37C45F1B3C47668
+        7C4FE263107369BB0CDA758B30CC76B1B60330DAD70E82470008A28403F1BBC3
+        7FF06F17FC1463FE0A0DA3FF006E7C52F1849A1ADCA09ADE0F891E39BBB999D1
+        C6F016DEDD6E8C18DC479722C65482368C62A6BFFF00835FFF00E0A01FB1AE95
+        FDB9F0B7C71A0EA3AA21C7D9BC01E3CBDD26F803C121AE63B34E84F024C900F0
+        4E01FE9E56E636B8684488668D43B206F9954E40247A1DAD83DF07D29FDA803F
+        999FD913FE0E54FDA3BFE09E3F189BE1A7ED6BE11F1278A34ED3BCB8AED753D2
+        C697E2DD1D084D922EE11A5E4650338F380794C8AC2E36801BF7F3E047C77F07
+        FED39F08340F1F78075FB0F147843C4F6A2EF4DD4ACD8F973A64AB02AC034722
+        3AB23C6E15E3747475565651C5FF00C153FF00E0941F0C7FE0AC1FB3FDC7847C
+        71630E9FE23B08E493C33E2CB6B657D4BC3972470C872A65B76217CDB7660928
+        00E52448E58FF077FE0865FB557C40FF008233FF00C15535EFD95FE2D35C59F8
+        77C5DE205F0EDFD999656B4D3B5A9022D86A76CAC99315DAB41197DB1F990CF6
+        F2B9C40AB401FD2251451401FCDCFF00C1BCDE1AB3FF008284FF00C1C61E30F8
+        A5ADF97731E872788BE24416D3AF9D1BC92DDADB5BA80D9C792DA8472263054D
+        BA608C62BFA82AFE613FE0D7CBDB5FD8E3FE0BF9E39F85DAEE63D5350D2BC49E
+        01B6C72A2EECAF61BA704F4FF57A64C07A9C7722BFA7BA00FE5BFF00E0E51FDA
+        7BE21FEC8FFF0005F6D73C6DF0D7C61AF7837C51A5787B4516F7DA75C98D8C7F
+        674730C887292C2CCA0BC322B46FD1958122BEC6FF0082557FC1E1DE1BF88EDA
+        6F82FF006A1D2EDBC1FAC954B787C71A3DBBBE9378C148DD7B6ABBA4B6762A99
+        922DF116909296F1AE6BE07FF83B534F9B52FF0082D5788ADED6196E2E2EBC3F
+        A2C71451217795CDB850AA0724938000E4D7A0FF00C12BFF00E0D22F8B1FB55B
+        D8F8B3E3CCDA9FC18F01C844A9A4B42BFF00094EA89F21C085C15B1520B8DD70
+        AD2AB2736E5583D007F4DBE08F1CE8BF133C21A6F883C37AC697E20D0758B75B
+        BB0D4B4DBB8EEECEFA16195922963251D1872194906BF9D1FF0083D6BE0159FC
+        35FDAE7E0BFC58D25C586ABE38D0AF34BBA6B602291A7D2A781E3B92CA03190A
+        5FC69B89C85B74031B457EFE7EC99FB29781FF00621FD9EFC37F0BFE1CE95268
+        BE0EF0AC52C7636B25D4B7520696692795DE49199999E696473CE017C2855014
+        7E0BFF00C1F01F19B4BD7FE3D7C03F87F0966D63C2BA16ADAFDDFF007443A84F
+        6D04233D33BB4D9891D7047A8C80767FF11692FF00D01B48FF00BE1BFC68AF0A
+        FF008852BE237FCFB47FF8109FE345005AFF008394FF00644F18FF00C13C3FE0
+        A39E11FDADBE19B7F66E9DE29D62CF535BB8A10D1E8FE24B40AFB644D810C773
+        1C226C31632BADE0601701BF723FE0943FF0550F87DFF0560FD996C7C6FE10B8
+        86C3C45A7C715B78AFC332CC1EF3C377CCA728C382F6F214768670009514E424
+        892C71F6BF1DFE04783FF69CF841E20F00F8FB40B1F13F843C516A6CF52D36F1
+        4F973A643290CA4347223AABA48855E3744746565561FCF3FED55FF0431FDAAB
+        FE08D1FB401F8B5FB2BEBBE30F17F876CE673657FE1D8C4DE20D36D8CB1B2DAE
+        A160AA56F62276EE31C52432792CF24508DAB401FD1D5D7EC83F0BAFBF6918FE
+        305C7807C2F71F1420B04D321F134B60926A1040A240163908251B6CAE85D70E
+        50EC24A80A3D1EBF9BBF801FF07ACFC5EF869A4C9A4FC58F833E13F1D6A96005
+        B1BAD2F539FC3774CE802B1B88DE2BA432160C584691282701462B63E327FC1F
+        03E3CD7BC30D0FC3FF00805E13F0BEB04FFC7DEBDE259F5CB703DA1860B36CE3
+        3C99319EC7A100FDD1FDB7BF6DEF877FF04F4FD9D75AF89DF13B5A5D27C3DA42
+        F970C31ED7BDD62E9959A2B2B488B2F9B7126D6DAB90005677648D1DD7F9B8FF
+        008270FC35F1B7FC1C27FF0005BDD5FE36F8EB4F8E1F06786356B6F146BF6FC4
+        B6B656B6E42E97A32131EC937F9088FB950C914375212243865F86DFF04E3FDB
+        7BFE0E15F8D5A7F8EBE36EB1E20F0BF82E1526DF5EF14581B1B2B2B7711129A4
+        E96A23F337A6C6F31152293CA2649CC806EFE82FF624FD893E1E7FC13E3F679D
+        1FE1A7C34D1FFB2F41D2F335C5C4C4497DAC5DB2A896F6EE50079B7126D5CB60
+        2AAAA468A91C688A01EB54514500145145007E21FF00C1DA1FEA345FFB078FFD
+        09ABC13FE0D4BFF938FB6FA4BFFA01A28A00FE8DE8A28A0028A28A00FFD9}
+      Visible = False
+      OnClick = ImagePlayClick
+    end
+    object sbAmount: TScrollBar
       Left = 88
       Top = 101
       Width = 103
@@ -359,9 +449,9 @@ object FDidactic: TFDidactic
       PageSize = 0
       Position = 1
       TabOrder = 0
-      OnChange = SBAmountChange
+      OnChange = sbAmountChange
     end
-    object EAmount: TEdit
+    object eAmount: TEdit
       Left = 20
       Top = 101
       Width = 42
@@ -369,27 +459,27 @@ object FDidactic: TFDidactic
       MaxLength = 3
       TabOrder = 1
       Text = '0'
-      OnChange = EAmountChange
+      OnChange = eAmountChange
     end
-    object BGenerate: TButton
+    object bGenerate: TButton
       Left = 40
       Top = 149
       Width = 97
       Height = 35
       Caption = 'Generate numbers'
       TabOrder = 2
-      OnClick = BGenerateClick
+      OnClick = bGenerateClick
     end
-    object BStart: TButton
+    object bStart: TButton
       Left = 61
       Top = 344
       Width = 89
       Height = 42
       Caption = 'Start'
       TabOrder = 3
-      OnClick = BStartClick
+      OnClick = bStartClick
     end
-    object Button4: TButton
+    object bStop: TButton
       Left = 61
       Top = 405
       Width = 89
@@ -398,108 +488,96 @@ object FDidactic: TFDidactic
       TabOrder = 4
     end
   end
-  object Panel2: TPanel
-    Left = 726
+  object PanelRight: TPanel
+    Left = 724
     Top = 0
     Width = 220
-    Height = 634
+    Height = 641
     Align = alRight
     TabOrder = 1
-    object GroupBox1: TGroupBox
+    object gbTableTypes: TGroupBox
       Left = 27
       Top = 41
       Width = 157
-      Height = 344
+      Height = 320
       Caption = ' Table types:  '
       TabOrder = 0
-      object RadioButton1: TRadioButton
+      object rbReversed: TRadioButton
         Left = 20
-        Top = 34
-        Width = 96
-        Height = 15
-        Caption = 'Custom'
-        Checked = True
-        TabOrder = 0
-        TabStop = True
-      end
-      object RadioButton2: TRadioButton
-        Left = 20
-        Top = 69
+        Top = 70
         Width = 96
         Height = 15
         Caption = 'Reversed'
-        TabOrder = 1
+        TabOrder = 0
       end
-      object RadioButton3: TRadioButton
-        Left = 19
-        Top = 104
+      object rbConstant: TRadioButton
+        Left = 20
+        Top = 105
         Width = 96
         Height = 15
         Caption = 'Constant'
-        TabOrder = 2
+        TabOrder = 1
       end
-      object RadioButton4: TRadioButton
+      object rbArrowUp: TRadioButton
         Left = 20
-        Top = 138
+        Top = 140
         Width = 96
         Height = 15
         Caption = 'Arrow up'
-        TabOrder = 3
+        TabOrder = 2
       end
-      object RadioButton5: TRadioButton
+      object rbArrowDown: TRadioButton
         Left = 20
-        Top = 173
+        Top = 175
         Width = 96
         Height = 15
         Caption = 'Arrow down'
-        TabOrder = 4
+        TabOrder = 3
       end
-      object RadioButton6: TRadioButton
+      object rbAlmostSorted: TRadioButton
         Left = 20
-        Top = 206
+        Top = 210
         Width = 96
         Height = 15
         Caption = 'Almost sorted'
-        TabOrder = 5
+        TabOrder = 4
       end
-      object RadioButton7: TRadioButton
+      object rbFewUnique: TRadioButton
         Left = 20
-        Top = 240
+        Top = 245
         Width = 96
         Height = 15
         Caption = 'Few unique'
-        TabOrder = 6
+        TabOrder = 5
       end
-      object RadioButton8: TRadioButton
+      object rbRandom: TRadioButton
         Left = 20
-        Top = 275
+        Top = 35
         Width = 96
         Height = 15
         Caption = 'Random'
-        TabOrder = 7
+        Checked = True
+        TabOrder = 6
+        TabStop = True
       end
-      object RadioButton9: TRadioButton
+      object rbSorted: TRadioButton
         Left = 20
-        Top = 309
+        Top = 280
         Width = 96
         Height = 15
         Caption = 'Sorted'
-        TabOrder = 8
+        TabOrder = 7
       end
     end
-    object Button1: TButton
-      Left = 47
-      Top = 419
-      Width = 123
-      Height = 55
-      Caption = 'RESET ALL'
-      TabOrder = 1
-    end
   end
-  object MainMenu1: TMainMenu
+  object MainMenu: TMainMenu
     Left = 664
     object File1: TMenuItem
       Caption = 'File'
+      object Start1: TMenuItem
+        Caption = 'Start'
+        OnClick = Start1Click
+      end
       object Tryby1: TMenuItem
         Caption = 'Tryby'
         object Dydaktyczny1: TMenuItem
@@ -511,9 +589,6 @@ object FDidactic: TFDidactic
         object Zaawansowany1: TMenuItem
           Caption = 'Zaawansowany'
         end
-      end
-      object Didactic1: TMenuItem
-        Caption = 'Reset'
       end
       object Exit1: TMenuItem
         Caption = 'Exit'

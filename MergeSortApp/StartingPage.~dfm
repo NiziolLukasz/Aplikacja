@@ -1,7 +1,7 @@
 object fStartingPage: TfStartingPage
-  Left = 367
-  Top = 177
-  Width = 1305
+  Left = 248
+  Top = 247
+  Width = 1092
   Height = 675
   Caption = 'Starting Page'
   Color = clBtnFace
@@ -13,28 +13,29 @@ object fStartingPage: TfStartingPage
   OldCreateOrder = False
   PixelsPerInch = 96
   TextHeight = 13
-  object Button1: TButton
-    Left = 192
+  object bDidacticPage: TButton
+    Left = 176
     Top = 280
-    Width = 193
-    Height = 65
-    Caption = 'Button1'
+    Width = 177
+    Height = 73
+    Caption = 'Didactic'
     TabOrder = 0
+    OnClick = bDidacticPageClick
   end
-  object Button2: TButton
-    Left = 496
+  object bAdvancedPage: TButton
+    Left = 672
     Top = 280
-    Width = 193
-    Height = 65
-    Caption = 'Button1'
+    Width = 177
+    Height = 73
+    Caption = 'Advanced'
     TabOrder = 1
   end
-  object Button3: TButton
-    Left = 800
+  object bEducationPage: TButton
+    Left = 424
     Top = 280
-    Width = 193
-    Height = 65
-    Caption = 'Button1'
+    Width = 177
+    Height = 73
+    Caption = 'Education'
     TabOrder = 2
   end
 end

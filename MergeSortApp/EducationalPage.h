@@ -1,24 +1,21 @@
 //---------------------------------------------------------------------------
 
-#ifndef StartingPageH
-#define StartingPageH
+#ifndef EducationalPageH
+#define EducationalPageH
 //---------------------------------------------------------------------------
 #include <Classes.hpp>
 #include <Controls.hpp>
 #include <StdCtrls.hpp>
 #include <Forms.hpp>
 //---------------------------------------------------------------------------
-class TfStartingPage : public TForm
+class TfEducationalPage : public TForm
 {
 __published:	// IDE-managed Components
-        TButton *Button1;
-        TButton *Button2;
-        TButton *Button3;
 private:	// User declarations
 public:		// User declarations
-        __fastcall TfStartingPage(TComponent* Owner);
+        __fastcall TfEducationalPage(TComponent* Owner);
 };
 //---------------------------------------------------------------------------
-extern PACKAGE TfStartingPage *fStartingPage;
+extern PACKAGE TfEducationalPage *fEducationalPage;
 //---------------------------------------------------------------------------
 #endif

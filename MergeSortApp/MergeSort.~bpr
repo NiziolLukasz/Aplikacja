@@ -3,11 +3,11 @@
 <PROJECT>
   <MACROS>
     <VERSION value="BCB.06.00"/>
-    <PROJECT value="Project.exe"/>
-    <OBJFILES value="Project.obj DidacticPage.obj StartingPage.obj"/>
-    <RESFILES value="Project.res"/>
+    <PROJECT value="MergeSort.exe"/>
+    <OBJFILES value="MergeSort.obj StartingPage.obj"/>
+    <RESFILES value="MergeSort.res"/>
     <DEFFILE value=""/>
-    <RESDEPEN value="$(RESFILES) DidacticPage.dfm StartingPage.dfm"/>
+    <RESDEPEN value="$(RESFILES) StartingPage.dfm"/>
     <LIBFILES value=""/>
     <LIBRARIES value=""/>
     <SPARELIBS value="vcl.lib rtl.lib"/>
@@ -21,14 +21,15 @@
     <LINKER value="ilink32"/>
     <USERDEFINES value="_DEBUG"/>
     <SYSDEFINES value="_RTLDLL;NO_STRICT;USEPACKAGES"/>
-    <MAINSOURCE value="Project.cpp"/>
-    <INCLUDEPATH value="$(BCB)\Bin;&quot;F:\Dysk Google\Licencjat\Aplikacja&quot;;$(BCB)\include;$(BCB)\include\vcl"/>
-    <LIBPATH value="$(BCB)\Bin;&quot;F:\Dysk Google\Licencjat\Aplikacja&quot;;$(BCB)\lib\obj;$(BCB)\lib"/>
+    <MAINSOURCE value="MergeSort.cpp"/>
+    <INCLUDEPATH value="..\;MergeSortApp;$(BCB)\include;$(BCB)\include\vcl"/>
+    <LIBPATH value="..\;MergeSortApp;$(BCB)\lib\obj;$(BCB)\lib"/>
     <WARNINGS value="-w-par"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <CFLAG1 value="-Od -Vx -Ve -X- -r- -a8 -b- -k -y -v -vi- -c -tW -tWM"/>
+    <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Vx -Ve -X- -r- -a8 -b- -k -y -v -vi- -c 
+      -tW -tWM"/>
     <PFLAGS value="-$YD -$W -$O- -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
     <AFLAGS value="/mx /w2 /zd"/>
@@ -42,10 +43,9 @@
     <OTHERFILES value=""/>
   </LINKER>
   <FILELIST>
-      <FILE FILENAME="Project.res" FORMNAME="" UNITNAME="Project.res" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Project.cpp" FORMNAME="" UNITNAME="Project" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="DidacticPage.cpp" FORMNAME="fDidacticPage" UNITNAME="DidacticPage" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="StartingPage.cpp" FORMNAME="fStartingPage" UNITNAME="StartingPage" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="MergeSort.res" FORMNAME="" UNITNAME="MergeSort.res" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="MergeSort.cpp" FORMNAME="" UNITNAME="MergeSort" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="StartingPage.cpp" FORMNAME="Form1" UNITNAME="StartingPage" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

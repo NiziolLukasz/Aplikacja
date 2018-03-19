@@ -3,13 +3,14 @@
 #include <vcl.h>
 #pragma hdrstop
 
+#include "AdvancedPage.h"
 #include "StartingPage.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
-TfStartingPage *fStartingPage;
+TfAdvancedPage *fAdvancedPage;
 //---------------------------------------------------------------------------
-__fastcall TfStartingPage::TfStartingPage(TComponent* Owner)
+__fastcall TfAdvancedPage::TfAdvancedPage(TComponent* Owner)
         : TForm(Owner)
 {
 }

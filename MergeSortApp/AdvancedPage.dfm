@@ -1,9 +1,9 @@
-object Form1: TForm1
-  Left = 376
-  Top = 457
+object fAdvancedPage: TfAdvancedPage
+  Left = 192
+  Top = 125
   Width = 1305
   Height = 675
-  Caption = 'Form1'
+  Caption = 'Advanced Page'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
