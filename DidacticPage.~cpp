@@ -3,7 +3,7 @@
 #include <vcl.h>
 #pragma hdrstop
 
-#include "Unit.h"
+#include "DidacticPage.h"
 #include <dos.h>
 //---------------------------------------------------------------------------
 #pragma package(smart_init)

@@ -1,6 +1,6 @@
-object fDidactic: TfDidactic
-  Left = 985
-  Top = 164
+object fDidacticPage: TfDidacticPage
+  Left = 913
+  Top = 141
   BorderStyle = bsToolWindow
   Caption = 'Project'
   ClientHeight = 641
@@ -574,6 +574,10 @@ object fDidactic: TfDidactic
     Left = 664
     object File1: TMenuItem
       Caption = 'File'
+      object Start1: TMenuItem
+        Caption = 'Start'
+        OnClick = Start1Click
+      end
       object Tryby1: TMenuItem
         Caption = 'Tryby'
         object Dydaktyczny1: TMenuItem
@@ -585,9 +589,6 @@ object fDidactic: TfDidactic
         object Zaawansowany1: TMenuItem
           Caption = 'Zaawansowany'
         end
-      end
-      object Didactic1: TMenuItem
-        Caption = 'Reset'
       end
       object Exit1: TMenuItem
         Caption = 'Exit'

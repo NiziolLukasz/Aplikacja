@@ -4,10 +4,10 @@
   <MACROS>
     <VERSION value="BCB.06.00"/>
     <PROJECT value="Project.exe"/>
-    <OBJFILES value="Project.obj Unit.obj"/>
+    <OBJFILES value="Project.obj DidacticPage.obj StartingPage.obj"/>
     <RESFILES value="Project.res"/>
     <DEFFILE value=""/>
-    <RESDEPEN value="$(RESFILES) Unit.dfm"/>
+    <RESDEPEN value="$(RESFILES) DidacticPage.dfm StartingPage.dfm"/>
     <LIBFILES value=""/>
     <LIBRARIES value=""/>
     <SPARELIBS value="vcl.lib rtl.lib"/>
@@ -44,7 +44,8 @@
   <FILELIST>
       <FILE FILENAME="Project.res" FORMNAME="" UNITNAME="Project.res" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Project.cpp" FORMNAME="" UNITNAME="Project" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Unit.cpp" FORMNAME="Form1" UNITNAME="Unit" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="DidacticPage.cpp" FORMNAME="fDidacticPage" UNITNAME="DidacticPage" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="StartingPage.cpp" FORMNAME="fStartingPage" UNITNAME="StartingPage" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

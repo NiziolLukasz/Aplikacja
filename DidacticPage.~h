@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 
-#ifndef UnitH
-#define UnitH
+#ifndef DidacticPageH
+#define DidacticPageH
 //---------------------------------------------------------------------------
 #include <Classes.hpp>
 #include <Controls.hpp>

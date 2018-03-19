@@ -3,15 +3,17 @@
 #include <vcl.h>
 #pragma hdrstop
 
-#include "Unit.h"
+#include "DidacticPage.h"
 #include <dos.h>
+#include "StartingPage.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
-TfDidactic *fDidactic;
+TfDidacticPage *fDidacticPage;
+
 int n = 20;
 //---------------------------------------------------------------------------
-__fastcall TfDidactic::TfDidactic(TComponent* Owner)
+__fastcall TfDidacticPage::TfDidacticPage(TComponent* Owner)
         : TForm(Owner)
 {
 
@@ -23,7 +25,7 @@ __fastcall TfDidactic::TfDidactic(TComponent* Owner)
    Druga podtablica to arr[m+1..r]
 */
 
-   void TfDidactic::mergeShape(TShape *arr[], int l, int m, int r) /* l - left, m - middle, r- right */
+   void TfDidacticPage::mergeShape(TShape *arr[], int l, int m, int r) /* l - left, m - middle, r- right */
 {
 
     int i, j, k;
@@ -83,7 +85,7 @@ __fastcall TfDidactic::TfDidactic(TComponent* Owner)
     Sleep(1000);
 }
 
-void TfDidactic::mergeShapeSort(TShape *arr[], int l, int r)
+void TfDidacticPage::mergeShapeSort(TShape *arr[], int l, int r)
 {
     for(int i=0; i < n; i++)
     {
@@ -112,7 +114,7 @@ void TfDidactic::mergeShapeSort(TShape *arr[], int l, int r)
 
 
 
-void __fastcall TfDidactic::bGenerateClick(TObject *Sender)
+void __fastcall TfDidacticPage::bGenerateClick(TObject *Sender)
 {
         for(int i=0; i < n; i++)
         {
@@ -141,19 +143,19 @@ void __fastcall TfDidactic::bGenerateClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfDidactic::bStartClick(TObject *Sender)
+void __fastcall TfDidacticPage::bStartClick(TObject *Sender)
 {
         mergeShapeSort(tab, 0, n-1);
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfDidactic::sbAmountChange(TObject *Sender)
+void __fastcall TfDidacticPage::sbAmountChange(TObject *Sender)
 {
         eAmount->Text = sbAmount->Position;
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfDidactic::eAmountChange(TObject *Sender)
+void __fastcall TfDidacticPage::eAmountChange(TObject *Sender)
 {
         if(eAmount->Text >= '1' && eAmount->Text <= '100')
                 sbAmount->Position = eAmount->Text.ToInt();
@@ -161,7 +163,7 @@ void __fastcall TfDidactic::eAmountChange(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfDidactic::sbDelayChange(TObject *Sender)
+void __fastcall TfDidacticPage::sbDelayChange(TObject *Sender)
 {
         AnsiString caption = ((sbDelay->Position) / 1000.0);
         caption += " sec";
@@ -170,7 +172,7 @@ void __fastcall TfDidactic::sbDelayChange(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfDidactic::ImagePauseClick(TObject *Sender)
+void __fastcall TfDidacticPage::ImagePauseClick(TObject *Sender)
 {
         // TODO : Oprogramowaæ zatrzymanie siê algorytmu sortowania
         ImagePause->Visible = false;
@@ -178,11 +180,19 @@ void __fastcall TfDidactic::ImagePauseClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfDidactic::ImagePlayClick(TObject *Sender)
+void __fastcall TfDidacticPage::ImagePlayClick(TObject *Sender)
 {
         // TODO : Oprogramowaæ wznowienie pracy algorytmu sortowania
         ImagePause->Visible = true;
         ImagePlay->Visible = false;
+}
+//---------------------------------------------------------------------------
+
+
+void __fastcall TfDidacticPage::Start1Click(TObject *Sender)
+{
+        fStartingPage->Show();
+
 }
 //---------------------------------------------------------------------------
 
