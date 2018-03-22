@@ -10,6 +10,7 @@
 #include <ExtCtrls.hpp>
 #include <jpeg.hpp>
 #include <Menus.hpp>
+#include <Mask.hpp>
 //---------------------------------------------------------------------------
 class TfDidacticPage : public TForm
 {
@@ -25,18 +26,16 @@ __published:	// IDE-managed Components
         TRadioButton *rbFewUnique;
         TRadioButton *rbRandom;
         TRadioButton *rbSorted;
-        TLabel *Label1;
         TScrollBar *sbAmount;
-        TEdit *eAmount;
         TButton *bGenerate;
-        TLabel *Label2;
-        TImage *ImageRight;
+        TLabel *lStep;
+        TImage *iRight;
         TButton *bStart;
         TButton *bStop;
         TPanel *PanelBottom;
-        TImage *ImagePause;
-        TImage *ImageLeft;
-        TLabel *Label3;
+        TImage *iPause;
+        TImage *iLeft;
+        TLabel *lAmount;
         TMainMenu *MainMenu;
         TMenuItem *File1;
         TMenuItem *Exit1;
@@ -49,21 +48,31 @@ __published:	// IDE-managed Components
         TScrollBar *sbDelay;
         TLabel *lDelayName;
         TLabel *lDelayNumber;
-        TImage *ImagePlay;
+        TImage *iPlay;
         TMenuItem *Start1;
+        TLabel *lControlPanel;
+        TTimer *Timer1;
         void __fastcall bGenerateClick(TObject *Sender);
         void __fastcall bStartClick(TObject *Sender);
         void __fastcall sbAmountChange(TObject *Sender);
-        void __fastcall eAmountChange(TObject *Sender);
         void __fastcall sbDelayChange(TObject *Sender);
-        void __fastcall ImagePauseClick(TObject *Sender);
-        void __fastcall ImagePlayClick(TObject *Sender);
+        void __fastcall iPauseClick(TObject *Sender);
+        void __fastcall iPlayClick(TObject *Sender);
         void __fastcall Start1Click(TObject *Sender);
+        void __fastcall rbRandomClick(TObject *Sender);
+        void __fastcall rbReversedClick(TObject *Sender);
+        void __fastcall rbConstantClick(TObject *Sender);
+        void __fastcall rbArrowDownClick(TObject *Sender);
+        void __fastcall rbArrowUpClick(TObject *Sender);
+        void __fastcall rbAlmostSortedClick(TObject *Sender);
+        void __fastcall rbSortedClick(TObject *Sender);
+        void __fastcall rbFewUniqueClick(TObject *Sender);
 
 private:	// User declarations
         TShape *tab[20];
-        void mergeShape(TShape *arr[], int l, int m, int r);
-        void mergeShapeSort(TShape *arr[], int l, int r);
+        void merge(TShape *arr[], int l, int m, int r);
+        void mergeSort(TShape *arr[], int l, int r);
+        int min(int x, int y);
 public:		// User declarations
         __fastcall TfDidacticPage(TComponent* Owner);
 };
