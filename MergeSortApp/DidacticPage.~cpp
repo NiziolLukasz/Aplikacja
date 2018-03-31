@@ -12,12 +12,22 @@
 #pragma resource "*.dfm"
 TfDidacticPage *fDidacticPage;
 
-int n = 21;
 //---------------------------------------------------------------------------
 __fastcall TfDidacticPage::TfDidacticPage(TComponent* Owner)
         : TForm(Owner)
 {
         fDidacticPage->ClientWidth = 231;
+
+        for(int i=0; i < 100; i++)
+        {
+                tab[i] = new TShape((TComponent*)(NULL));
+                tab[i]->Parent = this;
+                tab[i]->Width = 0;
+                tab[i]->Height = 0;
+                tab[i]->Left = 0;
+                tab[i]->Top = 0;
+                tab[i]->Brush->Color = clWhite;
+        }
 
 }
 int TfDidacticPage::min(int x, int y)
@@ -107,24 +117,51 @@ void TfDidacticPage::mergeSort(TShape *arr[], int l, int r)
 
 void __fastcall TfDidacticPage::bGenerateClick(TObject *Sender)
 {
-        if(PanelRight->Visible == false)
-        {
-                fDidacticPage->Width = 946;
-                PanelRight->Visible = true;
+        int n = sbAmount->Position;
+        int option = rgTableTypes->ItemIndex;
+        switch(option){
+                case 0: randomTable(n);
+                        bGenerate->Enabled = true;
+                        break;
+                case 1: reversedTable(n);
+                        bGenerate->Enabled = false;
+                        break;
+                case 2: constantTable(n);
+                        bGenerate->Enabled = true;
+                        break;
+                case 3: arrowUpTable(n);
+                        bGenerate->Enabled = false;
+                        break;
+                case 4: arrowDownTable(n);
+                        bGenerate->Enabled = false;
+                        break;
+                case 5: almostSortedTable(n);
+                        bGenerate->Enabled = true;
+                        break;
+                case 6: fewUniqueTable(n);
+                        bGenerate->Enabled = true;
+                        break;
+                case 7: sortedTable(n);
+                        bGenerate->Enabled = false;
+                        break;
         }
-
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfDidacticPage::bStartClick(TObject *Sender)
 {
+        int n = sbAmount->Position;
+        PanelLeft->Enabled = false;
         mergeSort(tab, 0, n-1);
+        PanelLeft->Enabled = true;
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfDidacticPage::sbAmountChange(TObject *Sender)
 {
+        int n =
         lAmount->Caption = sbAmount->Position;
+
 }
 //---------------------------------------------------------------------------
 
@@ -162,18 +199,11 @@ void __fastcall TfDidacticPage::Start1Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-
-
-
-
-
-void __fastcall TfDidacticPage::rbRandomClick(TObject *Sender)
+void TfDidacticPage::randomTable(int n)
 {
+        deleteTable();
+
         srand( time( NULL ) );
-        for(int i=0; i < n; i++)
-        {
-                delete tab[i];
-        }
 
         for(int i=0; i < n; i++)
         {
@@ -189,12 +219,9 @@ void __fastcall TfDidacticPage::rbRandomClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfDidacticPage::rbReversedClick(TObject *Sender)
+void TfDidacticPage::reversedTable(int n)
 {
-        for(int i=0; i < n; i++)
-        {
-                delete tab[i];
-        }
+        deleteTable();
 
         for(int i=0; i < n; i++)
         {
@@ -210,13 +237,12 @@ void __fastcall TfDidacticPage::rbReversedClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfDidacticPage::rbConstantClick(TObject *Sender)
+void TfDidacticPage::constantTable(int n)
 {
+        deleteTable();
+
         srand( time( NULL ) );
-        for(int i=0; i < n; i++)
-        {
-                delete tab[i];
-        }
+
         int height =  (rand() % 300) + 2;
 
         for(int i=0; i < n; i++)
@@ -234,12 +260,9 @@ void __fastcall TfDidacticPage::rbConstantClick(TObject *Sender)
 //---------------------------------------------------------------------------
 
 
-void __fastcall TfDidacticPage::rbArrowDownClick(TObject *Sender)
+void TfDidacticPage::arrowDownTable(int n)
 {
-        for(int i=0; i < n; i++)
-        {
-                delete tab[i];
-        }
+        deleteTable();
 
         for(int i=0, j = n; i < n; i++, j--)
         {
@@ -258,12 +281,9 @@ void __fastcall TfDidacticPage::rbArrowDownClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfDidacticPage::rbArrowUpClick(TObject *Sender)
+void TfDidacticPage::arrowUpTable(int n)
 {
-        for(int i=0; i < n; i++)
-        {
-                delete tab[i];
-        }
+        deleteTable();
 
         for(int i=0, j = 0; i < n; i++)
         {
@@ -283,13 +303,11 @@ void __fastcall TfDidacticPage::rbArrowUpClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfDidacticPage::rbAlmostSortedClick(TObject *Sender)
+void TfDidacticPage::almostSortedTable(int n)
 {
+        deleteTable();
+
         srand( time( NULL ) );
-        for(int i=0; i < n; i++)
-        {
-                delete tab[i];
-        }
 
         for(int i=0, j=n; i < n; i++, j--)
         {
@@ -323,27 +341,22 @@ void __fastcall TfDidacticPage::rbAlmostSortedClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfDidacticPage::rbFewUniqueClick(TObject *Sender)
+void TfDidacticPage::fewUniqueTable(int n)
 {
+        deleteTable();
+
         srand( time( NULL ) );
-        int *tabRand = new int[n/3];
+        int tab_length = (int)(n/3)+ n%3;
+        int *tabRand = new int[tab_length];
         int *temp = new int[n];
-        for(int i = 0; i< n/3; i++)
+        for(int i = 0; i< tab_length; i++)
         {
                 tabRand[i] = -(rand() % 300 + 5);
-                //Memo1->Lines->Add(IntToStr(tabRand[i]));
         }
         for(int i=0; i<n; i++)
         {
-                temp[i] = tabRand[i % n/3];
-                Memo1->Lines->Add(IntToStr(temp[i]));
+                temp[i] = tabRand[i % tab_length];
         }
-
-        for(int i=0; i < n; i++)
-        {
-                delete tab[i];
-        }
-
 
         int rand1;
         for(int i=0; i < n; i++)
@@ -366,12 +379,9 @@ void __fastcall TfDidacticPage::rbFewUniqueClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfDidacticPage::rbSortedClick(TObject *Sender)
+void TfDidacticPage::sortedTable(int n)
 {
-        for(int i=0; i < n; i++)
-        {
-                delete tab[i];
-        }
+        deleteTable();
 
         for(int i=0, j=n; i < n; i++, j--)
         {
@@ -387,4 +397,36 @@ void __fastcall TfDidacticPage::rbSortedClick(TObject *Sender)
 }
 
 //---------------------------------------------------------------------------
+
+void __fastcall TfDidacticPage::rgTableTypesClick(TObject *Sender)
+{
+        rgTableTypes->Top = 33;
+        lAmount->Visible = true;
+        sbAmount->Visible = true;
+        bGenerate->Visible = true;
+        fDidacticPage->Width = 946;
+        bGenerateClick(this);  
+}
+//---------------------------------------------------------------------------
+void TfDidacticPage::deleteTable(){
+        for(int i=0; i < 100; i++)
+        {
+                tab[i]->Width = 0;
+                tab[i]->Height = 0;
+                tab[i]->Left = 0;
+                tab[i]->Top = 0;
+                tab[i]->Brush->Color = clWhite;
+                tab[i]->Repaint();
+        }
+}
+
+//---------------------------------------------------------------------------
+
+
+
+
+
+
+
+
 

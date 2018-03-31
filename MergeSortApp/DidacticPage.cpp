@@ -12,12 +12,22 @@
 #pragma resource "*.dfm"
 TfDidacticPage *fDidacticPage;
 
-int n = 20;
 //---------------------------------------------------------------------------
 __fastcall TfDidacticPage::TfDidacticPage(TComponent* Owner)
         : TForm(Owner)
 {
         fDidacticPage->ClientWidth = 231;
+
+        for(int i=0; i < 100; i++)
+        {
+                tab[i] = new TShape((TComponent*)(NULL));
+                tab[i]->Parent = this;
+                tab[i]->Width = 0;
+                tab[i]->Height = 0;
+                tab[i]->Left = 0;
+                tab[i]->Top = 0;
+                tab[i]->Brush->Color = clWhite;
+        }
 
 }
 int TfDidacticPage::min(int x, int y)
@@ -107,30 +117,31 @@ void TfDidacticPage::mergeSort(TShape *arr[], int l, int r)
 
 void __fastcall TfDidacticPage::bGenerateClick(TObject *Sender)
 {
+        int n = sbAmount->Position;
         int option = rgTableTypes->ItemIndex;
         switch(option){
-                case 0: randomTable();
+                case 0: randomTable(n);
                         bGenerate->Enabled = true;
                         break;
-                case 1: reversedTable();
+                case 1: reversedTable(n);
                         bGenerate->Enabled = false;
                         break;
-                case 2: constantTable();
+                case 2: constantTable(n);
                         bGenerate->Enabled = true;
                         break;
-                case 3: arrowUpTable();
+                case 3: arrowUpTable(n);
                         bGenerate->Enabled = false;
                         break;
-                case 4: arrowDownTable();
+                case 4: arrowDownTable(n);
                         bGenerate->Enabled = false;
                         break;
-                case 5: almostSortedTable();
+                case 5: almostSortedTable(n);
                         bGenerate->Enabled = true;
                         break;
-                case 6: fewUniqueTable();
+                case 6: fewUniqueTable(n);
                         bGenerate->Enabled = true;
                         break;
-                case 7: sortedTable();
+                case 7: sortedTable(n);
                         bGenerate->Enabled = false;
                         break;
         }
@@ -139,12 +150,16 @@ void __fastcall TfDidacticPage::bGenerateClick(TObject *Sender)
 
 void __fastcall TfDidacticPage::bStartClick(TObject *Sender)
 {
+        int n = sbAmount->Position;
+        PanelLeft->Enabled = false;
         mergeSort(tab, 0, n-1);
+        PanelLeft->Enabled = true;
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfDidacticPage::sbAmountChange(TObject *Sender)
 {
+        bGenerate->Enabled = true;
         lAmount->Caption = sbAmount->Position;
 }
 //---------------------------------------------------------------------------
@@ -183,103 +198,79 @@ void __fastcall TfDidacticPage::Start1Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void TfDidacticPage::randomTable()
+void TfDidacticPage::randomTable(int n)
 {
+        deleteTable();
+
         srand( time( NULL ) );
-        for(int i=0; i < n; i++)
-        {
-                delete tab[i];
-        }
 
         for(int i=0; i < n; i++)
         {
-                tab[i] = new TShape((TComponent*)(NULL));
-                tab[i]->Parent = this;
                 tab[i]->Width = 15;
                 tab[i]->Height = -((rand() % 300) + 5);
                 tab[i]->Left = (tab[i]->Width) * (i%n) + 300;
                 tab[i]->Top = 400;
-                tab[i]->Brush->Color = clWhite;
                 tab[i]->Repaint();
         }
 }
 //---------------------------------------------------------------------------
 
-void TfDidacticPage::reversedTable()
+void TfDidacticPage::reversedTable(int n)
 {
-        for(int i=0; i < n; i++)
-        {
-                delete tab[i];
-        }
+        deleteTable();
 
         for(int i=0; i < n; i++)
         {
-                tab[i] = new TShape((TComponent*)(NULL));
-                tab[i]->Parent = this;
                 tab[i]->Width = 15;
                 tab[i]->Height = -10 * (i+1);
                 tab[i]->Left = (tab[i]->Width) * (i%n) + 300;
                 tab[i]->Top = 400;
-                tab[i]->Brush->Color = clWhite;
                 tab[i]->Repaint();
         }
 }
 //---------------------------------------------------------------------------
 
-void TfDidacticPage::constantTable()
+void TfDidacticPage::constantTable(int n)
 {
+        deleteTable();
+
         srand( time( NULL ) );
-        for(int i=0; i < n; i++)
-        {
-                delete tab[i];
-        }
+
         int height =  (rand() % 300) + 2;
 
         for(int i=0; i < n; i++)
         {
-                tab[i] = new TShape((TComponent*)(NULL));
-                tab[i]->Parent = this;
                 tab[i]->Width = 15;
                 tab[i]->Height = - height;
                 tab[i]->Left = (tab[i]->Width) * (i%n) + 300;
                 tab[i]->Top = 400;
-                tab[i]->Brush->Color = clWhite;
                 tab[i]->Repaint();
         }
 }
 //---------------------------------------------------------------------------
 
 
-void TfDidacticPage::arrowDownTable()
+void TfDidacticPage::arrowDownTable(int n)
 {
-        for(int i=0; i < n; i++)
-        {
-                delete tab[i];
-        }
+        deleteTable();
 
         for(int i=0, j = n; i < n; i++, j--)
         {
                 if(j < i)
                    j = i;
-                tab[i] = new TShape((TComponent*)(NULL));
-                tab[i]->Parent = this;
                 tab[i]->Width = 15;
                 tab[i]->Height = (-10 * (2.5*j)) + 240;
                 tab[i]->Left = (tab[i]->Width) * (i%n) + 300;
                 tab[i]->Top = 400;
-                tab[i]->Brush->Color = clWhite;
                 tab[i]->Repaint();
         }
 
 }
 //---------------------------------------------------------------------------
 
-void TfDidacticPage::arrowUpTable()
+void TfDidacticPage::arrowUpTable(int n)
 {
-        for(int i=0; i < n; i++)
-        {
-                delete tab[i];
-        }
+        deleteTable();
 
         for(int i=0, j = 0; i < n; i++)
         {
@@ -287,35 +278,27 @@ void TfDidacticPage::arrowUpTable()
                    j--;
                 else
                    j++;
-                tab[i] = new TShape((TComponent*)(NULL));
-                tab[i]->Parent = this;
                 tab[i]->Width = 15;
                 tab[i]->Height = (-10 * (2.5*j));
                 tab[i]->Left = (tab[i]->Width) * (i%n) + 300;
                 tab[i]->Top = 400;
-                tab[i]->Brush->Color = clWhite;
                 tab[i]->Repaint();
         }
 }
 //---------------------------------------------------------------------------
 
-void TfDidacticPage::almostSortedTable()
+void TfDidacticPage::almostSortedTable(int n)
 {
+        deleteTable();
+
         srand( time( NULL ) );
-        for(int i=0; i < n; i++)
-        {
-                delete tab[i];
-        }
 
         for(int i=0, j=n; i < n; i++, j--)
         {
-                tab[i] = new TShape((TComponent*)(NULL));
-                tab[i]->Parent = this;
                 tab[i]->Width = 15;
                 tab[i]->Height = -10 * (j+1);
                 tab[i]->Left = (tab[i]->Width) * (i%n) + 300;
                 tab[i]->Top = 400;
-                tab[i]->Brush->Color = clWhite;
                 tab[i]->Repaint();
         }
         int rand1;
@@ -339,8 +322,10 @@ void TfDidacticPage::almostSortedTable()
 }
 //---------------------------------------------------------------------------
 
-void TfDidacticPage::fewUniqueTable()
+void TfDidacticPage::fewUniqueTable(int n)
 {
+        deleteTable();
+
         srand( time( NULL ) );
         int tab_length = (int)(n/3)+ n%3;
         int *tabRand = new int[tab_length];
@@ -354,17 +339,9 @@ void TfDidacticPage::fewUniqueTable()
                 temp[i] = tabRand[i % tab_length];
         }
 
-        for(int i=0; i < n; i++)
-        {
-                delete tab[i];
-        }
-
-
         int rand1;
         for(int i=0; i < n; i++)
         {
-                tab[i] = new TShape((TComponent*)(NULL));
-                tab[i]->Parent = this;
                 tab[i]->Width = 15;
                 do{
                         rand1 = rand() % n;
@@ -373,7 +350,6 @@ void TfDidacticPage::fewUniqueTable()
                 temp[rand1] = 0;
                 tab[i]->Left = (tab[i]->Width) * (i%n) + 300;
                 tab[i]->Top = 400;
-                tab[i]->Brush->Color = clWhite;
                 tab[i]->Repaint();
         }
         delete [] tabRand;
@@ -381,22 +357,16 @@ void TfDidacticPage::fewUniqueTable()
 }
 //---------------------------------------------------------------------------
 
-void TfDidacticPage::sortedTable()
+void TfDidacticPage::sortedTable(int n)
 {
-        for(int i=0; i < n; i++)
-        {
-                delete tab[i];
-        }
+        deleteTable();
 
         for(int i=0, j=n; i < n; i++, j--)
         {
-                tab[i] = new TShape((TComponent*)(NULL));
-                tab[i]->Parent = this;
                 tab[i]->Width = 15;
                 tab[i]->Height = -10 * (j+1);
                 tab[i]->Left = (tab[i]->Width) * (i%n) + 300;
                 tab[i]->Top = 400;
-                tab[i]->Brush->Color = clWhite;
                 tab[i]->Repaint();
         }
 }
@@ -412,6 +382,19 @@ void __fastcall TfDidacticPage::rgTableTypesClick(TObject *Sender)
         fDidacticPage->Width = 946;
         bGenerateClick(this);  
 }
+//---------------------------------------------------------------------------
+void TfDidacticPage::deleteTable(){
+        for(int i=0; i < 100; i++)
+        {
+                tab[i]->Width = 0;
+                tab[i]->Height = 0;
+                tab[i]->Left = 0;
+                tab[i]->Top = 0;
+                tab[i]->Brush->Color = clWhite;
+                tab[i]->Repaint();
+        }
+}
+
 //---------------------------------------------------------------------------
 
 

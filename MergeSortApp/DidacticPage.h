@@ -54,19 +54,21 @@ __published:	// IDE-managed Components
         void __fastcall rgTableTypesClick(TObject *Sender);
 
 private:	// User declarations
-        TShape *tab[21];
+        TShape *tab[100];
         void merge(TShape *arr[], int l, int m, int r);
         void mergeSort(TShape *arr[], int l, int r);
         int min(int x, int y);
 
-        void randomTable();
-        void reversedTable();
-        void constantTable();
-        void arrowDownTable();
-        void arrowUpTable();
-        void almostSortedTable();
-        void sortedTable();
-        void fewUniqueTable();
+        void randomTable(int n);
+        void reversedTable(int n);
+        void constantTable(int n);
+        void arrowDownTable(int n);
+        void arrowUpTable(int n);
+        void almostSortedTable(int n);
+        void sortedTable(int n);
+        void fewUniqueTable(int n);
+
+        void deleteTable();
 public:		// User declarations
         __fastcall TfDidacticPage(TComponent* Owner);
 };
