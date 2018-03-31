@@ -12,7 +12,7 @@
 #pragma resource "*.dfm"
 TfDidacticPage *fDidacticPage;
 
-int n = 20;
+int n = 21;
 //---------------------------------------------------------------------------
 __fastcall TfDidacticPage::TfDidacticPage(TComponent* Owner)
         : TForm(Owner)
@@ -113,31 +113,6 @@ void __fastcall TfDidacticPage::bGenerateClick(TObject *Sender)
                 PanelRight->Visible = true;
         }
 
-        for(int i=0; i < n; i++)
-        {
-                delete tab[i];
-        }
-
-        tab[0] = new TShape((TComponent*)(NULL));
-        tab[0]->Parent = this;
-        tab[0]->Width = 15;
-        tab[0]->Height = -10;
-        tab[0]->Left = 300;
-        tab[0]->Top = 400;
-        tab[0]->Brush->Color = clWhite;
-        tab[0]->Repaint();
-
-        for(int i=1; i < n; i++)
-        {
-                tab[i] = new TShape((TComponent*)(NULL));
-                tab[i]->Parent = this;
-                tab[i]->Width = tab[0]->Width;
-                tab[i]->Height = tab[i-1]->Height + tab[0]->Height;
-                tab[i]->Left = tab[0]->Width + tab[i-1]->Left;
-                tab[i]->Top = tab[0]->Top;
-                tab[i]->Brush->Color = clWhite;
-                tab[i]->Repaint();
-        }
 }
 //---------------------------------------------------------------------------
 
@@ -205,7 +180,7 @@ void __fastcall TfDidacticPage::rbRandomClick(TObject *Sender)
                 tab[i] = new TShape((TComponent*)(NULL));
                 tab[i]->Parent = this;
                 tab[i]->Width = 15;
-                tab[i]->Height = -((rand() % 300) + 2);
+                tab[i]->Height = -((rand() % 300) + 5);
                 tab[i]->Left = (tab[i]->Width) * (i%n) + 300;
                 tab[i]->Top = 400;
                 tab[i]->Brush->Color = clWhite;
@@ -333,7 +308,7 @@ void __fastcall TfDidacticPage::rbAlmostSortedClick(TObject *Sender)
            for(int i=0; i < n/4; i++)
            {
                 rand1 = rand() % n;
-                tab[rand1]->Height = -((rand() % 300) + 2);
+                tab[rand1]->Height = -((rand() % 300) + 5);
                 tab[rand1]->Repaint();
 
            }
@@ -341,7 +316,7 @@ void __fastcall TfDidacticPage::rbAlmostSortedClick(TObject *Sender)
         else
         {
            rand1 = rand() % n;
-           tab[rand1]->Height = -((rand() % 300) + 2);
+           tab[rand1]->Height = -((rand() % 300) + 5);
            tab[rand1]->Repaint();
         }
 
@@ -351,15 +326,17 @@ void __fastcall TfDidacticPage::rbAlmostSortedClick(TObject *Sender)
 void __fastcall TfDidacticPage::rbFewUniqueClick(TObject *Sender)
 {
         srand( time( NULL ) );
-        int tabRand[n/3];
-        int temp[n];
+        int *tabRand = new int[n/3];
+        int *temp = new int[n];
         for(int i = 0; i< n/3; i++)
         {
-                tabRand[i] = -((rand() % 300) + 2;
+                tabRand[i] = -(rand() % 300 + 5);
+                //Memo1->Lines->Add(IntToStr(tabRand[i]));
         }
         for(int i=0; i<n; i++)
         {
-                temp[i] = tabRand[i % n/3]
+                temp[i] = tabRand[i % n/3];
+                Memo1->Lines->Add(IntToStr(temp[i]));
         }
 
         for(int i=0; i < n; i++)
@@ -376,7 +353,7 @@ void __fastcall TfDidacticPage::rbFewUniqueClick(TObject *Sender)
                 tab[i]->Width = 15;
                 do{
                         rand1 = rand() % n;
-                }while(temp[rand1] != 0);
+                }while(temp[rand1] == 0);
                 tab[i]->Height = temp[rand1];
                 temp[rand1] = 0;
                 tab[i]->Left = (tab[i]->Width) * (i%n) + 300;
@@ -384,7 +361,8 @@ void __fastcall TfDidacticPage::rbFewUniqueClick(TObject *Sender)
                 tab[i]->Brush->Color = clWhite;
                 tab[i]->Repaint();
         }
-
+        delete [] tabRand;
+        delete [] temp;
 }
 //---------------------------------------------------------------------------
 

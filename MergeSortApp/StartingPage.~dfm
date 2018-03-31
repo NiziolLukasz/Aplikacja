@@ -29,6 +29,7 @@ object fStartingPage: TfStartingPage
     Height = 73
     Caption = 'Advanced'
     TabOrder = 1
+    OnClick = bAdvancedPageClick
   end
   object bEducationPage: TButton
     Left = 424
@@ -37,5 +38,6 @@ object fStartingPage: TfStartingPage
     Height = 73
     Caption = 'Education'
     TabOrder = 2
+    OnClick = bEducationPageClick
   end
 end

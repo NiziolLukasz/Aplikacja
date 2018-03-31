@@ -17,15 +17,6 @@ class TfDidacticPage : public TForm
 __published:	// IDE-managed Components
         TPanel *PanelLeft;
         TPanel *PanelRight;
-        TGroupBox *gbTableTypes;
-        TRadioButton *rbReversed;
-        TRadioButton *rbConstant;
-        TRadioButton *rbArrowUp;
-        TRadioButton *rbArrowDown;
-        TRadioButton *rbAlmostSorted;
-        TRadioButton *rbFewUnique;
-        TRadioButton *rbRandom;
-        TRadioButton *rbSorted;
         TScrollBar *sbAmount;
         TButton *bGenerate;
         TLabel *lStep;
@@ -52,6 +43,7 @@ __published:	// IDE-managed Components
         TMenuItem *Start1;
         TLabel *lControlPanel;
         TTimer *Timer1;
+        TRadioGroup *rgTableTypes;
         void __fastcall bGenerateClick(TObject *Sender);
         void __fastcall bStartClick(TObject *Sender);
         void __fastcall sbAmountChange(TObject *Sender);
@@ -59,20 +51,22 @@ __published:	// IDE-managed Components
         void __fastcall iPauseClick(TObject *Sender);
         void __fastcall iPlayClick(TObject *Sender);
         void __fastcall Start1Click(TObject *Sender);
-        void __fastcall rbRandomClick(TObject *Sender);
-        void __fastcall rbReversedClick(TObject *Sender);
-        void __fastcall rbConstantClick(TObject *Sender);
-        void __fastcall rbArrowDownClick(TObject *Sender);
-        void __fastcall rbArrowUpClick(TObject *Sender);
-        void __fastcall rbAlmostSortedClick(TObject *Sender);
-        void __fastcall rbSortedClick(TObject *Sender);
-        void __fastcall rbFewUniqueClick(TObject *Sender);
+        void __fastcall rgTableTypesClick(TObject *Sender);
 
 private:	// User declarations
-        TShape *tab[20];
+        TShape *tab[21];
         void merge(TShape *arr[], int l, int m, int r);
         void mergeSort(TShape *arr[], int l, int r);
         int min(int x, int y);
+
+        void randomTable();
+        void reversedTable();
+        void constantTable();
+        void arrowDownTable();
+        void arrowUpTable();
+        void almostSortedTable();
+        void sortedTable();
+        void fewUniqueTable();
 public:		// User declarations
         __fastcall TfDidacticPage(TComponent* Owner);
 };

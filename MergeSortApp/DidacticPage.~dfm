@@ -625,6 +625,15 @@ object fDidacticPage: TfDidacticPage
       TabOrder = 1
     end
   end
+  object Memo1: TMemo
+    Left = 744
+    Top = 112
+    Width = 185
+    Height = 409
+    Lines.Strings = (
+      'Memo1')
+    TabOrder = 3
+  end
   object MainMenu: TMainMenu
     Left = 664
     object File1: TMenuItem
