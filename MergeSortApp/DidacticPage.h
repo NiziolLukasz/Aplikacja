@@ -54,7 +54,8 @@ __published:	// IDE-managed Components
         void __fastcall rgTableTypesClick(TObject *Sender);
 
 private:	// User declarations
-        TShape *tab[100];
+
+        TShape *tab[30];
         void merge(TShape *arr[], int l, int m, int r);
         void mergeSort(TShape *arr[], int l, int r);
         int min(int x, int y);

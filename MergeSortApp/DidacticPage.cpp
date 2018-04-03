@@ -11,14 +11,18 @@
 #pragma package(smart_init)
 #pragma resource "*.dfm"
 TfDidacticPage *fDidacticPage;
+int max_n, center;
 
 //---------------------------------------------------------------------------
 __fastcall TfDidacticPage::TfDidacticPage(TComponent* Owner)
         : TForm(Owner)
 {
+        max_n = 30;
+        center = (fDidacticPage->Width - PanelLeft->Width
+                        - PanelRight->Width)/ 2 + PanelLeft->Width - 10;
         fDidacticPage->ClientWidth = 231;
 
-        for(int i=0; i < 100; i++)
+        for(int i=0; i < max_n; i++)
         {
                 tab[i] = new TShape((TComponent*)(NULL));
                 tab[i]->Parent = this;
@@ -91,7 +95,7 @@ void TfDidacticPage::merge(TShape *arr[], int l, int m, int r) /* l - left, m - 
     {
         arr[k]->Height = R[j];
         arr[k]->Repaint();
-        
+
         j++;
         k++;
     }
@@ -208,7 +212,7 @@ void TfDidacticPage::randomTable(int n)
         {
                 tab[i]->Width = 15;
                 tab[i]->Height = -((rand() % 300) + 5);
-                tab[i]->Left = (tab[i]->Width) * (i%n) + 300;
+                tab[i]->Left = (tab[i]->Width) * (i%n) + center - (n*tab[i]->Width)/2;
                 tab[i]->Top = 400;
                 tab[i]->Repaint();
         }
@@ -223,7 +227,7 @@ void TfDidacticPage::reversedTable(int n)
         {
                 tab[i]->Width = 15;
                 tab[i]->Height = -10 * (i+1);
-                tab[i]->Left = (tab[i]->Width) * (i%n) + 300;
+                tab[i]->Left = (tab[i]->Width) * (i%n) + center - (n*tab[i]->Width)/2;
                 tab[i]->Top = 400;
                 tab[i]->Repaint();
         }
@@ -242,7 +246,7 @@ void TfDidacticPage::constantTable(int n)
         {
                 tab[i]->Width = 15;
                 tab[i]->Height = - height;
-                tab[i]->Left = (tab[i]->Width) * (i%n) + 300;
+                tab[i]->Left = (tab[i]->Width) * (i%n) + center - (n*tab[i]->Width)/2;
                 tab[i]->Top = 400;
                 tab[i]->Repaint();
         }
@@ -253,14 +257,18 @@ void TfDidacticPage::constantTable(int n)
 void TfDidacticPage::arrowDownTable(int n)
 {
         deleteTable();
-
+        int temp = 0;
+        if(n > 20 && n < 28)
+           temp = 40;
+        else if(n >= 28)
+           temp = 60;
         for(int i=0, j = n; i < n; i++, j--)
         {
-                if(j < i)
-                   j = i;
+                if(j <= i)
+                   j = i + 1;
                 tab[i]->Width = 15;
-                tab[i]->Height = (-10 * (2.5*j)) + 240;
-                tab[i]->Left = (tab[i]->Width) * (i%n) + 300;
+                tab[i]->Height = (-10 * (2.5*j)) + (10 * n) + temp;
+                tab[i]->Left = (tab[i]->Width) * (i%n) + center - (n*tab[i]->Width)/2;
                 tab[i]->Top = 400;
                 tab[i]->Repaint();
         }
@@ -280,7 +288,7 @@ void TfDidacticPage::arrowUpTable(int n)
                    j++;
                 tab[i]->Width = 15;
                 tab[i]->Height = (-10 * (2.5*j));
-                tab[i]->Left = (tab[i]->Width) * (i%n) + 300;
+                tab[i]->Left = (tab[i]->Width) * (i%n) + center - (n*tab[i]->Width)/2;
                 tab[i]->Top = 400;
                 tab[i]->Repaint();
         }
@@ -297,7 +305,7 @@ void TfDidacticPage::almostSortedTable(int n)
         {
                 tab[i]->Width = 15;
                 tab[i]->Height = -10 * (j+1);
-                tab[i]->Left = (tab[i]->Width) * (i%n) + 300;
+                tab[i]->Left = (tab[i]->Width) * (i%n) + center - (n*tab[i]->Width)/2;
                 tab[i]->Top = 400;
                 tab[i]->Repaint();
         }
@@ -348,7 +356,7 @@ void TfDidacticPage::fewUniqueTable(int n)
                 }while(temp[rand1] == 0);
                 tab[i]->Height = temp[rand1];
                 temp[rand1] = 0;
-                tab[i]->Left = (tab[i]->Width) * (i%n) + 300;
+                tab[i]->Left = (tab[i]->Width) * (i%n) + center - (n*tab[i]->Width)/2;
                 tab[i]->Top = 400;
                 tab[i]->Repaint();
         }
@@ -365,7 +373,7 @@ void TfDidacticPage::sortedTable(int n)
         {
                 tab[i]->Width = 15;
                 tab[i]->Height = -10 * (j+1);
-                tab[i]->Left = (tab[i]->Width) * (i%n) + 300;
+                tab[i]->Left = (tab[i]->Width) * (i%n) + center - (n*tab[i]->Width)/2;
                 tab[i]->Top = 400;
                 tab[i]->Repaint();
         }
@@ -379,12 +387,12 @@ void __fastcall TfDidacticPage::rgTableTypesClick(TObject *Sender)
         lAmount->Visible = true;
         sbAmount->Visible = true;
         bGenerate->Visible = true;
-        fDidacticPage->Width = 946;
-        bGenerateClick(this);  
+        fDidacticPage->Width = 990;
+        bGenerateClick(this);
 }
 //---------------------------------------------------------------------------
 void TfDidacticPage::deleteTable(){
-        for(int i=0; i < 100; i++)
+        for(int i=0; i < max_n; i++)
         {
                 tab[i]->Width = 0;
                 tab[i]->Height = 0;

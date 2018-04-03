@@ -159,9 +159,8 @@ void __fastcall TfDidacticPage::bStartClick(TObject *Sender)
 
 void __fastcall TfDidacticPage::sbAmountChange(TObject *Sender)
 {
-        int n =
+        bGenerate->Enabled = true;
         lAmount->Caption = sbAmount->Position;
-
 }
 //---------------------------------------------------------------------------
 
@@ -207,13 +206,10 @@ void TfDidacticPage::randomTable(int n)
 
         for(int i=0; i < n; i++)
         {
-                tab[i] = new TShape((TComponent*)(NULL));
-                tab[i]->Parent = this;
                 tab[i]->Width = 15;
                 tab[i]->Height = -((rand() % 300) + 5);
                 tab[i]->Left = (tab[i]->Width) * (i%n) + 300;
                 tab[i]->Top = 400;
-                tab[i]->Brush->Color = clWhite;
                 tab[i]->Repaint();
         }
 }
@@ -225,13 +221,10 @@ void TfDidacticPage::reversedTable(int n)
 
         for(int i=0; i < n; i++)
         {
-                tab[i] = new TShape((TComponent*)(NULL));
-                tab[i]->Parent = this;
                 tab[i]->Width = 15;
                 tab[i]->Height = -10 * (i+1);
                 tab[i]->Left = (tab[i]->Width) * (i%n) + 300;
                 tab[i]->Top = 400;
-                tab[i]->Brush->Color = clWhite;
                 tab[i]->Repaint();
         }
 }
@@ -247,13 +240,10 @@ void TfDidacticPage::constantTable(int n)
 
         for(int i=0; i < n; i++)
         {
-                tab[i] = new TShape((TComponent*)(NULL));
-                tab[i]->Parent = this;
                 tab[i]->Width = 15;
                 tab[i]->Height = - height;
                 tab[i]->Left = (tab[i]->Width) * (i%n) + 300;
                 tab[i]->Top = 400;
-                tab[i]->Brush->Color = clWhite;
                 tab[i]->Repaint();
         }
 }
@@ -268,13 +258,10 @@ void TfDidacticPage::arrowDownTable(int n)
         {
                 if(j < i)
                    j = i;
-                tab[i] = new TShape((TComponent*)(NULL));
-                tab[i]->Parent = this;
                 tab[i]->Width = 15;
                 tab[i]->Height = (-10 * (2.5*j)) + 240;
                 tab[i]->Left = (tab[i]->Width) * (i%n) + 300;
                 tab[i]->Top = 400;
-                tab[i]->Brush->Color = clWhite;
                 tab[i]->Repaint();
         }
 
@@ -291,13 +278,10 @@ void TfDidacticPage::arrowUpTable(int n)
                    j--;
                 else
                    j++;
-                tab[i] = new TShape((TComponent*)(NULL));
-                tab[i]->Parent = this;
                 tab[i]->Width = 15;
                 tab[i]->Height = (-10 * (2.5*j));
                 tab[i]->Left = (tab[i]->Width) * (i%n) + 300;
                 tab[i]->Top = 400;
-                tab[i]->Brush->Color = clWhite;
                 tab[i]->Repaint();
         }
 }
@@ -311,13 +295,10 @@ void TfDidacticPage::almostSortedTable(int n)
 
         for(int i=0, j=n; i < n; i++, j--)
         {
-                tab[i] = new TShape((TComponent*)(NULL));
-                tab[i]->Parent = this;
                 tab[i]->Width = 15;
                 tab[i]->Height = -10 * (j+1);
                 tab[i]->Left = (tab[i]->Width) * (i%n) + 300;
                 tab[i]->Top = 400;
-                tab[i]->Brush->Color = clWhite;
                 tab[i]->Repaint();
         }
         int rand1;
@@ -361,8 +342,6 @@ void TfDidacticPage::fewUniqueTable(int n)
         int rand1;
         for(int i=0; i < n; i++)
         {
-                tab[i] = new TShape((TComponent*)(NULL));
-                tab[i]->Parent = this;
                 tab[i]->Width = 15;
                 do{
                         rand1 = rand() % n;
@@ -371,7 +350,6 @@ void TfDidacticPage::fewUniqueTable(int n)
                 temp[rand1] = 0;
                 tab[i]->Left = (tab[i]->Width) * (i%n) + 300;
                 tab[i]->Top = 400;
-                tab[i]->Brush->Color = clWhite;
                 tab[i]->Repaint();
         }
         delete [] tabRand;
@@ -385,13 +363,10 @@ void TfDidacticPage::sortedTable(int n)
 
         for(int i=0, j=n; i < n; i++, j--)
         {
-                tab[i] = new TShape((TComponent*)(NULL));
-                tab[i]->Parent = this;
                 tab[i]->Width = 15;
                 tab[i]->Height = -10 * (j+1);
                 tab[i]->Left = (tab[i]->Width) * (i%n) + 300;
                 tab[i]->Top = 400;
-                tab[i]->Brush->Color = clWhite;
                 tab[i]->Repaint();
         }
 }

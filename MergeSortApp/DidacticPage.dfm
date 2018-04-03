@@ -1,10 +1,10 @@
 object fDidacticPage: TfDidacticPage
-  Left = 928
-  Top = 162
+  Left = 938
+  Top = 174
   BorderStyle = bsToolWindow
   Caption = 'Project'
   ClientHeight = 557
-  ClientWidth = 946
+  ClientWidth = 974
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -20,12 +20,12 @@ object fDidacticPage: TfDidacticPage
   object PanelBottom: TPanel
     Left = 224
     Top = 447
-    Width = 505
+    Width = 537
     Height = 111
     Align = alCustom
     TabOrder = 2
     object lDelayName: TLabel
-      Left = 200
+      Left = 232
       Top = 64
       Width = 42
       Height = 16
@@ -38,7 +38,7 @@ object fDidacticPage: TfDidacticPage
       ParentFont = False
     end
     object lDelayNumber: TLabel
-      Left = 248
+      Left = 280
       Top = 64
       Width = 32
       Height = 16
@@ -51,7 +51,7 @@ object fDidacticPage: TfDidacticPage
       ParentFont = False
     end
     object sbDelay: TScrollBar
-      Left = 88
+      Left = 104
       Top = 16
       Width = 345
       Height = 25
@@ -88,6 +88,7 @@ object fDidacticPage: TfDidacticPage
       Top = 416
       Width = 113
       Height = 20
+      Max = 30
       Min = 2
       PageSize = 0
       Position = 20
@@ -137,7 +138,7 @@ object fDidacticPage: TfDidacticPage
     end
   end
   object PanelRight: TPanel
-    Left = 726
+    Left = 758
     Top = 0
     Width = 220
     Height = 557
