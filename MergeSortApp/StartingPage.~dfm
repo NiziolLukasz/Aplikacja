@@ -1,6 +1,6 @@
 object fStartingPage: TfStartingPage
-  Left = 248
-  Top = 247
+  Left = 450
+  Top = 180
   Width = 1092
   Height = 675
   Caption = 'Starting Page'
@@ -11,6 +11,7 @@ object fStartingPage: TfStartingPage
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = False
+  Position = poScreenCenter
   PixelsPerInch = 96
   TextHeight = 13
   object bDidacticPage: TButton

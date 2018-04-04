@@ -25,3 +25,17 @@ void __fastcall TfStartingPage::bDidacticPageClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfStartingPage::bEducationPageClick(TObject *Sender)
+{
+        fStartingPage->Hide();
+        fEducationalPage->Show();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfStartingPage::bAdvancedPageClick(TObject *Sender)
+{
+        fStartingPage->Hide();
+        fAdvancedPage->Show();
+}
+//---------------------------------------------------------------------------
+

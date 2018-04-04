@@ -42,8 +42,12 @@ __published:	// IDE-managed Components
         TImage *iPlay;
         TMenuItem *Start1;
         TLabel *lControlPanel;
-        TTimer *Timer1;
         TRadioGroup *rgTableTypes;
+        TShape *sRed;
+        TShape *sYellow;
+        TShape *sBlue;
+        TLabel *lComparisonsName;
+        TLabel *lComparisonsAmount;
         void __fastcall bGenerateClick(TObject *Sender);
         void __fastcall bStartClick(TObject *Sender);
         void __fastcall sbAmountChange(TObject *Sender);
@@ -58,16 +62,15 @@ private:	// User declarations
         TShape *tab[30];
         void merge(TShape *arr[], int l, int m, int r);
         void mergeSort(TShape *arr[], int l, int r);
-        int min(int x, int y);
 
-        void randomTable(int n);
-        void reversedTable(int n);
-        void constantTable(int n);
-        void arrowDownTable(int n);
-        void arrowUpTable(int n);
-        void almostSortedTable(int n);
-        void sortedTable(int n);
-        void fewUniqueTable(int n);
+        void randomTable();
+        void reversedTable();
+        void constantTable();
+        void arrowDownTable();
+        void arrowUpTable();
+        void almostSortedTable();
+        void sortedTable();
+        void fewUniqueTable();
 
         void deleteTable();
 public:		// User declarations

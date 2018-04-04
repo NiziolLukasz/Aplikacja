@@ -1,10 +1,10 @@
 object fDidacticPage: TfDidacticPage
-  Left = 938
-  Top = 174
+  Left = 893
+  Top = 204
   BorderStyle = bsToolWindow
   Caption = 'Project'
   ClientHeight = 557
-  ClientWidth = 974
+  ClientWidth = 986
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -17,10 +17,63 @@ object fDidacticPage: TfDidacticPage
   Scaled = False
   PixelsPerInch = 96
   TextHeight = 13
+  object sRed: TShape
+    Left = 240
+    Top = 400
+    Width = 15
+    Height = 6
+    Brush.Color = clRed
+    Enabled = False
+    Visible = False
+  end
+  object sYellow: TShape
+    Left = 272
+    Top = 408
+    Width = 15
+    Height = 6
+    Brush.Color = clYellow
+    Enabled = False
+    Visible = False
+  end
+  object sBlue: TShape
+    Left = 256
+    Top = 400
+    Width = 15
+    Height = 6
+    Brush.Color = clBlue
+    Enabled = False
+    Visible = False
+  end
+  object lComparisonsName: TLabel
+    Left = 240
+    Top = 432
+    Width = 86
+    Height = 16
+    Caption = 'Comparisons: '
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+  end
+  object lComparisonsAmount: TLabel
+    Left = 328
+    Top = 432
+    Width = 7
+    Height = 16
+    Caption = '0'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+  end
   object PanelBottom: TPanel
     Left = 224
     Top = 447
-    Width = 537
+    Width = 545
     Height = 111
     Align = alCustom
     TabOrder = 2
@@ -42,7 +95,7 @@ object fDidacticPage: TfDidacticPage
       Top = 64
       Width = 32
       Height = 16
-      Caption = '1 sec'
+      Caption = '2 sec'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -13
@@ -55,9 +108,9 @@ object fDidacticPage: TfDidacticPage
       Top = 16
       Width = 345
       Height = 25
-      Max = 2000
+      Max = 4000
       PageSize = 0
-      Position = 1000
+      Position = 2000
       TabOrder = 0
       OnChange = sbDelayChange
     end
@@ -138,7 +191,7 @@ object fDidacticPage: TfDidacticPage
     end
   end
   object PanelRight: TPanel
-    Left = 758
+    Left = 766
     Top = 0
     Width = 220
     Height = 557
@@ -594,8 +647,5 @@ object fDidacticPage: TfDidacticPage
         Caption = 'About...'
       end
     end
-  end
-  object Timer1: TTimer
-    Left = 632
   end
 end
