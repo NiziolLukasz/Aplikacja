@@ -27,7 +27,7 @@ object fDidacticPage: TfDidacticPage
     Visible = False
   end
   object sYellow: TShape
-    Left = 272
+    Left = 248
     Top = 408
     Width = 15
     Height = 6
@@ -110,7 +110,7 @@ object fDidacticPage: TfDidacticPage
       Height = 25
       Max = 4000
       PageSize = 0
-      Position = 2000
+      Position = 1000
       TabOrder = 0
       OnChange = sbDelayChange
     end
@@ -647,5 +647,9 @@ object fDidacticPage: TfDidacticPage
         Caption = 'About...'
       end
     end
+  end
+  object Timer1: TTimer
+    OnTimer = Timer1Timer
+    Left = 632
   end
 end

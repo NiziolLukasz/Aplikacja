@@ -12,21 +12,33 @@
 #pragma resource "*.dfm"
 TfDidacticPage *fDidacticPage;
 int max_n, n, center, delay, if_count;
+// max_n - maxymalna iloœc s³upków
+// n - aktualna iloœc s³ópków
+// center - œrodek formatki dla wyœwietlanych s³upków
+// delay - wartoœæ opóŸnienia sortowania
+// if_count - iloœæ zliczonych porównañ
+
+
+int l,r; // Test
 
 //---------------------------------------------------------------------------
 __fastcall TfDidacticPage::TfDidacticPage(TComponent* Owner)
         : TForm(Owner)
 {
-        max_n = 30;
+        max_n = 30; // Okreœlenie maksmalnej iloœci s³upków
         center = (fDidacticPage->Width - PanelLeft->Width
-                        - PanelRight->Width)/ 2 + PanelLeft->Width - 10;
-        delay = sbDelay->Position;
-        n= sbAmount->Position;
-        if_count = 0;
+                        - PanelRight->Width)/ 2 + PanelLeft->Width - 10;  // Obliczenie œrodka formatki dla wyœwietlanych s³upków
+        delay = sbDelay->Position; // Przypisanie pocz¹tkowej wartoœci opóŸnienia
+        n= sbAmount->Position; // Przypisanie pocz¹tkowej iloœci s³upków
+        if_count = 0; // Przypisanie pocz¹tkowej wartoœci zliczania if'ów
 
-        fDidacticPage->ClientWidth = 231;
+        l=0;   // Test
+        r=n-1; // Test
 
-        for(int i=0; i < max_n; i++)
+
+        fDidacticPage->ClientWidth = 231;  // Zmniejszenie wielkoœci formatki
+
+        for(int i=0; i < max_n; i++)  // Stworzenie "niewidocznych" s³upków, dla dalszego u¿ytku
         {
                 tab[i] = new TShape((TComponent*)(NULL));
                 tab[i]->Parent = this;
@@ -47,14 +59,14 @@ void TfDidacticPage::merge(TShape *arr[], int l, int m, int r) /* l - left, m - 
 {
 
     int i, j, k;
-    int n1 = m - l + 1; /* iloœæ elementów w pierwszej podtablicy */
-    int n2 =  r - m; /* iloœæ elementów w drugiej podtablicy */
+    int n1 = m - l + 1; // iloœæ elementów w pierwszej podtablicy
+    int n2 =  r - m; // iloœæ elementów w drugiej podtablicy
 
-    /* Tworzenie pomocniczych tablic */
+    // Tworzenie pomocniczych tablic
     int *L = new int [n1];
     int *R = new int [n2];
 
-    /* Skopiowanie danych do pomocniczych tablic L[] i R[] */
+    // Skopiowanie danych do pomocniczych tablic L[] i R[]
     lComparisonsAmount->Caption = ++if_count;
     for (i = 0; i < n1; i++)
     {
@@ -68,18 +80,24 @@ void TfDidacticPage::merge(TShape *arr[], int l, int m, int r) /* l - left, m - 
         lComparisonsAmount->Caption = ++if_count;
     }
 
-    /* £¹czenie pomocniczych tablic spowrotem do arr[l..r]*/
-    i = 0; /* Pocz¹tkowy indeks pierwszej podtablicy */
-    j = 0; /* Pocz¹tkowy indeks drugiej podtablicy */
-    k = l; /* Pocz¹tkowy indeks po³¹czonej podtablicy */
+    // £¹czenie pomocniczych tablic spowrotem do arr[l..r]
+    i = 0; // Pocz¹tkowy indeks pierwszej podtablicy
+    j = 0; // Pocz¹tkowy indeks drugiej podtablicy
+    k = l; // Pocz¹tkowy indeks po³¹czonej podtablicy
+
+    // Uwidocznienie znaczników
     sBlue->Visible = true;
     sRed->Visible = true;
     sYellow->Visible = true;
+
+    //Przesuniêcie znaczników na miejsce startowe
     sRed->Left = arr[i + l]->Left;
     sBlue->Left = arr[m + 1+ j]->Left;
     sYellow->Left = arr[k]->Left;
+
     Repaint();
     Sleep(delay);
+
     lComparisonsAmount->Caption = ++if_count;
     while (i < n1 && j < n2)
     {
@@ -103,7 +121,7 @@ void TfDidacticPage::merge(TShape *arr[], int l, int m, int r) /* l - left, m - 
         k++;
         lComparisonsAmount->Caption = ++if_count;
     }
-    /* Skopiowanie pozosta³ych elementów podtablicy L[], jeœli jakieœ istniej¹ */
+    // Skopiowanie pozosta³ych elementów podtablicy L[], jeœli jakieœ istniej¹
     lComparisonsAmount->Caption = ++if_count;
     while (i < n1)
     {
@@ -118,7 +136,7 @@ void TfDidacticPage::merge(TShape *arr[], int l, int m, int r) /* l - left, m - 
         Sleep(delay);
         lComparisonsAmount->Caption = ++if_count;
     }
-    /* Skopiowanie pozosta³ych elementów podtablicy R[], jeœli jakieœ istniej¹ */
+    // Skopiowanie pozosta³ych elementów podtablicy R[], jeœli jakieœ istniej¹
     lComparisonsAmount->Caption = ++if_count;
     while (j < n2)
     {
@@ -131,20 +149,22 @@ void TfDidacticPage::merge(TShape *arr[], int l, int m, int r) /* l - left, m - 
         Sleep(delay);
         lComparisonsAmount->Caption = ++if_count;
     }
+
+    // Usuniêcie dodatkowch tablic
     delete [] L;
     delete [] R;
 }
 
 void TfDidacticPage::mergeSort(TShape *arr[], int l, int r)
 {
-    delay = sbDelay->Position;
+    delay = sbDelay->Position; // odœwierzenie wartoœci opóŸnienia
     lComparisonsAmount->Caption = ++if_count;
     if (l < r)
     {
-        /* To samo co (l+r)/2, ale unika przepe³nienia dla du¿ego l i r */
+        // To samo co (l+r)/2, ale unika przepe³nienia dla du¿ego l i r
         int m = l+(r-l)/2;
 
-        /* Sortowanie pierwszej i drugiej po³owy tablicy arr*/
+        // Sortowanie pierwszej i drugiej po³owy tablicy arr
 
         for(int i=m; i>=0; i--) // Rozsuniêcie lewej czêœci tablicy
         {
@@ -156,6 +176,7 @@ void TfDidacticPage::mergeSort(TShape *arr[], int l, int r)
         }
         Repaint();
         Sleep(delay);
+
         mergeSort(arr, l, m);
         mergeSort(arr, m+1, r);
 
@@ -169,7 +190,10 @@ void TfDidacticPage::mergeSort(TShape *arr[], int l, int r)
         }
         Repaint();
         Sleep(delay);
+
         merge(arr, l, m, r);
+
+        // Wy³¹czenie widocznoœci wskaŸników po ukoñczeniu funkcji merge
         sRed->Visible = false;
         sBlue->Visible = false;
         sYellow->Visible = false;
@@ -467,4 +491,22 @@ void TfDidacticPage::deleteTable(){
 
 //---------------------------------------------------------------------------
 
+struct dane{
+
+}
+
+void __fastcall TfDidacticPage::Timer1Timer(TObject *Sender)
+{
+        if(l < r)
+        {
+           int m = l+(r-l)/2;
+
+
+
+
+
+
+        }
+}
+//---------------------------------------------------------------------------
 

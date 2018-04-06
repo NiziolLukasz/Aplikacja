@@ -44,6 +44,32 @@ object fDidacticPage: TfDidacticPage
     Enabled = False
     Visible = False
   end
+  object lComparisonsName: TLabel
+    Left = 240
+    Top = 432
+    Width = 86
+    Height = 16
+    Caption = 'Comparisons: '
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+  end
+  object lComparisonsAmount: TLabel
+    Left = 328
+    Top = 432
+    Width = 7
+    Height = 16
+    Caption = '0'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+  end
   object PanelBottom: TPanel
     Left = 224
     Top = 447
@@ -589,7 +615,6 @@ object fDidacticPage: TfDidacticPage
       Font.Style = []
       ParentFont = False
       TabOrder = 1
-      OnClick = bStopClick
     end
   end
   object MainMenu: TMainMenu

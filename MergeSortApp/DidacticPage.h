@@ -48,6 +48,7 @@ __published:	// IDE-managed Components
         TShape *sBlue;
         TLabel *lComparisonsName;
         TLabel *lComparisonsAmount;
+        TTimer *Timer1;
         void __fastcall bGenerateClick(TObject *Sender);
         void __fastcall bStartClick(TObject *Sender);
         void __fastcall sbAmountChange(TObject *Sender);
@@ -56,6 +57,7 @@ __published:	// IDE-managed Components
         void __fastcall iPlayClick(TObject *Sender);
         void __fastcall Start1Click(TObject *Sender);
         void __fastcall rgTableTypesClick(TObject *Sender);
+        void __fastcall Timer1Timer(TObject *Sender);
 
 private:	// User declarations
 

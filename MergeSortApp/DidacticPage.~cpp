@@ -11,7 +11,7 @@
 #pragma package(smart_init)
 #pragma resource "*.dfm"
 TfDidacticPage *fDidacticPage;
-int max_n, n, center, delay;
+int max_n, n, center, delay, if_count;
 
 //---------------------------------------------------------------------------
 __fastcall TfDidacticPage::TfDidacticPage(TComponent* Owner)
@@ -22,6 +22,7 @@ __fastcall TfDidacticPage::TfDidacticPage(TComponent* Owner)
                         - PanelRight->Width)/ 2 + PanelLeft->Width - 10;
         delay = sbDelay->Position;
         n= sbAmount->Position;
+        if_count = 0;
 
         fDidacticPage->ClientWidth = 231;
 
@@ -54,10 +55,18 @@ void TfDidacticPage::merge(TShape *arr[], int l, int m, int r) /* l - left, m - 
     int *R = new int [n2];
 
     /* Skopiowanie danych do pomocniczych tablic L[] i R[] */
+    lComparisonsAmount->Caption = ++if_count;
     for (i = 0; i < n1; i++)
+    {
         L[i] = -arr[l + i]->Height;
+        lComparisonsAmount->Caption = ++if_count;
+    }
+    lComparisonsAmount->Caption = ++if_count;
     for (j = 0; j < n2; j++)
+    {
         R[j] = -arr[m + 1+ j]->Height;
+        lComparisonsAmount->Caption = ++if_count;
+    }
 
     /* £¹czenie pomocniczych tablic spowrotem do arr[l..r]*/
     i = 0; /* Pocz¹tkowy indeks pierwszej podtablicy */
@@ -71,12 +80,14 @@ void TfDidacticPage::merge(TShape *arr[], int l, int m, int r) /* l - left, m - 
     sYellow->Left = arr[k]->Left;
     Repaint();
     Sleep(delay);
+    lComparisonsAmount->Caption = ++if_count;
     while (i < n1 && j < n2)
     {
         sRed->Left = arr[i + l]->Left;
         sBlue->Left = arr[m + 1+ j]->Left;
         sYellow->Left = arr[k]->Left;
 
+        lComparisonsAmount->Caption = ++if_count;
         if (L[i] <= R[j])
         {
             arr[k]->Height = -L[i];
@@ -90,36 +101,35 @@ void TfDidacticPage::merge(TShape *arr[], int l, int m, int r) /* l - left, m - 
         Repaint();
         Sleep(delay);
         k++;
+        lComparisonsAmount->Caption = ++if_count;
     }
     /* Skopiowanie pozosta³ych elementów podtablicy L[], jeœli jakieœ istniej¹ */
+    lComparisonsAmount->Caption = ++if_count;
     while (i < n1)
     {
         sRed->Left = arr[i + l]->Left;
-        Repaint(); // TODELETE
         sYellow->Left = arr[k]->Left;
-        Repaint(); // TODELETE
         arr[k]->Height = -L[i];
-        Repaint(); // TODELETE
 
         i++;
         k++;
 
         Repaint();
         Sleep(delay);
+        lComparisonsAmount->Caption = ++if_count;
     }
     /* Skopiowanie pozosta³ych elementów podtablicy R[], jeœli jakieœ istniej¹ */
+    lComparisonsAmount->Caption = ++if_count;
     while (j < n2)
     {
         sBlue->Left = arr[m + 1+ j]->Left;
-        Repaint(); // TODELETE
         sYellow->Left = arr[k]->Left;
-        Repaint(); // TODELETE
         arr[k]->Height = -R[j];
-        Repaint(); // TODELETE
         j++;
         k++;
         Repaint();
         Sleep(delay);
+        lComparisonsAmount->Caption = ++if_count;
     }
     delete [] L;
     delete [] R;
@@ -128,6 +138,7 @@ void TfDidacticPage::merge(TShape *arr[], int l, int m, int r) /* l - left, m - 
 void TfDidacticPage::mergeSort(TShape *arr[], int l, int r)
 {
     delay = sbDelay->Position;
+    lComparisonsAmount->Caption = ++if_count;
     if (l < r)
     {
         /* To samo co (l+r)/2, ale unika przepe³nienia dla du¿ego l i r */
@@ -168,6 +179,7 @@ void TfDidacticPage::mergeSort(TShape *arr[], int l, int r)
 void __fastcall TfDidacticPage::bGenerateClick(TObject *Sender)
 {
         PanelRight->Enabled = true;
+        lComparisonsAmount->Caption = if_count = 0;
         n = sbAmount->Position;
         int option = rgTableTypes->ItemIndex;
         switch(option){
@@ -202,6 +214,7 @@ void __fastcall TfDidacticPage::bGenerateClick(TObject *Sender)
 void __fastcall TfDidacticPage::bStartClick(TObject *Sender)
 {
         n = sbAmount->Position;
+        lComparisonsAmount->Caption = if_count = 0;
 
         iPause->Visible = true;
         iPlay->Visible = false;
@@ -384,7 +397,7 @@ void TfDidacticPage::fewUniqueTable()
         deleteTable();
 
         srand( time( NULL ) );
-        int tab_length = (int)(n/3)+ n%3;
+        int tab_length = (n>9)? 5 : 2;
         int *tabRand = new int[tab_length];
         int *temp = new int[n];
         for(int i = 0; i< tab_length; i++)
@@ -454,21 +467,4 @@ void TfDidacticPage::deleteTable(){
 
 //---------------------------------------------------------------------------
 
-
-
-
-
-
-
-
-
-
-
-void __fastcall TfDidacticPage::bStopClick(TObject *Sender)
-{
-        // TODO : Oprogramowaæ zatrzymanie siê algorytmu sortowania
-        iPause->Visible = false;
-        iPlay->Visible = true;        
-}
-//---------------------------------------------------------------------------
 
