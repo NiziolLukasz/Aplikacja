@@ -43,4 +43,10 @@ void __fastcall TfStartingPage::bAdvancedPageClick(TObject *Sender)
 
 
 
+void __fastcall TfStartingPage::FormClose(TObject *Sender,
+      TCloseAction &Action)
+{
+        fStartingPage->Close();     
+}
+//---------------------------------------------------------------------------
 

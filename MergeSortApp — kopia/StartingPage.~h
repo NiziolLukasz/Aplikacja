@@ -7,7 +7,6 @@
 #include <Controls.hpp>
 #include <StdCtrls.hpp>
 #include <Forms.hpp>
-#include <Menus.hpp>
 //---------------------------------------------------------------------------
 class TfStartingPage : public TForm
 {
@@ -18,6 +17,7 @@ __published:	// IDE-managed Components
         void __fastcall bDidacticPageClick(TObject *Sender);
         void __fastcall bEducationPageClick(TObject *Sender);
         void __fastcall bAdvancedPageClick(TObject *Sender);
+        void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
 private:	// User declarations
 public:		// User declarations
         __fastcall TfStartingPage(TComponent* Owner);

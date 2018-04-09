@@ -1,6 +1,6 @@
 object fDidacticPage: TfDidacticPage
-  Left = 898
-  Top = 157
+  Left = 911
+  Top = 178
   BorderStyle = bsToolWindow
   Caption = 'Project'
   ClientHeight = 557
@@ -138,14 +138,14 @@ object fDidacticPage: TfDidacticPage
       Visible = False
     end
     object sbAmount: TScrollBar
-      Left = 56
+      Left = 80
       Top = 416
       Width = 113
       Height = 20
       Max = 30
       Min = 2
       PageSize = 0
-      Position = 10
+      Position = 20
       TabOrder = 0
       Visible = False
       OnChange = sbAmountChange
@@ -618,23 +618,14 @@ object fDidacticPage: TfDidacticPage
       TabOrder = 1
     end
   end
-  object bStartTimer: TButton
+  object Button1: TButton
     Left = 240
-    Top = 8
-    Width = 105
-    Height = 25
-    Caption = 'Start Timer'
-    TabOrder = 3
-    OnClick = bStartTimerClick
-  end
-  object bStopTimer: TButton
-    Left = 352
     Top = 8
     Width = 75
     Height = 25
-    Caption = 'WY'#321' Timer'
-    TabOrder = 4
-    OnClick = bStopTimerClick
+    Caption = 'Button1'
+    TabOrder = 3
+    OnClick = Button1Click
   end
   object MainMenu: TMainMenu
     Left = 664

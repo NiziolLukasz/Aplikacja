@@ -1,6 +1,6 @@
 object fDidacticPage: TfDidacticPage
-  Left = 893
-  Top = 204
+  Left = 898
+  Top = 157
   BorderStyle = bsToolWindow
   Caption = 'Project'
   ClientHeight = 557
@@ -15,6 +15,7 @@ object fDidacticPage: TfDidacticPage
   OldCreateOrder = False
   Position = poScreenCenter
   Scaled = False
+  OnClose = FormClose
   PixelsPerInch = 96
   TextHeight = 13
   object sRed: TShape
@@ -137,14 +138,14 @@ object fDidacticPage: TfDidacticPage
       Visible = False
     end
     object sbAmount: TScrollBar
-      Left = 80
+      Left = 56
       Top = 416
       Width = 113
       Height = 20
       Max = 30
       Min = 2
       PageSize = 0
-      Position = 20
+      Position = 10
       TabOrder = 0
       Visible = False
       OnChange = sbAmountChange
@@ -296,6 +297,7 @@ object fDidacticPage: TfDidacticPage
         BAD33F219106290240C8EDE70AEF3892D7296BE0755B42551A51281A4D79BDE0
         3AEF480BEC85031818AFFE738D9458A008653880C2F4CD0F7D41036248B0885F
         8ABAA0000FC5FFD9}
+      OnClick = iRightClick
     end
     object iLeft: TImage
       Left = 10
@@ -617,6 +619,25 @@ object fDidacticPage: TfDidacticPage
       TabOrder = 1
     end
   end
+  object bStartTimer: TButton
+    Left = 240
+    Top = 8
+    Width = 105
+    Height = 25
+    Caption = 'Start Timer'
+    TabOrder = 3
+    OnClick = bStartTimerClick
+  end
+  object bStopTimer: TButton
+    Left = 352
+    Top = 8
+    Width = 75
+    Height = 25
+    Caption = 'WY'#321' Timer'
+    Enabled = False
+    TabOrder = 4
+    OnClick = bStopTimerClick
+  end
   object MainMenu: TMainMenu
     Left = 664
     object File1: TMenuItem
@@ -648,8 +669,15 @@ object fDidacticPage: TfDidacticPage
       end
     end
   end
-  object Timer1: TTimer
-    OnTimer = Timer1Timer
+  object tMergeSort: TTimer
+    Enabled = False
+    OnTimer = tMergeSortTimer
     Left = 632
+  end
+  object tAnim: TTimer
+    Enabled = False
+    Interval = 10
+    OnTimer = tAnimTimer
+    Left = 600
   end
 end

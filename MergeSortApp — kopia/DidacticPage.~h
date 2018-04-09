@@ -49,8 +49,7 @@ __published:	// IDE-managed Components
         TLabel *lComparisonsName;
         TLabel *lComparisonsAmount;
         TTimer *tMergeSort;
-   TButton *bStartTimer;
-   TButton *bStopTimer;
+        TButton *Button1;
         void __fastcall bGenerateClick(TObject *Sender);
         void __fastcall bStartClick(TObject *Sender);
         void __fastcall sbAmountChange(TObject *Sender);
@@ -61,8 +60,7 @@ __published:	// IDE-managed Components
         void __fastcall rgTableTypesClick(TObject *Sender);
         void __fastcall tMergeSortTimer(TObject *Sender);
         void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
-        void __fastcall bStartTimerClick(TObject *Sender);
-   void __fastcall bStopTimerClick(TObject *Sender);
+        void __fastcall Button1Click(TObject *Sender);
 
 private:	// User declarations
 
