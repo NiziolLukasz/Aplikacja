@@ -199,8 +199,8 @@ object fDidacticPage: TfDidacticPage
     Align = alCustom
     TabOrder = 1
     object iRight: TImage
-      Left = 154
-      Top = 250
+      Left = 114
+      Top = 258
       Width = 63
       Height = 63
       Picture.Data = {
@@ -300,8 +300,8 @@ object fDidacticPage: TfDidacticPage
       OnClick = iRightClick
     end
     object iLeft: TImage
-      Left = 10
-      Top = 250
+      Left = 2
+      Top = 490
       Width = 63
       Height = 63
       Picture.Data = {
@@ -391,8 +391,8 @@ object fDidacticPage: TfDidacticPage
         451400514514005145140051451401FFD9}
     end
     object iPause: TImage
-      Left = 90
-      Top = 258
+      Left = 42
+      Top = 266
       Width = 49
       Height = 49
       Picture.Data = {
@@ -477,8 +477,8 @@ object fDidacticPage: TfDidacticPage
       OnClick = iPauseClick
     end
     object iPlay: TImage
-      Left = 90
-      Top = 258
+      Left = 42
+      Top = 266
       Width = 49
       Height = 49
       Picture.Data = {
@@ -564,7 +564,7 @@ object fDidacticPage: TfDidacticPage
       OnClick = iPlayClick
     end
     object lStep: TLabel
-      Left = 68
+      Left = 60
       Top = 225
       Width = 91
       Height = 20
@@ -591,7 +591,7 @@ object fDidacticPage: TfDidacticPage
     end
     object bStart: TButton
       Left = 61
-      Top = 64
+      Top = 464
       Width = 89
       Height = 42
       Caption = 'Start'
@@ -606,7 +606,7 @@ object fDidacticPage: TfDidacticPage
     end
     object bStop: TButton
       Left = 61
-      Top = 133
+      Top = 509
       Width = 89
       Height = 42
       Caption = 'Stop'
@@ -618,25 +618,37 @@ object fDidacticPage: TfDidacticPage
       ParentFont = False
       TabOrder = 1
     end
-  end
-  object bStartTimer: TButton
-    Left = 240
-    Top = 8
-    Width = 105
-    Height = 25
-    Caption = 'Start Timer'
-    TabOrder = 3
-    OnClick = bStartTimerClick
-  end
-  object bStopTimer: TButton
-    Left = 352
-    Top = 8
-    Width = 75
-    Height = 25
-    Caption = 'WY'#321' Timer'
-    Enabled = False
-    TabOrder = 4
-    OnClick = bStopTimerClick
+    object bStartTimer: TButton
+      Left = 60
+      Top = 70
+      Width = 90
+      Height = 50
+      Caption = 'Start'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -16
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 2
+      OnClick = bStartTimerClick
+    end
+    object bStopTimer: TButton
+      Left = 60
+      Top = 140
+      Width = 90
+      Height = 50
+      Caption = 'Stop'
+      Enabled = False
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -16
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 3
+      OnClick = bStopTimerClick
+    end
   end
   object MainMenu: TMainMenu
     Left = 664

@@ -20,6 +20,9 @@ int max_n, n, center, delay, if_count;
 // if_count - iloœæ zliczonych porównañ
 
 // TEST Timer
+int step;
+int how_much;
+int last;
 
 //int l,r; // Lewy i prawy koniec tablicy
 
@@ -225,6 +228,7 @@ void TfDidacticPage::mergeSort(TShape *arr[], int l, int r)
 void __fastcall TfDidacticPage::bGenerateClick(TObject *Sender)
 {
   PanelRight->Enabled = true;
+  bStartTimer->Enabled = true;
   lComparisonsAmount->Caption = if_count = 0;
   n = sbAmount->Position;
   int option = rgTableTypes->ItemIndex;
@@ -294,15 +298,17 @@ void __fastcall TfDidacticPage::sbDelayChange(TObject *Sender)
 
 void __fastcall TfDidacticPage::iPauseClick(TObject *Sender)
 {
-  // TODO : Oprogramowaæ zatrzymanie siê algorytmu sortowania
-  iPause->Visible = false;
-  iPlay->Visible = true;
+   tMergeSort->Enabled = false;
+
+   iPause->Visible = false;
+   iPlay->Visible = true;
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfDidacticPage::iPlayClick(TObject *Sender)
 {
-  // TODO : Oprogramowaæ wznowienie pracy algorytmu sortowania
+  tMergeSort->Enabled = true;
+
   iPause->Visible = true;
   iPlay->Visible = false;
 }
@@ -670,7 +676,7 @@ void __fastcall TfDidacticPage::tMergeSortTimer(TObject *Sender)
       {
          if(l.back() == 0 && r.back() == n-1)
          {
-            tMergeSort->Enabled = false;
+            bStopTimerClick();
          }
          l.pop_back();
          r.pop_back();
@@ -683,9 +689,10 @@ void __fastcall TfDidacticPage::tMergeSortTimer(TObject *Sender)
    }
    ll = l[tMergeSort->Tag]; //TODELETE
    rr = r[tMergeSort->Tag]; //TODELETE
+
    if(l[tMergeSort->Tag] < r[tMergeSort->Tag] && !left_leave)
    {
-      
+
       m.push_back(l[tMergeSort->Tag]+(r[tMergeSort->Tag]-l[tMergeSort->Tag])/2);
       mm = m[tMergeSort->Tag]; //TODELETE
       for(int i=m[tMergeSort->Tag]; i>=0; i--) // Rozsuniêcie lewej czêœci tablicy
@@ -794,6 +801,7 @@ void __fastcall TfDidacticPage::bStartTimerClick(TObject *Sender)
    bGenerate->Enabled = false;
 
    bStartTimer->Enabled = false;
+   bStopTimer->Enabled = true;
 
    
 
@@ -823,9 +831,49 @@ void __fastcall TfDidacticPage::bStopTimerClick(TObject *Sender)
    bStopTimer->Enabled = false;
    iPlay->Enabled = false;
    iPause->Enabled = false;
+   iRight->Enabled = false;
 
    iPause->Visible = false;
    iPlay->Visible = true;
+
+   // Usuniêcie dodatkowch tablic
+   delete [] L;
+   delete [] R;
+
+   // Wy³¹czenie widocznoœci wskaŸników
+   sRed->Visible = false;
+   sBlue->Visible = false;
+   sYellow->Visible = false;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfDidacticPage::iRightClick(TObject *Sender)
+{
+   step = 1;
+   how_much = 8;
+   last = iRight->Left;
+   tAnim->Interval = 10;
+   
+   tAnim->Enabled = true;
+   iRight->Enabled = false;
+
+
+   tMergeSortTimer(this);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfDidacticPage::tAnimTimer(TObject *Sender)
+{
+   iRight->Left += step;
+   if(iRight->Left <= last)
+   {
+      tAnim->Enabled = false;
+      iRight->Enabled = true;
+   }
+
+   if(iRight->Left > last + how_much)
+      step = -step;
+
 }
 //---------------------------------------------------------------------------
 

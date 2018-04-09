@@ -676,7 +676,7 @@ void __fastcall TfDidacticPage::tMergeSortTimer(TObject *Sender)
       {
          if(l.back() == 0 && r.back() == n-1)
          {
-            tMergeSort->Enabled = false;
+            bStopTimerClick(this);
          }
          l.pop_back();
          r.pop_back();
@@ -689,9 +689,10 @@ void __fastcall TfDidacticPage::tMergeSortTimer(TObject *Sender)
    }
    ll = l[tMergeSort->Tag]; //TODELETE
    rr = r[tMergeSort->Tag]; //TODELETE
+
    if(l[tMergeSort->Tag] < r[tMergeSort->Tag] && !left_leave)
    {
-      
+
       m.push_back(l[tMergeSort->Tag]+(r[tMergeSort->Tag]-l[tMergeSort->Tag])/2);
       mm = m[tMergeSort->Tag]; //TODELETE
       for(int i=m[tMergeSort->Tag]; i>=0; i--) // Rozsuniêcie lewej czêœci tablicy
@@ -830,6 +831,7 @@ void __fastcall TfDidacticPage::bStopTimerClick(TObject *Sender)
    bStopTimer->Enabled = false;
    iPlay->Enabled = false;
    iPause->Enabled = false;
+   iRight->Enabled = false;
 
    iPause->Visible = false;
    iPlay->Visible = true;

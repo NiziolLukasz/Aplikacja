@@ -51,6 +51,7 @@ __published:	// IDE-managed Components
         TTimer *tMergeSort;
    TButton *bStartTimer;
    TButton *bStopTimer;
+   TTimer *tAnim;
         void __fastcall bGenerateClick(TObject *Sender);
         void __fastcall bStartClick(TObject *Sender);
         void __fastcall sbAmountChange(TObject *Sender);
@@ -63,6 +64,8 @@ __published:	// IDE-managed Components
         void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
         void __fastcall bStartTimerClick(TObject *Sender);
    void __fastcall bStopTimerClick(TObject *Sender);
+   void __fastcall iRightClick(TObject *Sender);
+   void __fastcall tAnimTimer(TObject *Sender);
 
 private:	// User declarations
 
