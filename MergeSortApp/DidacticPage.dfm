@@ -1,10 +1,10 @@
 object fDidacticPage: TfDidacticPage
-  Left = 898
-  Top = 157
+  Left = 881
+  Top = 263
   BorderStyle = bsToolWindow
   Caption = 'Project'
-  ClientHeight = 557
-  ClientWidth = 986
+  ClientHeight = 558
+  ClientWidth = 994
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -71,10 +71,36 @@ object fDidacticPage: TfDidacticPage
     Font.Style = []
     ParentFont = False
   end
+  object lArrAccessName: TLabel
+    Left = 384
+    Top = 432
+    Width = 79
+    Height = 16
+    Caption = 'Array access'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+  end
+  object lArrAccessAmount: TLabel
+    Left = 472
+    Top = 432
+    Width = 7
+    Height = 16
+    Caption = '0'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+  end
   object PanelBottom: TPanel
     Left = 224
     Top = 447
-    Width = 545
+    Width = 553
     Height = 111
     Align = alCustom
     TabOrder = 2
@@ -109,9 +135,10 @@ object fDidacticPage: TfDidacticPage
       Top = 16
       Width = 345
       Height = 25
+      LargeChange = 100
       Max = 4000
       PageSize = 0
-      Position = 1000
+      Position = 2000
       TabOrder = 0
       OnChange = sbDelayChange
     end
@@ -120,7 +147,7 @@ object fDidacticPage: TfDidacticPage
     Left = 0
     Top = 0
     Width = 233
-    Height = 557
+    Height = 558
     Align = alLeft
     TabOrder = 0
     object lAmount: TLabel
@@ -145,7 +172,7 @@ object fDidacticPage: TfDidacticPage
       Max = 30
       Min = 2
       PageSize = 0
-      Position = 10
+      Position = 20
       TabOrder = 0
       Visible = False
       OnChange = sbAmountChange
@@ -192,7 +219,7 @@ object fDidacticPage: TfDidacticPage
     end
   end
   object PanelRight: TPanel
-    Left = 766
+    Left = 774
     Top = 0
     Width = 220
     Height = 557
@@ -300,8 +327,8 @@ object fDidacticPage: TfDidacticPage
       OnClick = iRightClick
     end
     object iLeft: TImage
-      Left = 2
-      Top = 490
+      Left = 154
+      Top = 498
       Width = 63
       Height = 63
       Picture.Data = {
@@ -590,37 +617,8 @@ object fDidacticPage: TfDidacticPage
       ParentFont = False
     end
     object bStart: TButton
-      Left = 61
-      Top = 464
-      Width = 89
-      Height = 42
-      Caption = 'Start'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      ParentFont = False
-      TabOrder = 0
-      OnClick = bStartClick
-    end
-    object bStop: TButton
-      Left = 61
-      Top = 509
-      Width = 89
-      Height = 42
-      Caption = 'Stop'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      ParentFont = False
-      TabOrder = 1
-    end
-    object bStartTimer: TButton
       Left = 60
-      Top = 70
+      Top = 64
       Width = 90
       Height = 50
       Caption = 'Start'
@@ -630,15 +628,15 @@ object fDidacticPage: TfDidacticPage
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
-      TabOrder = 2
-      OnClick = bStartTimerClick
+      TabOrder = 0
+      OnClick = bStartClick
     end
-    object bStopTimer: TButton
+    object bSkip: TButton
       Left = 60
       Top = 140
       Width = 90
       Height = 50
-      Caption = 'Stop'
+      Caption = 'Skip All'
       Enabled = False
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -646,50 +644,51 @@ object fDidacticPage: TfDidacticPage
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
-      TabOrder = 3
-      OnClick = bStopTimerClick
+      TabOrder = 1
+      OnClick = bSkipClick
     end
   end
   object MainMenu: TMainMenu
     Left = 664
-    object File1: TMenuItem
+    object mFile: TMenuItem
       Caption = 'File'
-      object Start1: TMenuItem
+      object mStart: TMenuItem
         Caption = 'Start'
-        OnClick = Start1Click
+        OnClick = mStartClick
       end
-      object Tryby1: TMenuItem
-        Caption = 'Tryby'
-        object Dydaktyczny1: TMenuItem
-          Caption = 'Dydaktyczny'
+      object mGoTo: TMenuItem
+        Caption = 'Go to'
+        object mEdu: TMenuItem
+          Caption = 'Educational'
+          OnClick = mEduClick
         end
-        object Naukwy1: TMenuItem
-          Caption = 'Naukowy'
-        end
-        object Zaawansowany1: TMenuItem
-          Caption = 'Zaawansowany'
+        object mAdv: TMenuItem
+          Caption = 'Advanced'
+          OnClick = mAdvClick
         end
       end
-      object Exit1: TMenuItem
+      object mExit: TMenuItem
         Caption = 'Exit'
+        OnClick = mExitClick
       end
     end
-    object Help1: TMenuItem
+    object mHelp: TMenuItem
       Caption = 'Help'
-      object About1: TMenuItem
+      object mAbout: TMenuItem
         Caption = 'About...'
       end
     end
-  end
-  object tMergeSort: TTimer
-    Enabled = False
-    OnTimer = tMergeSortTimer
-    Left = 632
   end
   object tAnim: TTimer
     Enabled = False
     Interval = 10
     OnTimer = tAnimTimer
     Left = 600
+  end
+  object tFormatAnim: TTimer
+    Enabled = False
+    Interval = 1
+    OnTimer = tFormatAnimTimer
+    Left = 568
   end
 end

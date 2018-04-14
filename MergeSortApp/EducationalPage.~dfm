@@ -1,6 +1,6 @@
 object fEducationalPage: TfEducationalPage
-  Left = 1126
-  Top = 159
+  Left = 1276
+  Top = 140
   Width = 631
   Height = 615
   Caption = 'Educational Page'
@@ -16,8 +16,8 @@ object fEducationalPage: TfEducationalPage
   PixelsPerInch = 96
   TextHeight = 13
   object lComparisonsAmount: TLabel
-    Left = 368
-    Top = 144
+    Left = 352
+    Top = 528
     Width = 9
     Height = 20
     Caption = '0'
@@ -29,37 +29,11 @@ object fEducationalPage: TfEducationalPage
     ParentFont = False
   end
   object lComparisonsName: TLabel
-    Left = 248
-    Top = 144
-    Width = 104
+    Left = 240
+    Top = 528
+    Width = 99
     Height = 20
-    Caption = 'Comparisons:'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -16
-    Font.Name = 'MS Sans Serif'
-    Font.Style = []
-    ParentFont = False
-  end
-  object lArrAccessName: TLabel
-    Left = 248
-    Top = 184
-    Width = 103
-    Height = 20
-    Caption = 'Array access:'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -16
-    Font.Name = 'MS Sans Serif'
-    Font.Style = []
-    ParentFont = False
-  end
-  object lArrAccessAmount: TLabel
-    Left = 368
-    Top = 184
-    Width = 9
-    Height = 20
-    Caption = '0'
+    Caption = 'Comparisons'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -16
@@ -141,16 +115,6 @@ object fEducationalPage: TfEducationalPage
       TabOrder = 2
       OnClick = rgTableTypesClick
     end
-  end
-  object mTable: TMemo
-    Left = 240
-    Top = 8
-    Width = 369
-    Height = 49
-    ReadOnly = True
-    ScrollBars = ssHorizontal
-    TabOrder = 1
-    WordWrap = False
   end
   object MainMenu: TMainMenu
     Left = 664

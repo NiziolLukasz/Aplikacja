@@ -22,25 +22,23 @@ __published:	// IDE-managed Components
         TLabel *lStep;
         TImage *iRight;
         TButton *bStart;
-        TButton *bStop;
         TPanel *PanelBottom;
         TImage *iPause;
         TImage *iLeft;
         TLabel *lAmount;
         TMainMenu *MainMenu;
-        TMenuItem *File1;
-        TMenuItem *Exit1;
-        TMenuItem *Help1;
-        TMenuItem *About1;
-        TMenuItem *Tryby1;
-        TMenuItem *Dydaktyczny1;
-        TMenuItem *Naukwy1;
-        TMenuItem *Zaawansowany1;
+   TMenuItem *mFile;
+   TMenuItem *mExit;
+   TMenuItem *mHelp;
+   TMenuItem *mAbout;
+   TMenuItem *mGoTo;
+   TMenuItem *mEdu;
+   TMenuItem *mAdv;
         TScrollBar *sbDelay;
         TLabel *lDelayName;
         TLabel *lDelayNumber;
         TImage *iPlay;
-        TMenuItem *Start1;
+   TMenuItem *mStart;
         TLabel *lControlPanel;
         TRadioGroup *rgTableTypes;
         TShape *sRed;
@@ -48,30 +46,32 @@ __published:	// IDE-managed Components
         TShape *sBlue;
         TLabel *lComparisonsName;
         TLabel *lComparisonsAmount;
-        TTimer *tMergeSort;
-   TButton *bStartTimer;
-   TButton *bStopTimer;
    TTimer *tAnim;
+   TTimer *tFormatAnim;
+   TButton *bStop;
         void __fastcall bGenerateClick(TObject *Sender);
         void __fastcall bStartClick(TObject *Sender);
         void __fastcall sbAmountChange(TObject *Sender);
         void __fastcall sbDelayChange(TObject *Sender);
         void __fastcall iPauseClick(TObject *Sender);
         void __fastcall iPlayClick(TObject *Sender);
-        void __fastcall Start1Click(TObject *Sender);
+        void __fastcall mStartClick(TObject *Sender);
         void __fastcall rgTableTypesClick(TObject *Sender);
-        void __fastcall tMergeSortTimer(TObject *Sender);
         void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
-        void __fastcall bStartTimerClick(TObject *Sender);
-   void __fastcall bStopTimerClick(TObject *Sender);
    void __fastcall iRightClick(TObject *Sender);
    void __fastcall tAnimTimer(TObject *Sender);
+   void __fastcall tFormatAnimTimer(TObject *Sender);
+   void __fastcall mEduClick(TObject *Sender);
+   void __fastcall mAdvClick(TObject *Sender);
+   void __fastcall mExitClick(TObject *Sender);
+   void __fastcall bStopClick(TObject *Sender);
 
 private:	// User declarations
 
         TShape *tab[30];
         void merge(TShape *arr[], int l, int m, int r);
         void mergeSort(TShape *arr[], int l, int r);
+        
 
         void randomTable();
         void reversedTable();
@@ -84,7 +84,9 @@ private:	// User declarations
 
         void deleteTable();
 public:		// User declarations
+        void mergeSortStart();
         __fastcall TfDidacticPage(TComponent* Owner);
+        __fastcall TfDidacticPage();
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TfDidacticPage *fDidacticPage;

@@ -29,9 +29,6 @@ __published:	// IDE-managed Components
    TRadioGroup *rgTableTypes;
    TLabel *lComparisonsAmount;
    TLabel *lComparisonsName;
-   TMemo *mTable;
-   TLabel *lArrAccessName;
-   TLabel *lArrAccessAmount;
    void __fastcall mDydClick(TObject *Sender);
    void __fastcall mAdvClick(TObject *Sender);
    void __fastcall mExitClick(TObject *Sender);
@@ -43,10 +40,6 @@ __published:	// IDE-managed Components
 private:	// User declarations
 
          int *tab;
-         void merge(int *arr[], int l, int m, int r);
-         void mergeSort(int *arr[], int l, int r);
-
-
          /*
          void randomTable();
          void reversedTable();

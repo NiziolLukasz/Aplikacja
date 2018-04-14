@@ -12,11 +12,8 @@
 #pragma resource "*.dfm"
 TfEducationalPage *fEducationalPage;
 
-int n, if_count, arr_access;
-
-// n - aktualna wielkoœæ tablicy
-// if_count - iloœæ zliczonych porównañ
-// arr_access - iloœæ zliczonych dostêpów do tablicy
+int if_count;
+int n;
 
 //---------------------------------------------------------------------------
 __fastcall TfEducationalPage::TfEducationalPage(TComponent* Owner)
@@ -24,129 +21,8 @@ __fastcall TfEducationalPage::TfEducationalPage(TComponent* Owner)
 {
    n= sbAmount->Position; // Przypisanie pocz¹tkowej iloœci s³upków
    if_count = 0; // Przypisanie pocz¹tkowej wartoœci zliczania if'ów
-   arr_access = 0; // Nadanie pocz¹tkowej wartoœci dostêpów do tablicy
 }
 //---------------------------------------------------------------------------
-
-/* £¹czy dwie podtablice arr[].
-   Pierwsza podtablica to arr[l..m]
-   Druga podtablica to arr[m+1..r]
-*/
-void TfDidacticPage::merge(int *arr[], int l, int m, int r) /* l - left, m - middle, r- right */
-{
-
-    int i, j, k;
-    int n1 = m - l + 1; // iloœæ elementów w pierwszej podtablicy
-    int n2 =  r - m; // iloœæ elementów w drugiej podtablicy
-
-    // Tworzenie pomocniczych tablic
-    int *L = new int [n1];
-    int *R = new int [n2];
-
-    // Skopiowanie danych do pomocniczych tablic L[] i R[]
-    lComparisonsAmount->Caption = ++if_count;
-
-    for (i = 0; i < n1; i++)
-    {
-        L[i] = arr[l + i];
-
-        lArrAccessAmount->Caption = ++arr_access;
-        lComparisonsAmount->Caption = ++if_count;
-    }
-    lComparisonsAmount->Caption = ++if_count;
-
-    for (j = 0; j < n2; j++)
-    {
-        R[j] = arr[m + 1+ j];
-
-        lArrAccessAmount->Caption = ++arr_access;
-        lComparisonsAmount->Caption = ++if_count;
-    }
-
-    // £¹czenie pomocniczych tablic spowrotem do arr[l..r]
-    i = 0; // Pocz¹tkowy indeks pierwszej podtablicy
-    j = 0; // Pocz¹tkowy indeks drugiej podtablicy
-    k = l; // Pocz¹tkowy indeks po³¹czonej podtablicy
-
-    if(i<n1) // Zabezpieczenie, gdy i < n1 jest prawd¹, wtedy mamy 2 porównania i<n1 i j<n2
-      lComparisonsAmount->Caption = ++if_count;
-    lComparisonsAmount->Caption = ++if_count;
-
-    while (i < n1 && j < n2)
-    {
-        lComparisonsAmount->Caption = ++if_count;
-        if (L[i] <= R[j])
-        {
-            arr[k] = L[i];
-            i++;
-
-            lArrAccessAmount->Caption = ++arr_access;
-        }
-        else
-        {
-            arr[k] = R[j];
-            j++;
-
-            lArrAccessAmount->Caption = ++arr_access;
-        }
-
-        k++;
-
-        if(i<n1) // Zabezpieczenie, gdy i < n1 jest prawd¹, wtedy mamy 2 porównania i<n1 i j<n2
-            lComparisonsAmount->Caption = ++if_count;
-        lComparisonsAmount->Caption = ++if_count;
-    }
-    // Skopiowanie pozosta³ych elementów podtablicy L[], jeœli jakieœ istniej¹
-    lComparisonsAmount->Caption = ++if_count;
-    while (i < n1)
-    {
-        arr[k] = L[i];
-
-        lArrAccessAmount->Caption = ++arr_access;
-
-        i++;
-        k++;
-
-        lComparisonsAmount->Caption = ++if_count;
-    }
-    // Skopiowanie pozosta³ych elementów podtablicy R[], jeœli jakieœ istniej¹
-    lComparisonsAmount->Caption = ++if_count;
-    while (j < n2)
-    {
-        arr[k] = R[j];
-
-        lArrAccessAmount->Caption = ++arr_access;
-
-        j++;
-        k++;
-
-        lComparisonsAmount->Caption = ++if_count;
-    }
-
-    // Usuniêcie dodatkowch tablic
-    delete [] L;
-    delete [] R;
-}
-//---------------------------------------------------------------------------
-
-void TfDidacticPage::mergeSort(int *arr[], int l, int r)
-{
-  lComparisonsAmount->Caption = ++if_count;
-
-  if (l < r)
-  {
-    // To samo co (l+r)/2, ale unika przepe³nienia dla du¿ego l i r
-    int m = l+(r-l)/2;
-
-    // Sortowanie pierwszej i drugiej po³owy tablicy arr
-    mergeSort(arr, l, m);
-    mergeSort(arr, m+1, r);
-
-    merge(arr, l, m, r);
-  }
-}
-//---------------------------------------------------------------------------
-
 void __fastcall TfEducationalPage::mDydClick(TObject *Sender)
 {
    fEducationalPage->Hide();
