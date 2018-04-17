@@ -199,6 +199,7 @@ object fDidacticPage: TfDidacticPage
       Width = 166
       Height = 320
       Caption = 'Table types: '
+      Color = clBtnFace
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -13
@@ -213,6 +214,7 @@ object fDidacticPage: TfDidacticPage
         'Almost sorted'
         'Few unique'
         'Sorted')
+      ParentColor = False
       ParentFont = False
       TabOrder = 2
       OnClick = rgTableTypesClick

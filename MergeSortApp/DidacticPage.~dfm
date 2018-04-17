@@ -71,6 +71,32 @@ object fDidacticPage: TfDidacticPage
     Font.Style = []
     ParentFont = False
   end
+  object lArrAccessName: TLabel
+    Left = 384
+    Top = 432
+    Width = 79
+    Height = 16
+    Caption = 'Array access'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+  end
+  object lArrAccessAmount: TLabel
+    Left = 472
+    Top = 432
+    Width = 7
+    Height = 16
+    Caption = '0'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+  end
   object PanelBottom: TPanel
     Left = 224
     Top = 447
@@ -112,7 +138,7 @@ object fDidacticPage: TfDidacticPage
       LargeChange = 100
       Max = 4000
       PageSize = 0
-      Position = 1000
+      Position = 2000
       TabOrder = 0
       OnChange = sbDelayChange
     end
@@ -173,6 +199,7 @@ object fDidacticPage: TfDidacticPage
       Width = 166
       Height = 320
       Caption = 'Table types: '
+      Color = clBtnFace
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -13
@@ -187,6 +214,7 @@ object fDidacticPage: TfDidacticPage
         'Almost sorted'
         'Few unique'
         'Sorted')
+      ParentColor = False
       ParentFont = False
       TabOrder = 2
       OnClick = rgTableTypesClick
@@ -301,8 +329,8 @@ object fDidacticPage: TfDidacticPage
       OnClick = iRightClick
     end
     object iLeft: TImage
-      Left = 2
-      Top = 490
+      Left = 154
+      Top = 498
       Width = 63
       Height = 63
       Picture.Data = {
@@ -605,7 +633,7 @@ object fDidacticPage: TfDidacticPage
       TabOrder = 0
       OnClick = bStartClick
     end
-    object bStop: TButton
+    object bSkip: TButton
       Left = 60
       Top = 140
       Width = 90
@@ -619,7 +647,7 @@ object fDidacticPage: TfDidacticPage
       Font.Style = []
       ParentFont = False
       TabOrder = 1
-      OnClick = bStopClick
+      OnClick = bSkipClick
     end
   end
   object MainMenu: TMainMenu
