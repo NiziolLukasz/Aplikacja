@@ -677,6 +677,7 @@ void __fastcall TfEducationalPage::bSaveSortedClick(TObject *Sender)
    {
       mResults->Lines->SaveToFile(SaveDialog->FileName); // Zapisz tablice do pliku
    }
+   mResults->Lines->Clear();
 }
 //---------------------------------------------------------------------------
 
