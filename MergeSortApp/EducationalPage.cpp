@@ -15,12 +15,11 @@
  #include <vector>
  #include<windows.h>
  #include<sstream>
-                  using namespace std;
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
 TfEducationalPage *fEducationalPage;
-int const max_n = 1000000;
+int const max_n = 10000000;
 //---------------------------------------------------------------------------
 __fastcall TfEducationalPage::TfEducationalPage(TComponent* Owner)
         : TForm(Owner)
@@ -28,9 +27,11 @@ __fastcall TfEducationalPage::TfEducationalPage(TComponent* Owner)
    n= sbAmount->Position; // Przypisanie pocz¹tkowej iloœci s³upków
    if_count = 0; // Przypisanie pocz¹tkowej wartoœci zliczania if'ów
    arr_access = 0; // Nadanie pocz¹tkowej wartoœci dostêpów do tablicy
-   sTime = "";
 
    DoubleBuffered = true;
+   sorted = false;
+   clickedSorted = false;
+   clickedUnsorted = false;
 
    rgTableTypes->Top = 97;
    fEducationalPage->ClientWidth = 230;  // Zmniejszenie wielkoœci formatki
@@ -43,7 +44,7 @@ int __fastcall mergeSortThreadEdu(Pointer Parameter);
    Pierwsza podtablica to arr[l..m]
    Druga podtablica to arr[m+1..r]
 */
-void TfEducationalPage::merge(int *arr, int l, int m, int r) /* l - left, m - middle, r- right */
+void TfEducationalPage::merge(int *&arr, int l, int m, int r) /* l - left, m - middle, r- right */
 {
 
     int i, j, k;
@@ -55,23 +56,23 @@ void TfEducationalPage::merge(int *arr, int l, int m, int r) /* l - left, m - mi
     int *R = new int [n2];
 
     // Skopiowanie danych do pomocniczych tablic L[] i R[]
-    lComparisonsAmount->Caption = ++if_count;
+    ++if_count;
 
     for (i = 0; i < n1; i++)
     {
         L[i] = arr[l + i];
 
-        lArrAccessAmount->Caption = arr_access + 2;
-        lComparisonsAmount->Caption = ++if_count;
+        arr_access += 2;
+        ++if_count;
     }
-    lComparisonsAmount->Caption = ++if_count;
+    ++if_count;
 
     for (j = 0; j < n2; j++)
     {
         R[j] = arr[m + 1+ j];
 
-        lArrAccessAmount->Caption = arr_access + 2;
-        lComparisonsAmount->Caption = ++if_count;
+        arr_access += 2;
+        ++if_count;
     }
 
     // £¹czenie pomocniczych tablic spowrotem do arr[l..r]
@@ -80,59 +81,59 @@ void TfEducationalPage::merge(int *arr, int l, int m, int r) /* l - left, m - mi
     k = l; // Pocz¹tkowy indeks po³¹czonej podtablicy
 
     if(i<n1) // Zabezpieczenie, gdy i < n1 jest prawd¹, wtedy mamy 2 porównania i<n1 i j<n2
-      lComparisonsAmount->Caption = ++if_count;
-    lComparisonsAmount->Caption = ++if_count;
+      ++if_count;
+    ++if_count;
 
     while (i < n1 && j < n2)
     {
-        lComparisonsAmount->Caption = ++if_count;
-        lArrAccessAmount->Caption = arr_access + 2;
+        ++if_count;
+        arr_access += 2;
         if (L[i] <= R[j])
         {
             arr[k] = L[i];
             i++;
 
-            lArrAccessAmount->Caption = ++arr_access;
+            arr_access += 2;
         }
         else
         {
             arr[k] = R[j];
             j++;
 
-            lArrAccessAmount->Caption = arr_access + 2;
+            arr_access += 2;
         }
 
         k++;
 
         if(i<n1) // Zabezpieczenie, gdy i < n1 jest prawd¹, wtedy mamy 2 porównania i<n1 i j<n2
-            lComparisonsAmount->Caption = ++if_count;
-        lComparisonsAmount->Caption = ++if_count;
+            ++if_count;
+        ++if_count;
     }
     // Skopiowanie pozosta³ych elementów podtablicy L[], jeœli jakieœ istniej¹
-    lComparisonsAmount->Caption = ++if_count;
+    ++if_count;
     while (i < n1)
     {
         arr[k] = L[i];
 
-        lArrAccessAmount->Caption = arr_access + 2;
+        arr_access += 2;
 
         i++;
         k++;
 
-        lComparisonsAmount->Caption = ++if_count;
+        ++if_count;
     }
     // Skopiowanie pozosta³ych elementów podtablicy R[], jeœli jakieœ istniej¹
-    lComparisonsAmount->Caption = ++if_count;
+    ++if_count;
     while (j < n2)
     {
         arr[k] = R[j];
 
-        lArrAccessAmount->Caption = arr_access + 2;
+        arr_access += 2;
 
         j++;
         k++;
 
-        lComparisonsAmount->Caption = ++if_count;
+        ++if_count;
     }
 
     // Usuniêcie dodatkowch tablic
@@ -141,9 +142,9 @@ void TfEducationalPage::merge(int *arr, int l, int m, int r) /* l - left, m - mi
 }
 //---------------------------------------------------------------------------
 
-void TfEducationalPage::mergeSort(int *arr, int l, int r)
+void TfEducationalPage::mergeSort(int *&arr, int l, int r)
 {
-  lComparisonsAmount->Caption = ++if_count;
+  ++if_count;
 
   if (l < r)
   {
@@ -195,41 +196,69 @@ void __fastcall TfEducationalPage::FormClose(TObject *Sender,
 
 void __fastcall TfEducationalPage::rgTableTypesClick(TObject *Sender)
 {
+   lSign->Caption = "Setup...";
+   lSign->Font->Color = clGray;
+
    rgTableTypes->Top = 33;
-   lAmount->Visible = true;
-   sbAmount->Visible = true;
-   bGenerate->Visible = true;
 
    if(fEducationalPage->Width < 640)
       tFormatAnim->Enabled = true; // W³¹czenie animacji rozsuniêcia formatki
 
-   lSign->Caption = "Setup...";
-   lSign->Font->Color = clGray;
-
-   //bGenerateClick(this);
+   option = rgTableTypes->ItemIndex;
+   if(option == 8)
+   {
+      lAmount->Visible = false;
+      sbAmount->Visible = false;
+      bGenerate->Top = 368;
+      bGenerate->Caption = "Load file...";
+   }
+   else
+   {
+      lAmount->Visible = true;
+      sbAmount->Visible = true;
+      bGenerate->Top = 477;
+      bGenerate->Caption = "Generate numbers";
+   }
+   bGenerate->Visible = true;
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfEducationalPage::bGenerateClick(TObject *Sender)
 {
-   if(!first_run)
+   if(option != 8) // Je¿eli nie wczytujemy z piku, to...
    {
-      deleteTable();
+      lSign->Caption = "Generating..."; // Ustaw komunikat
+      lSign->Font->Color = clNavy; // Ustaw kolor komunikatu
    }
 
-   mOutput->Lines->Clear();
-   first_run = false;
-   bStart->Enabled = true; // Odblokowanie przycisku "Start". Umo¿liwienie wystartowania algorytmu
+   if(bShowSorted->Caption == "Hide") // Jeœli tablica jest wyœwietlona
+      bShowSortedClick(this); // Kliniêcie przycisku "Show"
+   if(bShowUnsorted->Caption == "Hide") // Jeœli tablica jest wyœwietlona
+      bShowUnsortedClick(this); // Kliniêcie przycisku "Show"
+   mOutput->Lines->Clear(); // Wyczyszczenie dolnego memo
+   mInput->Lines->Clear();  // Wyczyszczenie górnego memo
+   Repaint(); // Odœwiez widok
 
-   int option = rgTableTypes->ItemIndex;
+   sorted = false; // Ustawiam "flage" mówi¹ca, ¿e algorytm jest nie posortowany
+   clickedSorted = false;     // Odblokowujê dojœcie w przycisku "Show"
+   clickedUnsorted = false;  //
 
-   if(option != 8)
+   unsorted_arr = ""; // Wyczyszczenie zmiennych
+   sorted_arr = "";  //
+   
+   if(!first_run) // Przy pierwszym odpaleniu, pomiñ usuwanie tablicy
    {
-      n = sbAmount->Position;
-      tab = new int [n];
+      deleteTable(tab); // Usuñ tablice
    }
 
-  switch(option)
+   first_run = false; // Ustaw "flage". Tablica wygenerowana przynajmniej 1 raz
+   if(option != 8) // Je¿eli nie wczytujemy z piku, to...
+   {
+      n = sbAmount->Position; // Ustaw wielkoœæ tablicy
+      tab = new int [n]; // Stwórz tablice
+   }
+   
+  switch(option) // Utworzenie tablicy wed³ug wybranej opcji
   {
     case 0: randomTable();
             break;
@@ -251,11 +280,18 @@ void __fastcall TfEducationalPage::bGenerateClick(TObject *Sender)
             break;
   }
 
-   lSign->Caption = "Table generated";
-   lSign->Font->Color = clNavy;
+   if(option != 8) // Je¿eli nie wczytujemy z piku, to...
+   {
+      lSign->Caption = "Table generated"; // Ustaw komunikat
+      lSign->Font->Color = clNavy; // Ustaw kolor komunikatu
+   }
 
-   mInput->Lines->Clear();
-   mInput->Lines->Append(showTable());
+   bShowUnsorted->Enabled = true; // Odblokuj przycisk "Show" od tablicy nieposortowanej
+   bShowSorted->Enabled = false; // Zablokuj przycisk "Show" od tablicy posortowanej
+   bSaveUnsorted->Enabled = true; // Odblokuj przycisk "Save..." od tablicy nieposortowanej
+   bSaveSorted->Enabled = false; // Zablokuj przycisk "Save..." od tablicy posortowanej
+
+   bStart->Enabled = true; // Odblokowanie przycisku "Start". Umo¿liwienie wystartowania algorytmu
 }
 //---------------------------------------------------------------------------
 
@@ -433,59 +469,75 @@ void TfEducationalPage::sortedTable()
 
 void TfEducationalPage::fromFile()
 {
-   string stringTab;
-   if( OpenDialog->Execute() )
+   std::string stringTab; // Utwo¿enie stringa do przechowania wartoœci z pliku
+   if( OpenDialog->Execute() ) // Otworzenie dialogu, do wybrania pliku
    {
-      const char *file_name = OpenDialog->FileName.c_str();
+      const char *file_name = OpenDialog->FileName.c_str(); // Pobranie nazwy pliku
 
-      std::fstream file;
-      file.open(file_name, std::ios::in);
-      if( file.good() == true )
+      std::fstream file; // Utworzenie zmiennej plikowej
+      file.open(file_name, std::ios::in); // Otworzenie pliku
+      if( file.good() == true ) // Sprawdzenie czy plik siê otworzy³
       {
-         getline(file, stringTab);
-         mInput->Lines->Append(stringTab.c_str());
-         file.close();
+         getline(file, stringTab); // Pobranie ca³ej lini z pliku
+         file.close(); // Zamknij plik
       }
    }
 
+   int pos, j = 0, size = 0; // pos - pozycja ";", j - id tablicy,
+   std::size_t found = stringTab.find(";"); // Wyszukanie ";" w stringu
+   while(found != std::string::npos) // Jeœli wyszukana wartoœæ nie jest maksymaln¹ wartoœci¹ size_t, to...
+   {
+         size++; // Zwiêksz wielkoœæ tablicy o 1
+         found = stringTab.find(";",found+1); // Ponownie wyszukaj ";", zaczynaj¹c od poprzedniego + 1 miejsca
+   }
+   n = size; // Ustaw obliczon¹ wielkoœæ tablicy pod zmienn¹ globaln¹
+   tab = new int [n]; // Stwórz tablice
 
+    while(!stringTab.empty()) // Jeœli string nie jest pusty, to...
+    {
+      pos = stringTab.find(";"); // ZnajdŸ miejsce ";"
+      tab[j] = StrToInt(stringTab.substr(0, pos).c_str()); // Skopiuj czêœæ stringa, a potem zamieñ na int i wrzuæ do tablicy
+      stringTab.erase(0, pos + 2); // Usuñ wyko¿ystan¹ ju¿ czêœæ stringa, wraz z ";"
+      j++; // Zwiêksz id tablicy o 1
+    }
+}
 //---------------------------------------------------------------------------
 
-void TfEducationalPage::deleteTable(){
-  delete [] tab;
+void TfEducationalPage::deleteTable(int *&arr){
+  delete [] arr;
 }
 void __fastcall TfEducationalPage::bStartClick(TObject *Sender)
 {
    lComparisonsAmount->Caption = if_count = 0; // Zresetowanie licznika porównañ
    lArrAccessAmount->Caption = arr_access = 0; // Zresetowanie licznika dostêpów
-   lTimeAmount->Caption = "0:00";
-   min =0;
-   Timer->Tag = 0;
 
    bStart->Enabled = false; // Zablokowanie przycisku Start. Uniemo¿liwienie w³¹czenia algorytmu podczas jego dzia³ania
 
    PanelLeft->Enabled = false; // Zablokowanie lewego panelu. Uniemo¿liwienie zmian, podczas dzia³ania algorytmu
    bGenerate->Enabled = false; // Zablokowanie przycisku "Generate again". Tak jak w lini wy¿ej, tylko ¿e z efektem wizuanym
+   bShowSorted->Enabled = true; // Odblokuj przycisk "Show" od tablicy posortowanej
+   bSaveSorted->Enabled = true; // Odblokuj przycisk "Save..." od tablicy posortowanej
+
+   if(!clickedUnsorted) // Jeœli wyœwietlono przynajmniej raz tablice nieposortowan¹, to nie blokuj przycisków
+   {
+      bShowUnsorted->Enabled = false;
+      bSaveUnsorted->Enabled = false; // Zablokuj przycisk "Save..." od tablicy nieposortowanej
+   }
 
    lSign->Caption = "Sorting...";
    lSign->Font->Color = clGreen;
    Repaint();
 
-   Timer->Enabled = true;
-
-
-   mergeSort(tab, 0, n-1);
-   //W_ID = BeginThread(NULL, 0, mergeSortThreadEdu, this, 0, W_PD); // Zaczêcie w¹tku i uruchomienie funkcji mergeSort
-   end();
+   W_ID = BeginThread(NULL, 0, mergeSortThreadEdu, this, 0, W_PD); // Zaczêcie w¹tku i uruchomienie funkcji mergeSort
 }
 //---------------------------------------------------------------------------
 
-String TfEducationalPage::showTable()
+String TfEducationalPage::getTable(int *&arr)
 {
-   String table = "";
+   AnsiString table = "";
    for(int i=0; i < n; i++)
    {
-      table += IntToStr(tab[i]) + ";";
+      table += IntToStr(arr[i]) + "; ";
    }
    return table;
 }
@@ -503,21 +555,6 @@ bool TfEducationalPage::isSorted()
 //---------------------------------------------------------------------------
 
 
-void __fastcall TfEducationalPage::TimerTimer(TObject *Sender)
-{
-   ++Timer->Tag;
-
-   if(Timer->Tag % 60 == 0)
-      ++min;
-   sec = Timer->Tag % 60;
-
-   sTime = IntToStr(min) + ":";
-   sTime += (sec < 10) ? "0" + IntToStr(sec) : IntToStr(sec);
-   lTimeAmount->Caption = sTime;
-
-
-}
-//---------------------------------------------------------------------------
 
 void __fastcall TfEducationalPage::tFormatAnimTimer(TObject *Sender)
 {
@@ -544,9 +581,10 @@ int __fastcall mergeSortThreadEdu(Pointer Parameter)
 //---------------------------------------------------------------------------
 void TfEducationalPage::end()
 {
-   Timer->Enabled = false;
-
-   if(isSorted())
+   lComparisonsAmount->Caption = if_count;
+   lArrAccessAmount->Caption = arr_access;
+   sorted = isSorted();
+   if(sorted)
    {
       lSign->Caption = "Sorted";
       lSign->Font->Color = clGreen;
@@ -556,11 +594,90 @@ void TfEducationalPage::end()
       lSign->Caption = "Unsorted";
       lSign->Font->Color = clRed;
    }
-
-   mOutput->Lines->Clear();
-   mOutput->Lines->Append(showTable());
+   Repaint();
 
    PanelLeft->Enabled = true; // Odblokowanie lewego panelu. Odblokowanie mo¿liwoœci wyboru.
    bGenerate->Enabled = true; // Odblokowanie przycisku "Generate again". Tak jak w lini wy¿ej, tylko ¿e z efektem wizuanym
 
 }
+void TfEducationalPage::showTable(bool &flagClicked, AnsiString &str, TMemo *&memo, TButton *button, bool saveClick = false)
+{
+   if(!flagClicked) // Jeœli to jest pierwsze klikniêcie
+   {
+      lSign2->Visible = true; // Poka¿ komunikat "Please wait..."
+      Repaint(); // Odœwiez zmiany
+      str = getTable(tab); // Pobierz tablice do stringa
+      memo->Lines->Text = str; // Wrzuæ tablice do memo
+      lSign2->Visible = false; // Ukryj komunikat "Please wait..."
+      Repaint(); // Odœwiez zmiany
+      flagClicked = true; // Zablokuj ponowne wejœcie tutaj
+      if(saveClick) return; // Jeœli dostaliœmy siê tutaj przez klikniêcie "Save...", to nie idz dalej
+   }
+   if(button->Caption == "Show") // Jeœli memo jest schowane
+   {
+      memo->Visible = true; // Poka¿ memo
+      button->Caption = "Hide"; // Zmieñ napis na przycisku
+   }
+   else
+   {
+      memo->Visible = false; // Ukryj memo
+      button->Caption = "Show"; // Zmieñ napis na przycisku
+   }
+}
+void __fastcall TfEducationalPage::bShowUnsortedClick(TObject *Sender)
+{
+   showTable(clickedUnsorted, unsorted_arr, mInput, bShowUnsorted);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfEducationalPage::bShowSortedClick(TObject *Sender)
+{
+   showTable(clickedSorted, sorted_arr, mOutput, bShowSorted);
+}
+//---------------------------------------------------------------------------
+
+
+void __fastcall TfEducationalPage::bLoadFileClick(TObject *Sender)
+{
+   fromFile();
+   lSign->Caption = "Loaded";
+   lSign->Font->Color = clNavy;
+}
+//---------------------------------------------------------------------------
+
+void TfEducationalPage::saveTable(bool &flagClicked, AnsiString &str, TMemo *&memo, TButton *button, bool saveClick)
+{
+   if(!flagClicked) // Jeœli jeszcze nie wyœwietliliœmy tablicy, to
+   {
+      showTable(flagClicked, str, memo, button, saveClick); // Wrzuæ wartoœæ tablicy do memo, ale go nie pokazuj
+   }
+   if(SaveDialog->Execute()) // Otwórz SaveDialog
+   {
+      memo->Lines->SaveToFile(SaveDialog->FileName); // Zapisz tablice do pliku
+   }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfEducationalPage::bSaveUnsortedClick(TObject *Sender)
+{
+   SaveDialog->FileName = "Unsorted table";
+   saveTable(clickedUnsorted, unsorted_arr, mInput, bShowUnsorted, true);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfEducationalPage::bSaveSortedClick(TObject *Sender)
+{
+   SaveDialog->FileName = "Sorted table";
+   saveTable(clickedSorted, sorted_arr, mOutput, bShowSorted, true);
+
+   AnsiString results = "Comparisions: " + IntToStr(if_count) + "\r\nArray access: " + IntToStr(arr_access);
+   mResults->Lines->Append(results);
+   SaveDialog->FileName = "Results";
+   if(SaveDialog->Execute()) // Otwórz SaveDialog
+   {
+      mResults->Lines->SaveToFile(SaveDialog->FileName); // Zapisz tablice do pliku
+   }
+   mResults->Lines->Clear();
+}
+//---------------------------------------------------------------------------
+

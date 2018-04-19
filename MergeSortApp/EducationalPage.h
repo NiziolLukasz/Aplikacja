@@ -32,15 +32,22 @@ __published:	// IDE-managed Components
    TMemo *mOutput;
    TButton *bStart;
    TLabel *lSign;
-   TLabel *lTimeName;
-   TLabel *lTimeAmount;
-   TTimer *Timer;
    TTimer *tFormatAnim;
    TLabel *lComparisonsAmount;
    TLabel *lComparisonsName;
    TLabel *lArrAccessName;
    TLabel *lArrAccessAmount;
    TOpenDialog *OpenDialog;
+   TButton *bShowUnsorted;
+   TLabel *lShowUnsorted;
+   TLabel *lShowSorted;
+   TButton *bShowSorted;
+   TLabel *lSign2;
+   TButton *bSaveUnsorted;
+   TButton *bSaveSorted;
+   TSaveDialog *SaveDialog;
+   TLabel *Label1;
+   TMemo *mResults;
    void __fastcall mDydClick(TObject *Sender);
    void __fastcall mAdvClick(TObject *Sender);
    void __fastcall mExitClick(TObject *Sender);
@@ -50,13 +57,16 @@ __published:	// IDE-managed Components
    void __fastcall bGenerateClick(TObject *Sender);
    void __fastcall sbAmountChange(TObject *Sender);
    void __fastcall bStartClick(TObject *Sender);
-   void __fastcall TimerTimer(TObject *Sender);
    void __fastcall tFormatAnimTimer(TObject *Sender);
+   void __fastcall bShowUnsortedClick(TObject *Sender);
+   void __fastcall bShowSortedClick(TObject *Sender);
+   void __fastcall bLoadFileClick(TObject *Sender);
+   void __fastcall bSaveUnsortedClick(TObject *Sender);
+   void __fastcall bSaveSortedClick(TObject *Sender);
 private:	// User declarations
-   int n, if_count, arr_access, min, sec;
-   String sTime;
-   bool first_run;
-
+   int n, if_count, arr_access, option;
+   AnsiString unsorted_arr, sorted_arr;
+   bool first_run, sorted, clickedSorted, clickedUnsorted;
 
    // n - aktualna wielkoœæ tablicy
    // if_count - iloœæ zliczonych porównañ
@@ -68,8 +78,9 @@ private:	// User declarations
 
 
    int *tab; // Tablica wartoœci
-   void merge(int *arr, int l, int m, int r); // Algorytm ³¹czenia
-   void mergeSort(int *arr, int l, int r); // Algorytm sortowania
+
+   void merge(int *&arr, int l, int m, int r); // Algorytm ³¹czenia
+   void mergeSort(int *&arr, int l, int r); // Algorytm sortowania
 
    // Funkcje generuj¹ce tablice:
    void randomTable(); // Tablica losowa
@@ -82,10 +93,13 @@ private:	// User declarations
    void fewUniqueTable(); // Tablica "kilka unikalnych"
    void fromFile(); // Tablica wczytana z pliku
 
-   void deleteTable(); // Usuniêcie tablicy
+   void deleteTable(int *&arr); // Usuniêcie tablicy
+
+   void showTable(bool &flagClicked, AnsiString &str, TMemo *&memo, TButton *button, bool saveClick);
+   void saveTable(bool &flagClicked, AnsiString &str, TMemo *&memo, TButton *button, bool saveClick);
 
    bool isSorted();
-   String showTable(); // Zwraca Stringa z wartoœciami tabeli np. 26;54;23;
+   String getTable(int *&arr); // Zwraca Stringa z wartoœciami tabeli np. "26; 54; 23; "
 
    void end();
    

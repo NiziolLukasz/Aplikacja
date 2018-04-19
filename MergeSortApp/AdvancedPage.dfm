@@ -1,6 +1,6 @@
 object fAdvancedPage: TfAdvancedPage
-  Left = 1052
-  Top = 917
+  Left = 1079
+  Top = 906
   Width = 678
   Height = 211
   Caption = 'Advanced Page'

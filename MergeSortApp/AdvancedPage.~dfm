@@ -1,8 +1,8 @@
 object fAdvancedPage: TfAdvancedPage
-  Left = 192
-  Top = 125
-  Width = 1305
-  Height = 675
+  Left = 1052
+  Top = 917
+  Width = 678
+  Height = 211
   Caption = 'Advanced Page'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -10,7 +10,40 @@ object fAdvancedPage: TfAdvancedPage
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
+  Menu = MainMenu
   OldCreateOrder = False
+  OnClose = FormClose
   PixelsPerInch = 96
   TextHeight = 13
+  object MainMenu: TMainMenu
+    Left = 664
+    object mFile: TMenuItem
+      Caption = 'File'
+      object mStart: TMenuItem
+        Caption = 'Start'
+        OnClick = mStartClick
+      end
+      object mGoTo: TMenuItem
+        Caption = 'Go to'
+        object mDid: TMenuItem
+          Caption = 'Didactic'
+          OnClick = mDidClick
+        end
+        object mEdu: TMenuItem
+          Caption = 'Educational'
+          OnClick = mEduClick
+        end
+      end
+      object mExit: TMenuItem
+        Caption = 'Exit'
+        OnClick = mExitClick
+      end
+    end
+    object mHelp: TMenuItem
+      Caption = 'Help'
+      object mAbout: TMenuItem
+        Caption = 'About...'
+      end
+    end
+  end
 end

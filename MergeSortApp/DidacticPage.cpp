@@ -287,7 +287,7 @@ void __fastcall TfDidacticPage::bGenerateClick(TObject *Sender)
   n = sbAmount->Position; // Przypisanie pocz¹tkowej iloœci s³upków
   int option = rgTableTypes->ItemIndex; // Sprawdzenie wybranej opcji w tabeli "Table types"
 
-  switch(option) // Utworzenie tableli wed³ug wybranej opcji
+  switch(option) // Utworzenie tablicy wed³ug wybranej opcji
   {
     case 0: randomTable();
             bGenerate->Enabled = true;
