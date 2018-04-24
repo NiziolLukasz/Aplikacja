@@ -14,10 +14,10 @@ WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
         {
                  Application->Initialize();
                  Application->CreateForm(__classid(TfStartingPage), &fStartingPage);
-       Application->CreateForm(__classid(TfAdvancedPage), &fAdvancedPage);
-       Application->CreateForm(__classid(TfDidacticPage), &fDidacticPage);
-       Application->CreateForm(__classid(TfEducationalPage), &fEducationalPage);
-       Application->Run();
+                 Application->CreateForm(__classid(TfAdvancedPage), &fAdvancedPage);
+                 Application->CreateForm(__classid(TfDidacticPage), &fDidacticPage);
+                 Application->CreateForm(__classid(TfEducationalPage), &fEducationalPage);
+                 Application->Run();
         }
         catch (Exception &exception)
         {
