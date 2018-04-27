@@ -1,0 +1,5 @@
+Algoritm Name 		Comparisons: 		Array access: 
+MS with 2 tables 	237581364			1170492452
+MS with 1 table 	0			0
+MS with half table 	0			0
+Quick Sort 		0			0

@@ -24,30 +24,39 @@ __published:	// IDE-managed Components
    TMenuItem *mAbout;
    TMenuItem *mDyd;
    TPanel *PanelLeft;
-   TLabel *lAmount;
    TScrollBar *sbAmount;
    TButton *bGenerate;
    TRadioGroup *rgTableTypes;
-   TMemo *mInput;
-   TMemo *mOutput;
    TButton *bStart;
    TLabel *lSign;
    TTimer *tFormatAnim;
-   TLabel *lComparisonsAmount;
-   TLabel *lComparisonsName;
-   TLabel *lArrAccessName;
-   TLabel *lArrAccessAmount;
+   TLabel *lCompMS2;
+   TLabel *lComparisons;
+   TLabel *lArrAccess;
+   TLabel *lArrMS2;
    TOpenDialog *OpenDialog;
-   TButton *bShowUnsorted;
-   TLabel *lShowUnsorted;
-   TLabel *lShowSorted;
-   TButton *bShowSorted;
+   TLabel *lSaveUnsorted;
+   TLabel *lSaveSorted;
    TLabel *lSign2;
    TButton *bSaveUnsorted;
    TButton *bSaveSorted;
    TSaveDialog *SaveDialog;
-   TLabel *Label1;
-   TMemo *mResults;
+   TEdit *eAmount;
+   TLabel *lRepeat;
+   TEdit *eRepeat;
+   TLabel *lAmountName;
+   TLabel *lAlgoritmName;
+   TLabel *lMS2;
+   TLabel *lMS1;
+   TLabel *lMShalf;
+   TLabel *lCompMS1;
+   TLabel *lCompMShalf;
+   TLabel *lArrMS1;
+   TLabel *lArrMShalf;
+   TLabel *lQS;
+   TLabel *lArrQS;
+   TLabel *lCompQS;
+   TButton *bSaveResults;
    void __fastcall mDydClick(TObject *Sender);
    void __fastcall mAdvClick(TObject *Sender);
    void __fastcall mExitClick(TObject *Sender);
@@ -58,22 +67,18 @@ __published:	// IDE-managed Components
    void __fastcall sbAmountChange(TObject *Sender);
    void __fastcall bStartClick(TObject *Sender);
    void __fastcall tFormatAnimTimer(TObject *Sender);
-   void __fastcall bShowUnsortedClick(TObject *Sender);
-   void __fastcall bShowSortedClick(TObject *Sender);
    void __fastcall bLoadFileClick(TObject *Sender);
    void __fastcall bSaveUnsortedClick(TObject *Sender);
    void __fastcall bSaveSortedClick(TObject *Sender);
+   void __fastcall bSaveResultsClick(TObject *Sender);
 private:	// User declarations
    int n, if_count, arr_access, option;
    AnsiString unsorted_arr, sorted_arr;
-   bool first_run, sorted, clickedSorted, clickedUnsorted;
+   bool first_run, sorted;
 
    // n - aktualna wielkoœæ tablicy
    // if_count - iloœæ zliczonych porównañ
    // arr_access - iloœæ zliczonych dostêpów do tablicy
-   // time -
-   // min -
-   // sec -
    // first_run -
 
 
@@ -92,23 +97,27 @@ private:	// User declarations
    void sortedTable(); // Tablica posortowana
    void fewUniqueTable(); // Tablica "kilka unikalnych"
    void fromFile(); // Tablica wczytana z pliku
-
    void deleteTable(int *&arr); // Usuniêcie tablicy
-
-   void showTable(bool &flagClicked, AnsiString &str, TMemo *&memo, TButton *button, bool saveClick);
-   void saveTable(bool &flagClicked, AnsiString &str, TMemo *&memo, TButton *button, bool saveClick);
+   void end();
+   void saveToFile(AnsiString str);
+   void showElements();
+   void showResults(TLabel *algName, TLabel *comp, TLabel *arr);
+   void clearResults(TLabel *algName, TLabel *comp, TLabel *arr);
 
    bool isSorted();
+   bool checkAmount();
+   bool checkRepeat();
+
    String getTable(int *&arr); // Zwraca Stringa z wartoœciami tabeli np. "26; 54; 23; "
 
-   void end();
+   
    
    // W¹tki:
    int W_ID; // Indentyfikator w¹tku
    unsigned int W_PD; // Pseudo-identyfikator w¹tku
 
 public:		// User declarations
-   void mergeSortStartEdu(); // Funkcja dzia³aj¹ca na innym w¹tku
+   void AlgorithmStart(); // Funkcja dzia³aj¹ca na innym w¹tku
         __fastcall TfEducationalPage(TComponent* Owner);
 };
 //---------------------------------------------------------------------------
