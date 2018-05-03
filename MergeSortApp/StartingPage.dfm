@@ -1,6 +1,6 @@
 object fStartingPage: TfStartingPage
-  Left = 584
-  Top = 156
+  Left = 610
+  Top = 150
   Width = 1092
   Height = 675
   Caption = 'Starting Page'

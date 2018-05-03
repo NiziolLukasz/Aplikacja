@@ -1,6 +1,6 @@
 object fEducationalPage: TfEducationalPage
-  Left = 1138
-  Top = 174
+  Left = 1156
+  Top = 322
   BorderStyle = bsToolWindow
   Caption = 'Educational Page'
   ClientHeight = 557
@@ -13,6 +13,7 @@ object fEducationalPage: TfEducationalPage
   Font.Style = []
   Menu = MainMenu
   OldCreateOrder = False
+  Position = poScreenCenter
   OnClose = FormClose
   PixelsPerInch = 96
   TextHeight = 13
@@ -135,7 +136,7 @@ object fEducationalPage: TfEducationalPage
     ParentFont = False
   end
   object lMS2: TLabel
-    Left = 240
+    Left = 256
     Top = 168
     Width = 125
     Height = 20
@@ -148,7 +149,7 @@ object fEducationalPage: TfEducationalPage
     ParentFont = False
   end
   object lMS1: TLabel
-    Left = 240
+    Left = 256
     Top = 208
     Width = 116
     Height = 20
@@ -161,7 +162,7 @@ object fEducationalPage: TfEducationalPage
     ParentFont = False
   end
   object lMShalf: TLabel
-    Left = 240
+    Left = 256
     Top = 248
     Width = 134
     Height = 20
@@ -226,7 +227,7 @@ object fEducationalPage: TfEducationalPage
     ParentFont = False
   end
   object lQS: TLabel
-    Left = 240
+    Left = 256
     Top = 288
     Width = 82
     Height = 20

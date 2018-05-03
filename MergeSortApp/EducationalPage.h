@@ -10,6 +10,8 @@
 #include <Menus.hpp>
 #include <ExtCtrls.hpp>
 #include <Dialogs.hpp>
+
+#include <vector>
 //---------------------------------------------------------------------------
 class TfEducationalPage : public TForm
 {
@@ -72,20 +74,26 @@ __published:	// IDE-managed Components
    void __fastcall bSaveSortedClick(TObject *Sender);
    void __fastcall bSaveResultsClick(TObject *Sender);
 private:	// User declarations
-   int n, if_count, arr_access, option;
-   AnsiString unsorted_arr, sorted_arr;
-   bool first_run, sorted;
-
-   // n - aktualna wielkoœæ tablicy
-   // if_count - iloœæ zliczonych porównañ
-   // arr_access - iloœæ zliczonych dostêpów do tablicy
-   // first_run -
-
+   int n; // aktualna wielkoœæ tablicy
+   int if_count; // iloœæ zliczonych porównañ
+   float comparision_sum;
+   int arr_access; // iloœæ zliczonych dostêpów do tablicy
+   float arr_sum;
+   int option;
+   AnsiString unsorted_arr;
+   AnsiString sorted_arr;
+   bool first_run;
 
    int *tab; // Tablica wartoœci
+   int *temp_tab; // Tablica pomocznicza
 
    void merge(int *&arr, int l, int m, int r); // Algorytm ³¹czenia
    void mergeSort(int *&arr, int l, int r); // Algorytm sortowania
+
+   inline int Rand(int p, int q);
+   inline void Swap(int &a, int &b);
+   int Partition(int arr[], int lo, int hi);
+   void QuickSort(int arr[], int lo, int hi);
 
    // Funkcje generuj¹ce tablice:
    void randomTable(); // Tablica losowa
@@ -107,10 +115,13 @@ private:	// User declarations
    bool isSorted();
    bool checkAmount();
    bool checkRepeat();
+   void compAccessSum();
+   float round(float var);
 
    String getTable(int *&arr); // Zwraca Stringa z wartoœciami tabeli np. "26; 54; 23; "
 
-   
+  //template<class T>
+   void sorting(void (*function)(int *arr, int begin, int end));
    
    // W¹tki:
    int W_ID; // Indentyfikator w¹tku

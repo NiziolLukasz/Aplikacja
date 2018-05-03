@@ -24,12 +24,13 @@ int const max_n = 10000000;
 __fastcall TfEducationalPage::TfEducationalPage(TComponent* Owner)
         : TForm(Owner)
 {
+   srand( time( NULL ) );
+
    n= sbAmount->Position; // Przypisanie pocz¹tkowej iloœci s³upków
    if_count = 0; // Przypisanie pocz¹tkowej wartoœci zliczania if'ów
    arr_access = 0; // Nadanie pocz¹tkowej wartoœci dostêpów do tablicy
 
    DoubleBuffered = true;
-   sorted = false;
 
    eAmount->Text = sbAmount->Position;
    rgTableTypes->Top = 97;
@@ -72,10 +73,6 @@ void __fastcall TfEducationalPage::FormClose(TObject *Sender,
 }
 //---------------------------------------------------------------------------
 
-/* £¹czy dwie podtablice arr[].
-   Pierwsza podtablica to arr[l..m]
-   Druga podtablica to arr[m+1..r]
-*/
 void TfEducationalPage::merge(int *&arr, int l, int m, int r) /* l - left, m - middle, r- right */
 {
 
@@ -87,34 +84,24 @@ void TfEducationalPage::merge(int *&arr, int l, int m, int r) /* l - left, m - m
     int *L = new int [n1];
     int *R = new int [n2];
 
-    // Skopiowanie danych do pomocniczych tablic L[] i R[]
-    //++if_count;
-
     for (i = 0; i < n1; i++)
     {
         L[i] = arr[l + i];
 
         arr_access += 1;
-       // ++if_count;
     }
-   // ++if_count;
 
     for (j = 0; j < n2; j++)
     {
         R[j] = arr[m + 1+ j];
 
         arr_access += 1;
-      //  ++if_count;
     }
 
     // £¹czenie pomocniczych tablic spowrotem do arr[l..r]
     i = 0; // Pocz¹tkowy indeks pierwszej podtablicy
     j = 0; // Pocz¹tkowy indeks drugiej podtablicy
     k = l; // Pocz¹tkowy indeks po³¹czonej podtablicy
-
-    //if(i<n1) // Zabezpieczenie, gdy i < n1 jest prawd¹, wtedy mamy 2 porównania i<n1 i j<n2
-    //  ++if_count;
-    //++if_count;
 
     while (i < n1 && j < n2)
     {
@@ -134,38 +121,22 @@ void TfEducationalPage::merge(int *&arr, int l, int m, int r) /* l - left, m - m
 
             arr_access += 1;
         }
-
         k++;
-
-        //if(i<n1) // Zabezpieczenie, gdy i < n1 jest prawd¹, wtedy mamy 2 porównania i<n1 i j<n2
-        //    ++if_count;
-        //++if_count;
     }
-    // Skopiowanie pozosta³ych elementów podtablicy L[], jeœli jakieœ istniej¹
-    //++if_count;
+
     while (i < n1)
     {
         arr[k] = L[i];
-
         arr_access += 1;
-
         i++;
         k++;
-
-       // ++if_count;
     }
-    // Skopiowanie pozosta³ych elementów podtablicy R[], jeœli jakieœ istniej¹
-    //++if_count;
     while (j < n2)
     {
         arr[k] = R[j];
-
         arr_access += 1;
-
         j++;
         k++;
-
-       // ++if_count;
     }
 
     // Usuniêcie dodatkowch tablic
@@ -176,8 +147,6 @@ void TfEducationalPage::merge(int *&arr, int l, int m, int r) /* l - left, m - m
 
 void TfEducationalPage::mergeSort(int *&arr, int l, int r)
 {
-  //++if_count;
-
   if (l < r)
   {
     // To samo co (l+r)/2, ale unika przepe³nienia dla du¿ego l i r
@@ -192,6 +161,49 @@ void TfEducationalPage::mergeSort(int *&arr, int l, int r)
 }
 //---------------------------------------------------------------------------
 
+int TfEducationalPage::Partition(int arr[], int lo, int hi)
+{
+    //produce ramdom subscript
+    int t = Rand(lo, hi);
+    Swap(arr[t], arr[hi]);
+
+    int index = lo - 1;
+    int key = arr[hi];
+    for(int i = lo ; i < hi; i++)
+    {
+        if(arr[i] <= key)
+            Swap(arr[++index], arr[i]);
+    }
+    Swap(arr[++index], arr[hi]);
+    return index;
+}
+//---------------------------------------------------------------------------
+
+void TfEducationalPage::QuickSort(int arr[], int lo, int hi)
+{
+    if(lo < hi)
+    {
+        int index = Partition(arr, lo, hi);
+        QuickSort(arr, lo, index-1);
+        QuickSort(arr, index+1, hi);
+    }
+}
+//---------------------------------------------------------------------------
+
+inline int TfEducationalPage::Rand(int p, int q)
+{
+    int size = q - p + 1;
+    return (p + rand() % size);
+}
+//---------------------------------------------------------------------------
+
+inline void TfEducationalPage::Swap(int &a, int &b)
+{
+    int k = a;
+    a = b;
+    b = k;
+}
+//---------------------------------------------------------------------------
 
 void __fastcall TfEducationalPage::rgTableTypesClick(TObject *Sender)
 {
@@ -199,6 +211,7 @@ void __fastcall TfEducationalPage::rgTableTypesClick(TObject *Sender)
    lSign->Font->Color = clGray;
 
    rgTableTypes->Top = 33;
+   eRepeat->Text = 1;
 
    if(fEducationalPage->Width < 640)
       tFormatAnim->Enabled = true; // W³¹czenie animacji rozsuniêcia formatki
@@ -249,9 +262,14 @@ void __fastcall TfEducationalPage::bGenerateClick(TObject *Sender)
    clearResults(lQS, lCompQS, lArrQS);
 
    bSaveSorted->Enabled = false; // Zablokuj przycisk "Save..." od tablicy posortowanej
-   bSaveResults->Enabled = false; 
+   bSaveResults->Enabled = false;
 
-   if(!checkAmount()){
+   if(!checkAmount())
+   {
+      return;
+   }
+   else if(option == 0 && !checkRepeat())
+   {
       return;
    }
 
@@ -262,11 +280,9 @@ void __fastcall TfEducationalPage::bGenerateClick(TObject *Sender)
    }
    Repaint(); // Odœwiez widok
 
-   sorted = false; // Ustawiam "flage" mówi¹ca, ¿e algorytm jest nie posortowany
-
    unsorted_arr = ""; // Wyczyszczenie zmiennych
    sorted_arr = "";  //
-   
+
    if(!first_run) // Przy pierwszym odpaleniu, pomiñ usuwanie tablicy
    {
       deleteTable(tab); // Usuñ tablice
@@ -303,7 +319,7 @@ void __fastcall TfEducationalPage::bGenerateClick(TObject *Sender)
 
    if(option != 8) // Je¿eli nie wczytujemy z piku, to...
    {
-      
+
       lSign->Caption = "Table generated"; // Ustaw komunikat
       lSign->Font->Color = clNavy; // Ustaw kolor komunikatu
    }
@@ -325,7 +341,6 @@ void __fastcall TfEducationalPage::sbAmountChange(TObject *Sender)
 void TfEducationalPage::randomTable()
 {
    // TOCHANGE: zmieniæ jakoœ randomizacje, mo¿e daæ uzytkownikowi wybór?
-    srand( time( NULL ) );
 
     for(int i=0; i < n; i++)
     {
@@ -336,8 +351,6 @@ void TfEducationalPage::randomTable()
 
 void TfEducationalPage::reversedTable()
 {
-   srand( time( NULL ) );
-
    do
    {
       tab[0] = rand() % 200000;
@@ -352,8 +365,6 @@ void TfEducationalPage::reversedTable()
 
 void TfEducationalPage::constantTable()
 {
-  srand( time( NULL ) );
-
   int random = rand() % 20000;
 
   for(int i=0; i < n; i++)
@@ -366,8 +377,6 @@ void TfEducationalPage::constantTable()
 
 void TfEducationalPage::arrowDownTable()
 {
-   srand(time(NULL));
-
    do
    {
       tab[0] = rand() % 200000;
@@ -382,8 +391,6 @@ void TfEducationalPage::arrowDownTable()
 
 void TfEducationalPage::arrowUpTable()
 {
-  srand(time(NULL));
-
    do
    {
       tab[0] = -(rand() % 200000);
@@ -398,8 +405,6 @@ void TfEducationalPage::arrowUpTable()
 
 void TfEducationalPage::almostSortedTable()
 {
-  srand( time( NULL ) );
-
   do
   {
       tab[0] = -(rand() % 20000);
@@ -433,8 +438,6 @@ void TfEducationalPage::almostSortedTable()
 
 void TfEducationalPage::fewUniqueTable()
 {
-  srand( time( NULL ) );
-
   int tab_length;
    if(n < 6)
       tab_length = 2;
@@ -474,8 +477,6 @@ void TfEducationalPage::fewUniqueTable()
 
 void TfEducationalPage::sortedTable()
 {
-  srand( time( NULL ) );
-
    do
    {
       tab[0] = -(rand() % 20000);
@@ -493,14 +494,16 @@ void TfEducationalPage::fromFile()
    std::string stringTab; // Utwo¿enie stringa do przechowania wartoœci z pliku
    if( OpenDialog->Execute() ) // Otworzenie dialogu, do wybrania pliku
    {
-      const char *file_name = OpenDialog->FileName.c_str(); // Pobranie nazwy pliku
-
       std::fstream file; // Utworzenie zmiennej plikowej
-      file.open(file_name, std::ios::in); // Otworzenie pliku
+      file.open(OpenDialog->FileName.c_str(), std::ios::in); // Otworzenie pliku
       if( file.good() == true ) // Sprawdzenie czy plik siê otworzy³
       {
          getline(file, stringTab); // Pobranie ca³ej lini z pliku
          file.close(); // Zamknij plik
+      }else
+      {
+         ShowMessage("B³¹d pliku!!!");
+         return;
       }
    }
 
@@ -544,22 +547,17 @@ void __fastcall TfEducationalPage::bStartClick(TObject *Sender)
    PanelLeft->Enabled = false; // Zablokowanie lewego panelu. Uniemo¿liwienie zmian, podczas dzia³ania algorytmu
    bGenerate->Enabled = false; // Zablokowanie przycisku "Generate again". Tak jak w lini wy¿ej, tylko ¿e z efektem wizuanym
 
+   comparision_sum = 0.0;
+   arr_sum = 0.0;
+
    lSign->Caption = "Sorting...";
    lSign->Font->Color = clGreen;
    Repaint();
+   
+   temp_tab = tab;
 
-   if(option == 0)
-   {
-      for(int i=0; i < eRepeat; i++)
-      {
-         W_ID = BeginThread(NULL, 0, AlgorithmThread, this, 0, W_PD); // Zaczêcie w¹tku i uruchomienie algorytmów
-      }
-   }else
-   {
-      W_ID = BeginThread(NULL, 0, AlgorithmThread, this, 0, W_PD); // Zaczêcie w¹tku i uruchomienie algorytmów
-   }
+   W_ID = BeginThread(NULL, 0, AlgorithmThread, this, 0, W_PD); // Zaczêcie w¹tku i uruchomienie algorytmów
 }
-
 //---------------------------------------------------------------------------
 
 String TfEducationalPage::getTable(int *&arr)
@@ -584,8 +582,6 @@ bool TfEducationalPage::isSorted()
 }
 //---------------------------------------------------------------------------
 
-
-
 void __fastcall TfEducationalPage::tFormatAnimTimer(TObject *Sender)
 {
    fEducationalPage->Width += 20;
@@ -595,10 +591,64 @@ void __fastcall TfEducationalPage::tFormatAnimTimer(TObject *Sender)
    }
 }
 //---------------------------------------------------------------------------
+
+void TfEducationalPage::compAccessSum()
+{
+   float div = StrToFloat(eRepeat->Text);
+   comparision_sum += if_count / div;
+   arr_sum += arr_access / div;
+   if_count = 0;
+   arr_access = 0;
+}
+//---------------------------------------------------------------------------
+
+/* // TODELETE
+//template<class T>
+void TfEducationalPage::sorting(void (*function)(int*, int, int))
+{
+   function(tab, 0, n-1);
+   compAccessSum();
+   tab = temp_tab;
+}
+//---------------------------------------------------------------------------
+*/
+
 void TfEducationalPage::AlgorithmStart()
 {
-   mergeSort(tab, 0, n-1);
+   int length = StrToInt(eRepeat->Text);
+
+   for(int index = 0; index < length; ++index)
+   {
+      mergeSort(tab, 0, n-1); //sorting(&mergeSort); //Merge Sort with 2 tables
+      compAccessSum();
+      tab = temp_tab;
+   }
    showResults(lMS2, lCompMS2, lArrMS2);
+/*
+   for(int index = 0; index < length; ++index)
+   {
+      // Merge Sort with 1 table
+      compAccessSum();
+      tab = temp_tab;
+   }
+   showResults(lMS1, lCompMS1, lArrMS1);
+
+   for(int index = 0; index < length; ++index)
+   {
+      // Merge Sort with half table
+      compAccessSum();
+      tab = temp_tab;
+   }
+   showResults(lMShalf, lCompMShalf, lArrMShalf);
+
+   for(int index = 0; index < length; ++index)
+   {
+      QuickSort(tab, 0, n-1); // Quick Sort
+      compAccessSum();
+      tab = temp_tab;
+   }
+   showResults(lQS, lCompQS, lArrQS);
+*/
    end();
 }
 //---------------------------------------------------------------------------
@@ -611,12 +661,26 @@ int __fastcall AlgorithmThread(Pointer Parameter)
 }
 //---------------------------------------------------------------------------
 
+float TfEducationalPage::round(float var)
+{
+    float value = (int)(var * 100 + .5);
+    return (float)value / 100;
+}
+//---------------------------------------------------------------------------
+
 void TfEducationalPage::showResults(TLabel *algName, TLabel *comp, TLabel *arr)
 {
-   comp->Caption = if_count;
-   arr->Caption = arr_access;
-   sorted = isSorted();
-   if(sorted)
+   comp->Caption = round(comparision_sum);
+   arr->Caption = round(arr_sum);
+   comparision_sum = 0.0;
+   arr_sum = 0.0;
+
+   if(algName->Color == clRed)
+   {
+      return;
+   }
+
+   if(isSorted())
    {
       algName->Color = clGreen;
    }
@@ -652,9 +716,8 @@ void TfEducationalPage::saveToFile(AnsiString str)
 {
    if(SaveDialog->Execute()) // Otwórz SaveDialog
    {
-      const char *file_name = SaveDialog->FileName.c_str(); // Pobranie nazwy pliku
       std::fstream file; // Utworzenie zmiennej plikowej
-      file.open(file_name, std::ios::out); // Otworzenie pliku
+      file.open(SaveDialog->FileName.c_str(), std::ios::out); // Otworzenie pliku
 
       if( file.good() == true ) // Sprawdzenie czy plik siê otworzy³
       {
@@ -719,7 +782,7 @@ bool TfEducationalPage::checkRepeat()
 {
    int value;
     if( !TryStrToInt(eRepeat->Text, value) ||
-         ( StrToInt(eRepeat->Text)) > 0 )
+         ( StrToInt(eRepeat->Text)) < 1 )
     {
         ShowMessage("Invalid integer value entered, try again.");
         eRepeat->SetFocus();

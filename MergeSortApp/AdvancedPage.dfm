@@ -1,9 +1,10 @@
 object fAdvancedPage: TfAdvancedPage
-  Left = 1079
-  Top = 906
-  Width = 678
-  Height = 211
+  Left = 1155
+  Top = 149
+  BorderStyle = bsToolWindow
   Caption = 'Advanced Page'
+  ClientHeight = 112
+  ClientWidth = 140
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -12,9 +13,39 @@ object fAdvancedPage: TfAdvancedPage
   Font.Style = []
   Menu = MainMenu
   OldCreateOrder = False
+  Position = poScreenCenter
   OnClose = FormClose
   PixelsPerInch = 96
   TextHeight = 13
+  object lSign2: TLabel
+    Left = 16
+    Top = 79
+    Width = 114
+    Height = 25
+    Caption = 'Please wait...'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -20
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+    Visible = False
+  end
+  object bSortFile: TButton
+    Left = 16
+    Top = 16
+    Width = 105
+    Height = 57
+    Caption = 'Sort File'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -19
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 0
+    OnClick = bSortFileClick
+  end
   object MainMenu: TMainMenu
     Left = 664
     object mFile: TMenuItem
@@ -45,5 +76,15 @@ object fAdvancedPage: TfAdvancedPage
         Caption = 'About...'
       end
     end
+  end
+  object OpenDialog: TOpenDialog
+    DefaultExt = '.txt'
+    Filter = 'Text documents ( *.txt )|*.txt|All files ( *.* )|*.*'
+    Left = 32
+  end
+  object SaveDialog: TSaveDialog
+    DefaultExt = '.txt'
+    FileName = 'Sorted array'
+    Filter = 'Text documents ( *.txt )|*.txt|All files ( *.* )|*.*'
   end
 end
