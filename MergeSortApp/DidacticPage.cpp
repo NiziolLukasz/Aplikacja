@@ -54,6 +54,8 @@ __fastcall TfDidacticPage::TfDidacticPage(TComponent* Owner)
 void TfDidacticPage::mergeSortStart()
 {
    mergeSort(tab, 0, n-1);
+   bSkipClick(this);
+   running = false;
    unlock();
 }
 
@@ -81,21 +83,15 @@ void TfDidacticPage::merge(TShape *arr[], int l, int m, int r) /* l - left, m - 
     int *R = new int [n2];
 
     // Skopiowanie danych do pomocniczych tablic L[] i R[]
-    lComparisonsAmount->Caption = ++if_count;
     for (i = 0; i < n1; i++)
     {
         L[i] = -arr[l + i]->Height;
-
-        lArrAccessAmount->Caption = arr_access + 2;
-        lComparisonsAmount->Caption = ++if_count;
+        lArrAccessAmount->Caption = ++arr_access;
     }
-    lComparisonsAmount->Caption = ++if_count;
     for (j = 0; j < n2; j++)
     {
         R[j] = -arr[m + 1+ j]->Height;
-
-        lArrAccessAmount->Caption = arr_access + 2;
-        lComparisonsAmount->Caption = ++if_count;
+        lArrAccessAmount->Caption = ++arr_access;
     }
 
     // £¹czenie pomocniczych tablic spowrotem do arr[l..r]
@@ -122,9 +118,6 @@ void TfDidacticPage::merge(TShape *arr[], int l, int m, int r) /* l - left, m - 
     }else
       Sleep(delay);
 
-    if(i<n1) // Zabezpieczenie, gdy i < n1 jest prawd¹, wtedy mamy 2 porównania i<n1 i j<n2
-      lComparisonsAmount->Caption = ++if_count;
-    lComparisonsAmount->Caption = ++if_count;
     while (i < n1 && j < n2)
     {
         sRed->Left = arr[i + l]->Left;
@@ -132,23 +125,20 @@ void TfDidacticPage::merge(TShape *arr[], int l, int m, int r) /* l - left, m - 
         sYellow->Left = arr[k]->Left;
 
         lComparisonsAmount->Caption = ++if_count;
-        lArrAccessAmount->Caption = arr_access + 2;
+        ++arr_access;
+        lArrAccessAmount->Caption = ++arr_access;
         if (L[i] <= R[j])
         {
             arr[k]->Height = -L[i];
             i++;
-
-            lArrAccessAmount->Caption = arr_access + 2;
         }
         else
         {
             arr[k]->Height = -R[j];
             j++;
-
-            lArrAccessAmount->Caption = arr_access + 2;
         }
+        lArrAccessAmount->Caption = ++arr_access;
         Repaint();
-        
 
         if(right_click) // Je¿eli zosta³ klikniêty przycisk "w prawo" w "Step by step"
         {
@@ -158,13 +148,8 @@ void TfDidacticPage::merge(TShape *arr[], int l, int m, int r) /* l - left, m - 
           Sleep(delay);
 
         k++;
-
-        if(i<n1) // Zabezpieczenie, gdy i < n1 jest prawd¹, wtedy mamy 2 porównania i<n1 i j<n2
-            lComparisonsAmount->Caption = ++if_count;
-        lComparisonsAmount->Caption = ++if_count;
     }
     // Skopiowanie pozosta³ych elementów podtablicy L[], jeœli jakieœ istniej¹
-    lComparisonsAmount->Caption = ++if_count;
     while (i < n1)
     {
         sRed->Left = arr[i + l]->Left;
@@ -172,13 +157,13 @@ void TfDidacticPage::merge(TShape *arr[], int l, int m, int r) /* l - left, m - 
 
         arr[k]->Height = -L[i];
 
-        lArrAccessAmount->Caption = arr_access + 2;
+        lArrAccessAmount->Caption = ++arr_access;
 
         i++;
         k++;
 
         Repaint();
-        
+
 
         if(right_click) // Je¿eli zosta³ klikniêty przycisk "w prawo" w "Step by step"
         {
@@ -186,8 +171,6 @@ void TfDidacticPage::merge(TShape *arr[], int l, int m, int r) /* l - left, m - 
             SuspendThread((Pointer)W_ID); // Zatrzymanie w¹tku inaczej zatrzymanie sortowania
         }else
           Sleep(delay);
-
-        lComparisonsAmount->Caption = ++if_count;
     }
     // Skopiowanie pozosta³ych elementów podtablicy R[], jeœli jakieœ istniej¹
     lComparisonsAmount->Caption = ++if_count;
@@ -198,12 +181,12 @@ void TfDidacticPage::merge(TShape *arr[], int l, int m, int r) /* l - left, m - 
 
         arr[k]->Height = -R[j];
 
-        lArrAccessAmount->Caption = arr_access + 2;
+        lArrAccessAmount->Caption = ++arr_access;
 
         j++;
         k++;
         Repaint();
-        
+
 
         if(right_click) // Je¿eli zosta³ klikniêty przycisk "w prawo" w "Step by step"
         {
@@ -211,8 +194,6 @@ void TfDidacticPage::merge(TShape *arr[], int l, int m, int r) /* l - left, m - 
             SuspendThread((Pointer)W_ID); // Zatrzymanie w¹tku inaczej zatrzymanie sortowania
         }else
           Sleep(delay);
-
-        lComparisonsAmount->Caption = ++if_count;
     }
 
     // Usuniêcie dodatkowch tablic
@@ -222,8 +203,6 @@ void TfDidacticPage::merge(TShape *arr[], int l, int m, int r) /* l - left, m - 
 
 void TfDidacticPage::mergeSort(TShape *arr[], int l, int r)
 {
-  lComparisonsAmount->Caption = ++if_count;
-
   if (l < r)
   {
     // To samo co (l+r)/2, ale unika przepe³nienia dla du¿ego l i r
@@ -261,7 +240,7 @@ void TfDidacticPage::mergeSort(TShape *arr[], int l, int r)
         arr[i]->Left += -4;
     }
     Repaint();
-    
+
 
     if(right_click) // Je¿eli zosta³ klikniêty przycisk "w prawo" w "Step by step"
     {
@@ -281,6 +260,9 @@ void TfDidacticPage::mergeSort(TShape *arr[], int l, int r)
 
 void __fastcall TfDidacticPage::bGenerateClick(TObject *Sender)
 {
+  lComparisonsAmount->Caption = if_count = 0; // resetujê licznik porównañ
+  lArrAccessAmount->Caption = arr_access = 0; // Zresetowanie licznika dostêpów
+
   PanelRight->Enabled = true; // Odblokowanie prawego panelu. Odblokowanie mo¿liwoœci kontroli algorytmu.
   bStart->Enabled = true; // Odblokowanie przycisku "Start". Umo¿liwienie wystartowania algorytmu
 
@@ -320,8 +302,6 @@ void __fastcall TfDidacticPage::bGenerateClick(TObject *Sender)
 void __fastcall TfDidacticPage::bStartClick(TObject *Sender)
 {
    delay = sbDelay->Position; // Zaktualizowanie wartoœci opóŸnienia
-   lComparisonsAmount->Caption = if_count = 0; // resetujê licznik porównañ
-   lArrAccessAmount->Caption = arr_access = 0; // Zresetowanie licznika dostêpów
    running = true; // Ustawiam "flagê" mówi¹c¹, ¿e ju¿ algorytm siê uruchomi³
 
    iPause->Visible = true; // Prze³¹czenie widocznoœci przycisków
@@ -381,8 +361,9 @@ void __fastcall TfDidacticPage::iPlayClick(TObject *Sender)
 
 void __fastcall TfDidacticPage::mStartClick(TObject *Sender)
 {
-  fDidacticPage->Hide();
-  fStartingPage->Show();
+   PageChangeDid();
+   fDidacticPage->Hide();
+   fStartingPage->Show();
 }
 //---------------------------------------------------------------------------
 
@@ -588,17 +569,6 @@ void TfDidacticPage::deleteTable(){
 
 //---------------------------------------------------------------------------
 
-
-
-void __fastcall TfDidacticPage::FormClose(TObject *Sender,
-      TCloseAction &Action)
-{
-   fStartingPage->Close();
-}
-//---------------------------------------------------------------------------
-
-
-
 void __fastcall TfDidacticPage::iRightClick(TObject *Sender)
 {
    if(!running) // Je¿eli sortowanie jeszcze siê nie usuchomi³o
@@ -641,6 +611,7 @@ void __fastcall TfDidacticPage::tAnimTimer(TObject *Sender)
 void __fastcall TfDidacticPage::tFormatAnimTimer(TObject *Sender)
 {
    fDidacticPage->Width += 20;
+   fDidacticPage->Left -= 10;
    if(fDidacticPage->Width >= 990)
    {
       tFormatAnim->Enabled = false;
@@ -648,10 +619,34 @@ void __fastcall TfDidacticPage::tFormatAnimTimer(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfDidacticPage::bSkipClick(TObject *Sender)
+{
+   delay = 0;
 
+   if(iPlay->Visible) // Je¿eli w¹tek jest zatrzymany
+   {
+      iPlayClick(this); // Wywo³aj funkcje wznowienia w¹tku
+   }
+
+   iPause->Visible = false; // Prze³¹czenie widocznoœci przycisków
+   iPlay->Visible = true; //
+
+   PanelRight->Enabled = false; // Zablokowanie prawego panelu. Uniemo¿liwienie kontroli przewijanego algorytmu.
+   PanelBottom->Enabled = false; // Zablokowanie dolnego panelu. Uniemo¿liwienie kontroli przewijanego algorytmu.
+   bSkip->Enabled = false; // Zablokowanie przycisku "Stop". Tak jak w lini wy¿ej, tylko ¿e z efektem wizuanym
+   bStart->Enabled = false; // Zablokowanie przycisku "Start". Tak jak w lini wy¿ej, tylko ¿e z efektem wizuanym
+}
+//---------------------------------------------------------------------------
+void TfDidacticPage::unlock()
+{
+   PanelLeft->Enabled = true; // Odblokowanie lewego panelu. Odblokowanie mo¿liwoœci wyboru.
+   PanelBottom->Enabled = true; // Odblokowanie dolnego panelu. Odblokowanie mo¿liwoœci wyboru.
+   bGenerate->Enabled = true; // Odblokowanie przycisku "Generate again". Tak jak w lini wy¿ej, tylko ¿e z efektem wizuanym
+}
 
 void __fastcall TfDidacticPage::mEduClick(TObject *Sender)
 {
+   PageChangeDid();
    fDidacticPage->Hide();
    fEducationalPage->Show();
 }
@@ -659,6 +654,7 @@ void __fastcall TfDidacticPage::mEduClick(TObject *Sender)
 
 void __fastcall TfDidacticPage::mAdvClick(TObject *Sender)
 {
+   PageChangeDid();
    fDidacticPage->Hide();
    fAdvancedPage->Show();   
 }
@@ -670,26 +666,28 @@ void __fastcall TfDidacticPage::mExitClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-
-
-void __fastcall TfDidacticPage::bSkipClick(TObject *Sender)
+void __fastcall TfDidacticPage::FormClose(TObject *Sender,
+      TCloseAction &Action)
 {
-   delay = 0;
-
-   iPause->Visible = false; // Prze³¹czenie widocznoœci przycisków
-   iPlay->Visible = true; //
-
-   PanelRight->Enabled = false; // Zablokowanie prawego panelu. Uniemo¿liwienie kontroli zatrzymanego ju¿ algorytmu.
-   bSkip->Enabled = false; // Zablokowanie przycisku "Stop". Tak jak w lini wy¿ej, tylko ¿e z efektem wizuanym
-   bStart->Enabled = false; // Zablokowanie przycisku "Start". Tak jak w lini wy¿ej, tylko ¿e z efektem wizuanym
-
-
-   if(iPause->Visible)  // Je¿eli w¹tek jest zatrzymany
-      ResumeThread((Pointer)W_ID); // Wznowienie w¹tku inaczej wznowienie sortowania
+   fStartingPage->Close();
 }
 //---------------------------------------------------------------------------
-void TfDidacticPage::unlock()
+
+void TfDidacticPage::PageChangeDid()
 {
-   PanelLeft->Enabled = true; // Odblokowanie lewego panelu. Odblokowanie mo¿liwoœci wyboru.
-   bGenerate->Enabled = true; // Odblokowanie przycisku "Generate again". Tak jak w lini wy¿ej, tylko ¿e z efektem wizuanym
+   if(running)
+   {
+      bSkipClick(this);
+   }
+
+   fDidacticPage->Left = 840; // przesuniêcie formatki na œrodek ekranu
+   fDidacticPage->ClientWidth = 230;  // Zmniejszenie wielkoœci formatki
+   rgTableTypes->Top = 97; // Przesuniêcie tabeli ni¿ej
+
+   sbAmount->Position = 20;
+   sbDelay->Position = 2000;
+
+   lAmount->Visible = false; // Ukrycie przycisków
+   sbAmount->Visible = false; //
+   bGenerate->Visible = false; //
 }

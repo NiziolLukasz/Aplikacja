@@ -24,7 +24,6 @@ __published:	// IDE-managed Components
         TButton *bStart;
         TPanel *PanelBottom;
         TImage *iPause;
-        TImage *iLeft;
         TLabel *lAmount;
         TMainMenu *MainMenu;
    TMenuItem *mFile;
@@ -69,24 +68,20 @@ __published:	// IDE-managed Components
    void __fastcall bSkipClick(TObject *Sender);
 
 private:	// User declarations
-   int max_n, n, center, delay, if_count, arr_access;
-   // max_n - maxymalna iloœc s³upków
-   // n - aktualna iloœc s³ópków
-   // center - œrodek formatki dla wyœwietlanych s³upków
-   // delay - wartoœæ opóŸnienia sortowania
-   // if_count - iloœæ zliczonych porównañ
-   // arr_access - iloœæ zliczonych dostêpów do tablicy
+   int max_n; // Maxymalna iloœc s³upków
+   int n; // Aktualna iloœc s³ópków
+   int center; // Œrodek formatki dla wyœwietlanych s³upków
+   int delay; // Wartoœæ opóŸnienia sortowania
+   int if_count; // Iloœæ zliczonych porównañ
+   int arr_access; // Iloœæ zliczonych dostêpów do tablicy
 
-   bool running, right_click;
-   int step, how_much, last;
-   // running - true: dzia³anie algorytmu trwa; false: algorytm nieuruchomiony
-   // right_click - true: wciœniêty przycisk "Step by step"; false: nic siê nie dzieje
+   bool running; // True: dzia³anie algorytmu trwa; false: algorytm nieuruchomiony
+   bool right_click; // True: wciœniêty przycisk "Step by step"; false: nic siê nie dzieje
 
-   // Animacja:
-   // step - o ile ma siê przesun¹æ obiekt
-   // how_much - jak daleko ma siê przesun¹æ obiekt
-   // last - pocz¹tkowa/ostatnia pozycja obiektu
-
+   //Animacja:
+   int step; // O ile ma siê przesun¹æ obiekt
+   int how_much; // Jak daleko ma siê przesun¹æ obiekt
+   int last; // Pocz¹tkowa/ostatnia pozycja obiektu
 
    // W¹tki:
    int W_ID; // Indentyfikator w¹tku
@@ -110,6 +105,7 @@ private:	// User declarations
 
    void deleteTable(); // "Usuniêcie" tablicy
 
+   void PageChangeDid();
 
 public:		// User declarations
    void mergeSortStart(); // Funkcja dzia³aj¹ca na innym w¹tku

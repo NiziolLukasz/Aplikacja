@@ -41,6 +41,7 @@ int __fastcall AlgorithmThread(Pointer Parameter);
 
 void __fastcall TfEducationalPage::mDydClick(TObject *Sender)
 {
+   PageChangeEdu();
    fEducationalPage->Hide();
    fDidacticPage->Show();
 }
@@ -48,6 +49,7 @@ void __fastcall TfEducationalPage::mDydClick(TObject *Sender)
 
 void __fastcall TfEducationalPage::mAdvClick(TObject *Sender)
 {
+   PageChangeEdu();
    fEducationalPage->Hide();
    fAdvancedPage->Show();
 }
@@ -61,6 +63,7 @@ void __fastcall TfEducationalPage::mExitClick(TObject *Sender)
 
 void __fastcall TfEducationalPage::mStartClick(TObject *Sender)
 {
+   PageChangeEdu();
    fEducationalPage->Hide();
    fStartingPage->Show();
 }
@@ -73,7 +76,7 @@ void __fastcall TfEducationalPage::FormClose(TObject *Sender,
 }
 //---------------------------------------------------------------------------
 
-void TfEducationalPage::merge(int *&arr, int l, int m, int r) /* l - left, m - middle, r- right */
+void TfEducationalPage::mergeTwoTables(int *&arr, int l, int m, int r) /* l - left, m - middle, r- right */
 {
 
     int i, j, k;
@@ -145,7 +148,7 @@ void TfEducationalPage::merge(int *&arr, int l, int m, int r) /* l - left, m - m
 }
 //---------------------------------------------------------------------------
 
-void TfEducationalPage::mergeSort(int *&arr, int l, int r)
+void TfEducationalPage::mergeSortTwoTables(int *&arr, int l, int r)
 {
   if (l < r)
   {
@@ -153,10 +156,59 @@ void TfEducationalPage::mergeSort(int *&arr, int l, int r)
     int m = l+(r-l)/2;
 
     // Sortowanie pierwszej i drugiej po³owy tablicy arr
-    mergeSort(arr, l, m);
-    mergeSort(arr, m+1, r);
+    mergeSortTwoTables(arr, l, m);
+    mergeSortTwoTables(arr, m+1, r);
 
-    merge(arr, l, m, r);
+    mergeTwoTables(arr, l, m, r);
+  }
+}
+//---------------------------------------------------------------------------
+
+void TfEducationalPage::mergeOneTable(int *&arr, int l, int  s, int p){
+   int *pom = new int[p-l + 1]; // pomocnicza tablica do ³¹czenia
+   int i = l; // indeks pocz¹tku lewej tablicy
+   int j = s + 1; // indeks pocz¹tku prawej tablicy
+   int k = 0; // indeks pocz¹tku pomocniczej tablicy
+   while(i <= s && j <= p){
+      ++if_count;
+      ++arr_access;
+      if(arr[i] <= arr[j])
+         pom[k++] = arr[i++];
+      else
+         pom[k++] = arr[j++];
+   }
+   // reszta elementów lewej po³owy
+   while(i <= s){
+      ++arr_access;
+      pom[k++] = arr[i++];
+   }
+   // reszta elementów prawej po³owy
+   while(j <= p){
+      ++arr_access;
+      pom[k++] = arr[j++];
+   }
+   // skopiuj po³¹czon¹ pomocnicz¹ tablice do oryginalnej tabicy
+   for(k = 0, i = l; i <= p; ++i, ++k){
+      ++arr_access;
+      arr[i] = pom[k];
+   }
+
+   delete []pom;
+}
+//---------------------------------------------------------------------------
+
+void TfEducationalPage::mergeSortOneTable(int *&arr, int l, int r)
+{
+  if (l < r)
+  {
+    // To samo co (l+r)/2, ale unika przepe³nienia dla du¿ego l i r
+    int m = l+(r-l)/2;
+
+    // Sortowanie pierwszej i drugiej po³owy tablicy arr
+    mergeSortOneTable(arr, l, m);
+    mergeSortOneTable(arr, m+1, r);
+
+    mergeOneTable(arr, l, m, r);
   }
 }
 //---------------------------------------------------------------------------
@@ -171,10 +223,15 @@ int TfEducationalPage::Partition(int arr[], int lo, int hi)
     int key = arr[hi];
     for(int i = lo ; i < hi; i++)
     {
+        ++if_count;
         if(arr[i] <= key)
+        {
             Swap(arr[++index], arr[i]);
+            ++arr_access;
+        }
     }
     Swap(arr[++index], arr[hi]);
+    arr_access += 2;
     return index;
 }
 //---------------------------------------------------------------------------
@@ -205,10 +262,19 @@ inline void TfEducationalPage::Swap(int &a, int &b)
 }
 //---------------------------------------------------------------------------
 
+void  TfEducationalPage::clearAllResults()
+{
+   clearResults(lMS2, lCompMS2, lArrMS2);
+   clearResults(lMS1, lCompMS1, lArrMS1);
+   clearResults(lMShalf, lCompMShalf, lArrMShalf);
+   clearResults(lQS, lCompQS, lArrQS);
+}
+
 void __fastcall TfEducationalPage::rgTableTypesClick(TObject *Sender)
 {
-   lSign->Caption = "Setup...";
-   lSign->Font->Color = clGray;
+   clearAllResults();
+
+	changeSign("Setup...", clGray);
 
    rgTableTypes->Top = 33;
    eRepeat->Text = 1;
@@ -256,29 +322,18 @@ void TfEducationalPage::showElements()
 
 void __fastcall TfEducationalPage::bGenerateClick(TObject *Sender)
 {
-   clearResults(lMS2, lCompMS2, lArrMS2);
-   clearResults(lMS1, lCompMS1, lArrMS1);
-   clearResults(lMShalf, lCompMShalf, lArrMShalf);
-   clearResults(lQS, lCompQS, lArrQS);
+   clearAllResults();
 
    bSaveSorted->Enabled = false; // Zablokuj przycisk "Save..." od tablicy posortowanej
    bSaveResults->Enabled = false;
 
-   if(!checkAmount())
-   {
-      return;
-   }
-   else if(option == 0 && !checkRepeat())
-   {
-      return;
-   }
-
    if(option != 8) // Je¿eli nie wczytujemy z piku, to...
    {
-      lSign->Caption = "Generating..."; // Ustaw komunikat
-      lSign->Font->Color = clNavy; // Ustaw kolor komunikatu
+		changeSign("Generating...",clNavy); 
+   }else
+   {
+		changeSign("Loading...", clNavy);
    }
-   Repaint(); // Odœwiez widok
 
    unsorted_arr = ""; // Wyczyszczenie zmiennych
    sorted_arr = "";  //
@@ -319,13 +374,17 @@ void __fastcall TfEducationalPage::bGenerateClick(TObject *Sender)
 
    if(option != 8) // Je¿eli nie wczytujemy z piku, to...
    {
-
-      lSign->Caption = "Table generated"; // Ustaw komunikat
-      lSign->Font->Color = clNavy; // Ustaw kolor komunikatu
+		changeSign("Table generated", clNavy); 
+   }else
+   {
+		changeSign("Loaded", clNavy);
    }
+   
    lSign2->Visible = true;
+   Repaint();
    unsorted_arr = getTable(tab);
    lSign2->Visible = false;
+   Repaint();
    bSaveUnsorted->Enabled = true; // Odblokuj przycisk "Save..." od tablicy nieposortowanej
 
    bStart->Enabled = true; // Odblokowanie przycisku "Start". Umo¿liwienie wystartowania algorytmu
@@ -521,7 +580,7 @@ void TfEducationalPage::fromFile()
     {
       pos = stringTab.find(";"); // ZnajdŸ miejsce ";"
       tab[j] = StrToInt(stringTab.substr(0, pos).c_str()); // Skopiuj czêœæ stringa, a potem zamieñ na int i wrzuæ do tablicy
-      stringTab.erase(0, pos + 2); // Usuñ wyko¿ystan¹ ju¿ czêœæ stringa, wraz z ";"
+      stringTab.erase(0, pos + 1); // Usuñ wyko¿ystan¹ ju¿ czêœæ stringa, wraz z ";"
       j++; // Zwiêksz id tablicy o 1
     }
 }
@@ -550,9 +609,7 @@ void __fastcall TfEducationalPage::bStartClick(TObject *Sender)
    comparision_sum = 0.0;
    arr_sum = 0.0;
 
-   lSign->Caption = "Sorting...";
-   lSign->Font->Color = clGreen;
-   Repaint();
+   changeSign("Sorting...", clGreen);
    
    temp_tab = tab;
 
@@ -565,7 +622,7 @@ String TfEducationalPage::getTable(int *&arr)
    AnsiString table = "";
    for(int i=0; i < n; i++)
    {
-      table += IntToStr(arr[i]) + "; ";
+      table += IntToStr(arr[i]) + ";";
    }
    return table;
 }
@@ -585,6 +642,7 @@ bool TfEducationalPage::isSorted()
 void __fastcall TfEducationalPage::tFormatAnimTimer(TObject *Sender)
 {
    fEducationalPage->Width += 20;
+   fEducationalPage->Left -= 10;
    if(fEducationalPage->Width >= 640)
    {
       tFormatAnim->Enabled = false;
@@ -602,53 +660,57 @@ void TfEducationalPage::compAccessSum()
 }
 //---------------------------------------------------------------------------
 
-/* // TODELETE
+/*
+ // TODELETE
 //template<class T>
-void TfEducationalPage::sorting(void (*function)(int*, int, int))
+void TfEducationalPage::sorting(void (function)(int*, int, int))
 {
    function(tab, 0, n-1);
    compAccessSum();
    tab = temp_tab;
 }
-//---------------------------------------------------------------------------
 */
+//---------------------------------------------------------------------------
+
+void TfEducationalPage::countAll()
+{
+   compAccessSum();
+   tab = temp_tab;
+}
+//---------------------------------------------------------------------------
 
 void TfEducationalPage::AlgorithmStart()
 {
    int length = StrToInt(eRepeat->Text);
-
+   
    for(int index = 0; index < length; ++index)
    {
-      mergeSort(tab, 0, n-1); //sorting(&mergeSort); //Merge Sort with 2 tables
-      compAccessSum();
-      tab = temp_tab;
+      mergeSortTwoTables(tab, 0, n-1); //sorting(&mergeSort); //Merge Sort with 2 tables
+      countAll();
    }
    showResults(lMS2, lCompMS2, lArrMS2);
-/*
+  
    for(int index = 0; index < length; ++index)
    {
-      // Merge Sort with 1 table
-      compAccessSum();
-      tab = temp_tab;
+      mergeSortOneTable(tab, 0, n-1); // Merge Sort with 1 table
+      countAll();
    }
    showResults(lMS1, lCompMS1, lArrMS1);
-
+   
    for(int index = 0; index < length; ++index)
    {
       // Merge Sort with half table
-      compAccessSum();
-      tab = temp_tab;
+      countAll();
    }
    showResults(lMShalf, lCompMShalf, lArrMShalf);
-
+   
    for(int index = 0; index < length; ++index)
    {
       QuickSort(tab, 0, n-1); // Quick Sort
-      compAccessSum();
-      tab = temp_tab;
+      countAll();
    }
    showResults(lQS, lCompQS, lArrQS);
-*/
+     
    end();
 }
 //---------------------------------------------------------------------------
@@ -663,7 +725,7 @@ int __fastcall AlgorithmThread(Pointer Parameter)
 
 float TfEducationalPage::round(float var)
 {
-    float value = (int)(var * 100 + .5);
+    int value = (int)(var * 100 + .5);
     return (float)value / 100;
 }
 //---------------------------------------------------------------------------
@@ -682,7 +744,7 @@ void TfEducationalPage::showResults(TLabel *algName, TLabel *comp, TLabel *arr)
 
    if(isSorted())
    {
-      algName->Color = clGreen;
+      algName->Color = clLime;
    }
    else
    {
@@ -694,21 +756,32 @@ void TfEducationalPage::showResults(TLabel *algName, TLabel *comp, TLabel *arr)
 
 void TfEducationalPage::end()
 {
-   lSign->Caption = "Completed";
+	changeSign("Completed", clGreen);
 
    PanelLeft->Enabled = true; // Odblokowanie lewego panelu. Odblokowanie mo¿liwoœci wyboru.
    bGenerate->Enabled = true; // Odblokowanie przycisku "Generate again". Tak jak w lini wy¿ej, tylko ¿e z efektem wizuanym
 
-   bSaveSorted->Enabled = true; // Odblokuj przycisk "Save..." od tablicy posortowanej
-   bSaveResults->Enabled = true;
+   if(lMS1->Color != clRed &&
+        lMS2->Color != clRed &&
+        lMShalf->Color != clRed &&
+        lQS->Color != clRed)
+   {
+        bSaveSorted->Enabled = true; // Odblokuj przycisk "Save..." od tablicy posortowanej
+        bSaveResults->Enabled = true;
+   }
 }
 //---------------------------------------------------------------------------
+void TfEducationalPage::changeSign(String text, TColor color)
+{
+    lSign->Caption = text; // Ustaw komunikat
+    lSign->Font->Color = color; // Ustaw kolor komunikatu
+    Repaint(); // Odœwie¿ formatke
+}
 
+//---------------------------------------------------------------------------
 void __fastcall TfEducationalPage::bLoadFileClick(TObject *Sender)
 {
    fromFile();
-   lSign->Caption = "Loaded";
-   lSign->Font->Color = clNavy;
 }
 //---------------------------------------------------------------------------
 
@@ -749,15 +822,17 @@ void __fastcall TfEducationalPage::bSaveUnsortedClick(TObject *Sender)
 void __fastcall TfEducationalPage::bSaveSortedClick(TObject *Sender)
 {
    lSign2->Visible = true;
+   Repaint();
    sorted_arr = getTable(tab);
    lSign2->Visible = false;
+   Repaint();
 
    SaveDialog->FileName = "Sorted table";
    saveToFile(sorted_arr);
 }
 //---------------------------------------------------------------------------
 
-bool TfEducationalPage::checkAmount()
+void TfEducationalPage::checkAmount()
 {
    int value;
     if( !TryStrToInt(eAmount->Text, value) ||
@@ -767,18 +842,14 @@ bool TfEducationalPage::checkAmount()
         ShowMessage("Invalid integer value entered, \ntry again between "
                      + IntToStr(sbAmount->Min) + " - " + IntToStr(sbAmount->Max));
         eAmount->SetFocus();
-
-        return false;
     }
 
     sbAmount->Position = value;
     Repaint();
-
-    return true;
 }
 //---------------------------------------------------------------------------
 
-bool TfEducationalPage::checkRepeat()
+void TfEducationalPage::checkRepeat()
 {
    int value;
     if( !TryStrToInt(eRepeat->Text, value) ||
@@ -787,10 +858,7 @@ bool TfEducationalPage::checkRepeat()
         ShowMessage("Invalid integer value entered, try again.");
         eRepeat->SetFocus();
 
-        return false;
     }
-
-    return true;
 }
 //---------------------------------------------------------------------------
 
@@ -808,3 +876,25 @@ void __fastcall TfEducationalPage::bSaveResultsClick(TObject *Sender)
 //---------------------------------------------------------------------------
 
 
+
+
+
+void __fastcall TfEducationalPage::eRepeatExit(TObject *Sender)
+{
+   checkRepeat();   
+}
+//---------------------------------------------------------------------------
+
+
+void __fastcall TfEducationalPage::eAmountExit(TObject *Sender)
+{
+   checkAmount();
+}
+//---------------------------------------------------------------------------
+
+void TfEducationalPage::PageChangeEdu()
+{
+   rgTableTypes->Top = 97;
+   fEducationalPage->Left = 840; // przesuniêcie formatki na œrodek ekranu
+   fEducationalPage->ClientWidth = 230;  // Zmniejszenie wielkoœci formatki
+}

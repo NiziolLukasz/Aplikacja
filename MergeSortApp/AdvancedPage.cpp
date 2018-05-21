@@ -19,7 +19,7 @@ __fastcall TfAdvancedPage::TfAdvancedPage(TComponent* Owner)
 {
 }
 //---------------------------------------------------------------------------
-int __fastcall AlgorithmThread(Pointer Parameter);
+int __fastcall AlgorithmThreadAdv(Pointer Parameter);
 
 //---------------------------------------------------------------------------
 void __fastcall TfAdvancedPage::mDidClick(TObject *Sender)
@@ -55,79 +55,40 @@ void __fastcall TfAdvancedPage::FormClose(TObject *Sender,
    fStartingPage->Close();
 }
 //---------------------------------------------------------------------------
-void TfAdvancedPage::merge(int *&arr, int l, int m, int r) /* l - left, m - middle, r- right */
-{
 
-    int i, j, k;
-    int n1 = m - l + 1; // iloœæ elementów w pierwszej podtablicy
-    int n2 =  r - m; // iloœæ elementów w drugiej podtablicy
-
-    // Tworzenie pomocniczych tablic
-    int *L = new int [n1];
-    int *R = new int [n2];
-
-    for (i = 0; i < n1; i++)
-    {
-        L[i] = arr[l + i];
+void TfAdvancedPage::mergeSort(int *&arr, int left, int right){
+    int mid;
+    if(left < right){
+        mid = (left + right) >> 1;
+        mergeSort(arr, left, mid);
+        mergeSort(arr, mid+1, right);
+        merge(arr, left, mid, right);
     }
-
-    for (j = 0; j < n2; j++)
-    {
-        R[j] = arr[m + 1+ j];
-    }
-
-    // £¹czenie pomocniczych tablic spowrotem do arr[l..r]
-    i = 0; // Pocz¹tkowy indeks pierwszej podtablicy
-    j = 0; // Pocz¹tkowy indeks drugiej podtablicy
-    k = l; // Pocz¹tkowy indeks po³¹czonej podtablicy
-
-    while (i < n1 && j < n2)
-    {
-        if (L[i] <= R[j])
-        {
-            arr[k] = L[i];
-            i++;
-        }
-        else
-        {
-            arr[k] = R[j];
-            j++;
-        }
-        k++;
-    }
-
-    while (i < n1)
-    {
-        arr[k] = L[i];
-        i++;
-        k++;
-    }
-    while (j < n2)
-    {
-        arr[k] = R[j];
-        j++;
-        k++;
-    }
-
-    // Usuniêcie dodatkowch tablic
-    delete [] L;
-    delete [] R;
 }
 //---------------------------------------------------------------------------
 
-void TfAdvancedPage::mergeSort(int *&arr, int l, int r)
-{
-  if (l < r)
-  {
-    // To samo co (l+r)/2, ale unika przepe³nienia dla du¿ego l i r
-    int m = l+(r-l)/2;
-
-    // Sortowanie pierwszej i drugiej po³owy tablicy arr
-    mergeSort(arr, l, m);
-    mergeSort(arr, m+1, r);
-
-    merge(arr, l, m, r);
-  }
+void TfAdvancedPage::merge(int *&arr, int l, int  s, int p){
+    int *pom = new int[p-l + 1]; // pomocnicza tablica do ³¹czenia
+    int i = l; // indeks pocz¹tku lewej tablicy
+	int j = s + 1; // indeks pocz¹tku prawej tablicy
+    int k = 0; // indeks pocz¹tku pomocniczej tablicy
+    while(i <= s && j <= p){
+        if(arr[i] <= arr[j])
+            pom[k++] = arr[i++];
+        else
+            pom[k++] = arr[j++];
+    }
+    // reszta elementów lewej po³owy
+    while(i <= s)
+        pom[k++] = arr[i++];
+    // reszta elementów prawej po³owy
+    while(j <= p)
+        pom[k++] = arr[j++];
+    // skopiuj po³¹czon¹ pomocnicz¹ tablice do oryginalnej tabicy
+    for(k = 0, i = l; i <= p; ++i, ++k)
+        arr[i] = pom[k];
+ 
+    delete []pom;
 }
 //---------------------------------------------------------------------------
 
@@ -165,7 +126,7 @@ void TfAdvancedPage::loadFileToArray(int*& arr, int &length)
     {
       pos = stringTab.find(";"); // ZnajdŸ miejsce ";"
       tab[j] = StrToInt(stringTab.substr(0, pos).c_str()); // Skopiuj czêœæ stringa, a potem zamieñ na int i wrzuæ do tablicy
-      stringTab.erase(0, pos + 2); // Usuñ wyko¿ystan¹ ju¿ czêœæ stringa, wraz z ";"
+      stringTab.erase(0, pos + 1); // Usuñ wyko¿ystan¹ ju¿ czêœæ stringa, wraz z ";"
       j++; // Zwiêksz id tablicy o 1
     }
 
@@ -180,7 +141,7 @@ String TfAdvancedPage::arrayToStr(const int *&arr)
    AnsiString table = "";
    for(int i=0; i < n; i++)
    {
-      table += IntToStr(arr[i]) + "; ";
+      table += IntToStr(arr[i]) + ";";
    }
 
    waitSignalOff();
@@ -265,7 +226,7 @@ void TfAdvancedPage::waitSignalOff()
 
 void TfAdvancedPage::sortArray()
 {
-   W_ID = BeginThread(NULL, 0, AlgorithmThread, this, 0, W_PD); // Zaczêcie w¹tku i uruchomienie algorytmów
+   W_ID = BeginThread(NULL, 0, AlgorithmThreadAdv, this, 0, W_PD); // Zaczêcie w¹tku i uruchomienie algorytmów
 }
 //---------------------------------------------------------------------------
 
@@ -283,10 +244,10 @@ void TfAdvancedPage::AlgorithmStart()
 }
 //---------------------------------------------------------------------------
 
-int __fastcall AlgorithmThread(Pointer Parameter)
+int __fastcall AlgorithmThreadAdv(Pointer Parameter)
 {
    fAdvancedPage->AlgorithmStart();
-   ExitThread(GetExitCodeThread(AlgorithmThread, NULL)); // usuniêcie w¹tku z pamiêci, od tego momentu w¹tku nie mo¿na ju¿ wstrzymaæ.
+   ExitThread(GetExitCodeThread(AlgorithmThreadAdv, NULL)); // usuniêcie w¹tku z pamiêci, od tego momentu w¹tku nie mo¿na ju¿ wstrzymaæ.
    return 0;
 }
 
@@ -297,7 +258,7 @@ void __fastcall TfAdvancedPage::bSortFileClick(TObject *Sender)
    sortArray();
 
    // TODELETE
-   //WaitForSingleObject(AlgorithmThread, INFINITE);
+   //WaitForSingleObject(AlgorithmThreadAdv, INFINITE);
    //checkIsSorted();
    //saveToFile(arrayToStr(tab));
    //bSortFile->Enabled = true;

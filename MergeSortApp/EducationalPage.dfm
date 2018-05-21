@@ -1,9 +1,9 @@
 object fEducationalPage: TfEducationalPage
-  Left = 1156
-  Top = 322
+  Left = 1022
+  Top = 208
   BorderStyle = bsToolWindow
   Caption = 'Educational Page'
-  ClientHeight = 557
+  ClientHeight = 559
   ClientWidth = 648
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -269,7 +269,7 @@ object fEducationalPage: TfEducationalPage
     Left = 0
     Top = 0
     Width = 233
-    Height = 557
+    Height = 559
     Align = alLeft
     TabOrder = 0
     object lRepeat: TLabel
@@ -362,6 +362,7 @@ object fEducationalPage: TfEducationalPage
       Height = 21
       TabOrder = 3
       Visible = False
+      OnExit = eAmountExit
     end
     object eRepeat: TEdit
       Left = 80
@@ -371,6 +372,7 @@ object fEducationalPage: TfEducationalPage
       TabOrder = 4
       Text = '1'
       Visible = False
+      OnExit = eRepeatExit
     end
   end
   object bStart: TButton
@@ -395,6 +397,7 @@ object fEducationalPage: TfEducationalPage
     Width = 89
     Height = 25
     Caption = 'Save table...'
+    Enabled = False
     TabOrder = 2
     OnClick = bSaveUnsortedClick
   end
@@ -404,6 +407,7 @@ object fEducationalPage: TfEducationalPage
     Width = 89
     Height = 25
     Caption = 'Save table...'
+    Enabled = False
     TabOrder = 3
     OnClick = bSaveSortedClick
   end

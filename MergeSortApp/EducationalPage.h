@@ -73,6 +73,8 @@ __published:	// IDE-managed Components
    void __fastcall bSaveUnsortedClick(TObject *Sender);
    void __fastcall bSaveSortedClick(TObject *Sender);
    void __fastcall bSaveResultsClick(TObject *Sender);
+   void __fastcall eRepeatExit(TObject *Sender);
+   void __fastcall eAmountExit(TObject *Sender);
 private:	// User declarations
    int n; // aktualna wielkoœæ tablicy
    int if_count; // iloœæ zliczonych porównañ
@@ -87,8 +89,11 @@ private:	// User declarations
    int *tab; // Tablica wartoœci
    int *temp_tab; // Tablica pomocznicza
 
-   void merge(int *&arr, int l, int m, int r); // Algorytm ³¹czenia
-   void mergeSort(int *&arr, int l, int r); // Algorytm sortowania
+   void mergeTwoTables(int *&arr, int l, int m, int r); // Algorytm ³¹czenia dwóch tablic
+   void mergeSortTwoTables(int *&arr, int l, int r); // Algorytm sortowania dwóch tablic
+
+   void mergeOneTable(int *&arr, int l, int  s, int p); // Algorytm ³¹czenia jednej tablicy
+   void mergeSortOneTable(int *&arr, int l, int r); // Algorytm sortowania jednej tablicy
 
    inline int Rand(int p, int q);
    inline void Swap(int &a, int &b);
@@ -111,18 +116,22 @@ private:	// User declarations
    void showElements();
    void showResults(TLabel *algName, TLabel *comp, TLabel *arr);
    void clearResults(TLabel *algName, TLabel *comp, TLabel *arr);
+   void clearAllResults();
 
    bool isSorted();
-   bool checkAmount();
-   bool checkRepeat();
+   void checkAmount();
+   void checkRepeat();
    void compAccessSum();
+   void countAll();
+   void changeSign(String text, TColor color);
+   void PageChangeEdu();
    float round(float var);
 
    String getTable(int *&arr); // Zwraca Stringa z wartoœciami tabeli np. "26; 54; 23; "
 
   //template<class T>
-   void sorting(void (*function)(int *arr, int begin, int end));
-   
+   //void sorting(void (*function)(int *arr, int begin, int end));
+
    // W¹tki:
    int W_ID; // Indentyfikator w¹tku
    unsigned int W_PD; // Pseudo-identyfikator w¹tku
