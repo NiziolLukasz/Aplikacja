@@ -35,10 +35,13 @@ __published:	// IDE-managed Components
 private:	// User declarations
 
    int *tab;
+   double *tab_double;
    int n;
 
-   void merge(int *&arr, int l, int m, int r);
-   void mergeSort(int *&arr, int l, int r);
+   template <class T>
+   void merge(T *arr, int l, int m, int r);
+   template<class T>
+   void mergeSort(T *arr, int l, int r);
 
    void loadFileToArray(int*& arr, int& length);
    void sortArray();

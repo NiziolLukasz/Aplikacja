@@ -1,5 +1,5 @@
 object fEducationalPage: TfEducationalPage
-  Left = 1022
+  Left = 912
   Top = 208
   BorderStyle = bsToolWindow
   Caption = 'Educational Page'

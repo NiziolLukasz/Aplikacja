@@ -335,9 +335,6 @@ void __fastcall TfEducationalPage::bGenerateClick(TObject *Sender)
 		changeSign("Loading...", clNavy);
    }
 
-   unsorted_arr = ""; // Wyczyszczenie zmiennych
-   sorted_arr = "";  //
-
    if(!first_run) // Przy pierwszym odpaleniu, pomiñ usuwanie tablicy
    {
       deleteTable(tab); // Usuñ tablice
@@ -380,11 +377,6 @@ void __fastcall TfEducationalPage::bGenerateClick(TObject *Sender)
 		changeSign("Loaded", clNavy);
    }
    
-   lSign2->Visible = true;
-   Repaint();
-   unsorted_arr = getTable(tab);
-   lSign2->Visible = false;
-   Repaint();
    bSaveUnsorted->Enabled = true; // Odblokuj przycisk "Save..." od tablicy nieposortowanej
 
    bStart->Enabled = true; // Odblokowanie przycisku "Start". Umo¿liwienie wystartowania algorytmu
@@ -599,6 +591,16 @@ void TfEducationalPage::clearResults(TLabel *algName, TLabel *comp, TLabel *arr)
 }
 //---------------------------------------------------------------------------
 
+void TfEducationalPage::copyTable(int *&original, int *&tempTable)
+{
+	tempTable = new int[n];
+	for(int i=0; i < n; i++)
+	{
+		tempTable[i] = original[i];
+	}
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TfEducationalPage::bStartClick(TObject *Sender)
 {
    bStart->Enabled = false; // Zablokowanie przycisku Start. Uniemo¿liwienie w³¹czenia algorytmu podczas jego dzia³ania
@@ -607,11 +609,14 @@ void __fastcall TfEducationalPage::bStartClick(TObject *Sender)
    bGenerate->Enabled = false; // Zablokowanie przycisku "Generate again". Tak jak w lini wy¿ej, tylko ¿e z efektem wizuanym
 
    comparision_sum = 0.0;
-   arr_sum = 0.0;
+   access_sum = 0.0;
 
    changeSign("Sorting...", clGreen);
    
-   temp_tab = tab;
+   copyTable(tab, tab_MS1);
+   copyTable(tab, tab_MS2);
+   copyTable(tab, tab_MShalf);
+   copyTable(tab, tab_QS);
 
    W_ID = BeginThread(NULL, 0, AlgorithmThread, this, 0, W_PD); // Zaczêcie w¹tku i uruchomienie algorytmów
 }
@@ -628,11 +633,11 @@ String TfEducationalPage::getTable(int *&arr)
 }
 //---------------------------------------------------------------------------
 
-bool TfEducationalPage::isSorted()
+bool TfEducationalPage::isSorted(int *&table)
 {
    for(int i=1; i < n; i++)
    {
-      if(tab[i-1] > tab[i])
+      if(table[i-1] > table[i])
          return false;
    }
    return true;
@@ -654,28 +659,9 @@ void TfEducationalPage::compAccessSum()
 {
    float div = StrToFloat(eRepeat->Text);
    comparision_sum += if_count / div;
-   arr_sum += arr_access / div;
+   access_sum += arr_access / div;
    if_count = 0;
    arr_access = 0;
-}
-//---------------------------------------------------------------------------
-
-/*
- // TODELETE
-//template<class T>
-void TfEducationalPage::sorting(void (function)(int*, int, int))
-{
-   function(tab, 0, n-1);
-   compAccessSum();
-   tab = temp_tab;
-}
-*/
-//---------------------------------------------------------------------------
-
-void TfEducationalPage::countAll()
-{
-   compAccessSum();
-   tab = temp_tab;
 }
 //---------------------------------------------------------------------------
 
@@ -685,31 +671,31 @@ void TfEducationalPage::AlgorithmStart()
    
    for(int index = 0; index < length; ++index)
    {
-      mergeSortTwoTables(tab, 0, n-1); //sorting(&mergeSort); //Merge Sort with 2 tables
-      countAll();
+      mergeSortTwoTables(tab_MS2, 0, n-1); //sorting(&mergeSort); //Merge Sort with 2 tables
+      compAccessSum();
    }
-   showResults(lMS2, lCompMS2, lArrMS2);
+   showResults(tab_MS2, lMS2, lCompMS2, lArrMS2);
   
    for(int index = 0; index < length; ++index)
    {
-      mergeSortOneTable(tab, 0, n-1); // Merge Sort with 1 table
-      countAll();
+      mergeSortOneTable(tab_MS1, 0, n-1); // Merge Sort with 1 table
+      compAccessSum();
    }
-   showResults(lMS1, lCompMS1, lArrMS1);
+   showResults(tab_MS1, lMS1, lCompMS1, lArrMS1);
    
    for(int index = 0; index < length; ++index)
    {
       // Merge Sort with half table
-      countAll();
+      compAccessSum();
    }
-   showResults(lMShalf, lCompMShalf, lArrMShalf);
-   /**/
+   showResults(tab_MShalf, lMShalf, lCompMShalf, lArrMShalf);
+   
    for(int index = 0; index < length; ++index)
    {
-      QuickSort(tab, 0, n-1); // Quick Sort
-      countAll();
+      QuickSort(tab_QS, 0, n-1); // Quick Sort
+      compAccessSum();
    }
-   showResults(lQS, lCompQS, lArrQS);
+   showResults(tab_QS, lQS, lCompQS, lArrQS);
      
    end();
 }
@@ -730,19 +716,19 @@ float TfEducationalPage::round(float var)
 }
 //---------------------------------------------------------------------------
 
-void TfEducationalPage::showResults(TLabel *algName, TLabel *comp, TLabel *arr)
+void TfEducationalPage::showResults(int *&table, TLabel *algName, TLabel *comp, TLabel *arr)
 {
    comp->Caption = round(comparision_sum);
-   arr->Caption = round(arr_sum);
+   arr->Caption = round(access_sum);
    comparision_sum = 0.0;
-   arr_sum = 0.0;
+   access_sum = 0.0;
 
    if(algName->Color == clRed)
    {
       return;
    }
 
-   if(isSorted())
+   if(isSorted(table))
    {
       algName->Color = clLime;
    }
@@ -812,24 +798,28 @@ void TfEducationalPage::saveToFile(AnsiString str)
 
 void __fastcall TfEducationalPage::bSaveUnsortedClick(TObject *Sender)
 {
-
-   SaveDialog->FileName = "Unsorted table";
-   saveToFile(unsorted_arr);
-
+	lSign2->Visible = true;
+	Repaint();
+	
+	SaveDialog->FileName = "Unsorted table";
+	saveToFile(getTable(tab));
+	
+	lSign2->Visible = false;
+	Repaint();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfEducationalPage::bSaveSortedClick(TObject *Sender)
 {
-   lSign2->Visible = true;
-   Repaint();
-   sorted_arr = getTable(tab);
-   lSign2->Visible = false;
-   Repaint();
-
-   SaveDialog->FileName = "Sorted table";
-   saveToFile(sorted_arr);
-}
+	lSign2->Visible = true;
+	Repaint();
+	
+	SaveDialog->FileName = "Sorted table";
+	saveToFile(getTable(tab_MS1));
+	
+	lSign2->Visible = false;
+	Repaint();
+}	
 //---------------------------------------------------------------------------
 
 void TfEducationalPage::checkAmount()
@@ -875,10 +865,6 @@ void __fastcall TfEducationalPage::bSaveResultsClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-
-
-
-
 void __fastcall TfEducationalPage::eRepeatExit(TObject *Sender)
 {
    checkRepeat();   
@@ -898,3 +884,5 @@ void TfEducationalPage::PageChangeEdu()
    fEducationalPage->Left = 840; // przesuniêcie formatki na œrodek ekranu
    fEducationalPage->ClientWidth = 230;  // Zmniejszenie wielkoœci formatki
 }
+
+

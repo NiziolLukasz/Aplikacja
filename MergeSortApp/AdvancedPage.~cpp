@@ -55,8 +55,8 @@ void __fastcall TfAdvancedPage::FormClose(TObject *Sender,
    fStartingPage->Close();
 }
 //---------------------------------------------------------------------------
-
-void TfAdvancedPage::mergeSort(int *&arr, int left, int right){
+template<class T>
+void TfAdvancedPage::mergeSort(T *arr, int left, int right){
     int mid;
     if(left < right){
         mid = (left + right) >> 1;
@@ -66,9 +66,9 @@ void TfAdvancedPage::mergeSort(int *&arr, int left, int right){
     }
 }
 //---------------------------------------------------------------------------
-
-void TfAdvancedPage::merge(int *&arr, int l, int  s, int p){
-    int *pom = new int[p-l + 1]; // pomocnicza tablica do ³¹czenia
+template<class T>
+void TfAdvancedPage::merge(T *arr, int l, int  s, int p){
+    T *pom = new T[p-l + 1]; // pomocnicza tablica do ³¹czenia
     int i = l; // indeks pocz¹tku lewej tablicy
 	int j = s + 1; // indeks pocz¹tku prawej tablicy
     int k = 0; // indeks pocz¹tku pomocniczej tablicy
@@ -126,7 +126,7 @@ void TfAdvancedPage::loadFileToArray(int*& arr, int &length)
     {
       pos = stringTab.find(";"); // ZnajdŸ miejsce ";"
       tab[j] = StrToInt(stringTab.substr(0, pos).c_str()); // Skopiuj czêœæ stringa, a potem zamieñ na int i wrzuæ do tablicy
-      stringTab.erase(0, pos + 2); // Usuñ wyko¿ystan¹ ju¿ czêœæ stringa, wraz z ";"
+      stringTab.erase(0, pos + 1); // Usuñ wyko¿ystan¹ ju¿ czêœæ stringa, wraz z ";"
       j++; // Zwiêksz id tablicy o 1
     }
 
@@ -141,7 +141,7 @@ String TfAdvancedPage::arrayToStr(const int *&arr)
    AnsiString table = "";
    for(int i=0; i < n; i++)
    {
-      table += IntToStr(arr[i]) + "; ";
+      table += IntToStr(arr[i]) + ";";
    }
 
    waitSignalOff();

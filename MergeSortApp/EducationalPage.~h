@@ -76,29 +76,37 @@ __published:	// IDE-managed Components
    void __fastcall eRepeatExit(TObject *Sender);
    void __fastcall eAmountExit(TObject *Sender);
 private:	// User declarations
-   int n; // aktualna wielkoœæ tablicy
-   int if_count; // iloœæ zliczonych porównañ
-   float comparision_sum;
-   int arr_access; // iloœæ zliczonych dostêpów do tablicy
-   float arr_sum;
-   int option;
-   AnsiString unsorted_arr;
-   AnsiString sorted_arr;
+   unsigned int n; // aktualna wielkoœæ tablicy
+   unsigned long long if_count; // iloœæ zliczonych porównañ
+   unsigned float comparision_sum;
+   unsigned long long arr_access; // iloœæ zliczonych dostêpów do tablicy
+   unsigned float access_sum;
+   unsigned int option;
    bool first_run;
 
    int *tab; // Tablica wartoœci
-   int *temp_tab; // Tablica pomocznicza
+   int *tab_MS1; // Tablica pomocznicza
+   int *tab_MS2; // Tablica pomocznicza
+   int *tab_MShalf; // Tablica pomocznicza
+   int *tab_QS; // Tablica pomocznicza
 
+   template<class T>
    void mergeTwoTables(int *&arr, int l, int m, int r); // Algorytm ³¹czenia dwóch tablic
+   template<class T>
    void mergeSortTwoTables(int *&arr, int l, int r); // Algorytm sortowania dwóch tablic
 
+   template<class T>
    void mergeOneTable(int *&arr, int l, int  s, int p); // Algorytm ³¹czenia jednej tablicy
+   template<class T>
    void mergeSortOneTable(int *&arr, int l, int r); // Algorytm sortowania jednej tablicy
 
-   inline int Rand(int p, int q);
-   inline void Swap(int &a, int &b);
-   int Partition(int arr[], int lo, int hi);
-   void QuickSort(int arr[], int lo, int hi);
+   int Rand(int p, int q);
+   template<class T>
+   void Swap(T &a, T &b);
+   template<class T>
+   int Partition(T arr[], int lo, int hi);
+   template<class t>
+   void QuickSort(T arr[], int lo, int hi);
 
    // Funkcje generuj¹ce tablice:
    void randomTable(); // Tablica losowa
@@ -114,20 +122,24 @@ private:	// User declarations
    void end();
    void saveToFile(AnsiString str);
    void showElements();
-   void showResults(TLabel *algName, TLabel *comp, TLabel *arr);
+   template<class T>
+   void showResults(T *&table, TLabel *algName, TLabel *comp, TLabel *arr);
    void clearResults(TLabel *algName, TLabel *comp, TLabel *arr);
    void clearAllResults();
 
-   bool isSorted();
+   tempate<class T>
+   bool isSorted(T *&table);
    void checkAmount();
    void checkRepeat();
    void compAccessSum();
-   void countAll();
    void changeSign(String text, TColor color);
    void PageChangeEdu();
-   float round(float var);
+   template<class T>
+   void copyTable(T *&original, T *&tempTable);
+   float round(unsigned float var);
 
-   String getTable(int *&arr); // Zwraca Stringa z wartoœciami tabeli np. "26; 54; 23; "
+   template<class T>
+   String getTable(T *&arr); // Zwraca Stringa z wartoœciami tabeli np. "26; 54; 23; "
 
   //template<class T>
    //void sorting(void (*function)(int *arr, int begin, int end));
