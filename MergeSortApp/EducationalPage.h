@@ -76,12 +76,12 @@ __published:	// IDE-managed Components
    void __fastcall eRepeatExit(TObject *Sender);
    void __fastcall eAmountExit(TObject *Sender);
 private:	// User declarations
-   int n; // aktualna wielkoœæ tablicy
-   int if_count; // iloœæ zliczonych porównañ
-   float comparision_sum;
-   int arr_access; // iloœæ zliczonych dostêpów do tablicy
-   float access_sum;
-   int option;
+   unsigned int n; // aktualna wielkoœæ tablicy
+   unsigned long long if_count; // iloœæ zliczonych porównañ
+   unsigned float comparision_sum;
+   unsigned long long arr_access; // iloœæ zliczonych dostêpów do tablicy
+   unsigned float access_sum;
+   unsigned int option;
    bool first_run;
 
    int *tab; // Tablica wartoœci
@@ -90,17 +90,23 @@ private:	// User declarations
    int *tab_MShalf; // Tablica pomocznicza
    int *tab_QS; // Tablica pomocznicza
 
-   
+   template<class T>
    void mergeTwoTables(int *arr, int l, int m, int r); // Algorytm ³¹czenia dwóch tablic
-   void mergeSortTwoTables(int *arr, int l, int r); // Algorytm sortowania dwóch tabli
-   
-   void mergeOneTable(int *arr, int l, int  s, int p); // Algorytm ³¹czenia jednej tablicy  
-   void mergeSortOneTable(int *arr, int l, int r); // Algorytm sortowania jednej tablicy
+   template<class T>
+   void mergeSortTwoTables(int *arr, int l, int r); // Algorytm sortowania dwóch tablic
 
-   int Rand(int p, int q);   
-   void Swap(int &a, int &b);
-   int Partition(int *arr, int lo, int hi);
-   void QuickSort(int *arr, int lo, int hi);
+   template<class T>
+   void mergeOneTable(T *arr, int l, int  s, int p); // Algorytm ³¹czenia jednej tablicy
+   template<class T>
+   void mergeSortOneTable(T *arr, int l, int r); // Algorytm sortowania jednej tablicy
+
+   int Rand(int p, int q);
+   template<class T>
+   void Swap(T &a, T &b);
+   template<class T>
+   int Partition(T arr[], int lo, int hi);
+   template<class T>
+   void QuickSort(T arr[], int lo, int hi);
 
    // Funkcje generuj¹ce tablice:
    void randomTable(); // Tablica losowa
@@ -116,20 +122,24 @@ private:	// User declarations
    void end();
    void saveToFile(AnsiString str);
    void showElements();
-   void showResults(int *table, TLabel *algName, TLabel *comp, TLabel *arr);
+   template<class T>
+   void showResults(T *table, TLabel *algName, TLabel *comp, TLabel *arr);
    void clearResults(TLabel *algName, TLabel *comp, TLabel *arr);
    void clearAllResults();
 
-   bool isSorted(int *table);
+   tempate<class T>
+   bool isSorted(T *table);
    void checkAmount();
    void checkRepeat();
    void compAccessSum();
    void changeSign(String text, TColor color);
    void PageChangeEdu();
-   void copyTable(int *original, int *tempTable);
-   float round(float var);
+   template<class T>
+   void copyTable(T *original, T *tempTable);
+   float round(unsigned float var);
 
-   String getTable(int *arr); // Zwraca Stringa z wartoœciami tabeli np. "26;54;23;"
+   template<class T>
+   String getTable(T *arr); // Zwraca Stringa z wartoœciami tabeli np. "26;54;23;"
 
    // W¹tki:
    int W_ID; // Indentyfikator w¹tku
