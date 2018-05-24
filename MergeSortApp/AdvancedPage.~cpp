@@ -55,8 +55,8 @@ void __fastcall TfAdvancedPage::FormClose(TObject *Sender,
    fStartingPage->Close();
 }
 //---------------------------------------------------------------------------
-template<class T>
-void TfAdvancedPage::mergeSort(T *arr, int left, int right){
+ 
+void TfAdvancedPage::mergeSort(int *arr, int left, int right){
     int mid;
     if(left < right){
         mid = (left + right) >> 1;
@@ -66,9 +66,9 @@ void TfAdvancedPage::mergeSort(T *arr, int left, int right){
     }
 }
 //---------------------------------------------------------------------------
-template<class T>
-void TfAdvancedPage::merge(T *arr, int l, int  s, int p){
-    T *pom = new T[p-l + 1]; // pomocnicza tablica do ³¹czenia
+ 
+void TfAdvancedPage::merge(int *arr, int l, int  s, int p){
+    int *pom = new int[p-l + 1]; // pomocnicza tablica do ³¹czenia
     int i = l; // indeks pocz¹tku lewej tablicy
 	int j = s + 1; // indeks pocz¹tku prawej tablicy
     int k = 0; // indeks pocz¹tku pomocniczej tablicy

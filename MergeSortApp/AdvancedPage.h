@@ -34,15 +34,12 @@ __published:	// IDE-managed Components
    void __fastcall bSortFileClick(TObject *Sender);
 private:	// User declarations
 
-   int *tab_int;
-   double *tab_double;
-   String tab_string;
+   int *tab;
    int n;
 
-   template <class T>
-   void merge(T *arr, int l, int m, int r);
-   template<class T>
-   void mergeSort(T *arr, int l, int r);
+   
+   void merge(int *arr, int l, int m, int r);
+   void mergeSort(int *arr, int l, int r);
 
    void loadFileToArray(int*& arr, int& length);
    void sortArray();

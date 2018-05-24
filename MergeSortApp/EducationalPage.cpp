@@ -76,7 +76,7 @@ void __fastcall TfEducationalPage::FormClose(TObject *Sender,
 }
 //---------------------------------------------------------------------------
 
-void TfEducationalPage::mergeTwoTables(int *&arr, int l, int m, int r) /* l - left, m - middle, r- right */
+void TfEducationalPage::mergeTwoTables(int *arr, int l, int m, int r) /* l - left, m - middle, r- right */
 {
 
     int i, j, k;
@@ -148,7 +148,7 @@ void TfEducationalPage::mergeTwoTables(int *&arr, int l, int m, int r) /* l - le
 }
 //---------------------------------------------------------------------------
 
-void TfEducationalPage::mergeSortTwoTables(int *&arr, int l, int r)
+void TfEducationalPage::mergeSortTwoTables(int *arr, int l, int r)
 {
   if (l < r)
   {
@@ -164,7 +164,7 @@ void TfEducationalPage::mergeSortTwoTables(int *&arr, int l, int r)
 }
 //---------------------------------------------------------------------------
 
-void TfEducationalPage::mergeOneTable(int *&arr, int l, int  s, int p){
+void TfEducationalPage::mergeOneTable(int *arr, int l, int  s, int p){
    int *pom = new int[p-l + 1]; // pomocnicza tablica do ³¹czenia
    int i = l; // indeks pocz¹tku lewej tablicy
    int j = s + 1; // indeks pocz¹tku prawej tablicy
@@ -197,7 +197,7 @@ void TfEducationalPage::mergeOneTable(int *&arr, int l, int  s, int p){
 }
 //---------------------------------------------------------------------------
 
-void TfEducationalPage::mergeSortOneTable(int *&arr, int l, int r)
+void TfEducationalPage::mergeSortOneTable(int *arr, int l, int r)
 {
   if (l < r)
   {
@@ -213,7 +213,7 @@ void TfEducationalPage::mergeSortOneTable(int *&arr, int l, int r)
 }
 //---------------------------------------------------------------------------
 
-int TfEducationalPage::Partition(int arr[], int lo, int hi)
+int TfEducationalPage::Partition(int *arr, int lo, int hi)
 {
     //produce ramdom subscript
     int t = Rand(lo, hi);
@@ -236,7 +236,7 @@ int TfEducationalPage::Partition(int arr[], int lo, int hi)
 }
 //---------------------------------------------------------------------------
 
-void TfEducationalPage::QuickSort(int arr[], int lo, int hi)
+void TfEducationalPage::QuickSort(int *arr, int lo, int hi)
 {
     if(lo < hi)
     {
@@ -578,7 +578,7 @@ void TfEducationalPage::fromFile()
 }
 //---------------------------------------------------------------------------
 
-void TfEducationalPage::deleteTable(int *&arr){
+void TfEducationalPage::deleteTable(int *arr){
   delete [] arr;
 }
 //---------------------------------------------------------------------------
@@ -591,7 +591,7 @@ void TfEducationalPage::clearResults(TLabel *algName, TLabel *comp, TLabel *arr)
 }
 //---------------------------------------------------------------------------
 
-void TfEducationalPage::copyTable(int *&original, int *&tempTable)
+void TfEducationalPage::copyTable(int *original, int *tempTable)
 {
 	tempTable = new int[n];
 	for(int i=0; i < n; i++)
@@ -622,7 +622,7 @@ void __fastcall TfEducationalPage::bStartClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-String TfEducationalPage::getTable(int *&arr)
+String TfEducationalPage::getTable(int *arr)
 {
    AnsiString table = "";
    for(int i=0; i < n; i++)
@@ -633,7 +633,7 @@ String TfEducationalPage::getTable(int *&arr)
 }
 //---------------------------------------------------------------------------
 
-bool TfEducationalPage::isSorted(int *&table)
+bool TfEducationalPage::isSorted(int *table)
 {
    for(int i=1; i < n; i++)
    {
@@ -668,35 +668,35 @@ void TfEducationalPage::compAccessSum()
 void TfEducationalPage::AlgorithmStart()
 {
    int length = StrToInt(eRepeat->Text);
-   
+   /*
    for(int index = 0; index < length; ++index)
    {
       mergeSortTwoTables(tab_MS2, 0, n-1); //sorting(&mergeSort); //Merge Sort with 2 tables
       compAccessSum();
    }
    showResults(tab_MS2, lMS2, lCompMS2, lArrMS2);
-  
+   
    for(int index = 0; index < length; ++index)
    {
       mergeSortOneTable(tab_MS1, 0, n-1); // Merge Sort with 1 table
       compAccessSum();
    }
    showResults(tab_MS1, lMS1, lCompMS1, lArrMS1);
-   
+
    for(int index = 0; index < length; ++index)
    {
       // Merge Sort with half table
       compAccessSum();
    }
    showResults(tab_MShalf, lMShalf, lCompMShalf, lArrMShalf);
-   
+   */
    for(int index = 0; index < length; ++index)
    {
       QuickSort(tab_QS, 0, n-1); // Quick Sort
       compAccessSum();
    }
    showResults(tab_QS, lQS, lCompQS, lArrQS);
-     
+    
    end();
 }
 //---------------------------------------------------------------------------
@@ -716,7 +716,7 @@ float TfEducationalPage::round(float var)
 }
 //---------------------------------------------------------------------------
 
-void TfEducationalPage::showResults(int *&table, TLabel *algName, TLabel *comp, TLabel *arr)
+void TfEducationalPage::showResults(int *table, TLabel *algName, TLabel *comp, TLabel *arr)
 {
    comp->Caption = round(comparision_sum);
    arr->Caption = round(access_sum);
