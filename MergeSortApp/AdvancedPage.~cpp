@@ -55,40 +55,46 @@ void __fastcall TfAdvancedPage::FormClose(TObject *Sender,
    fStartingPage->Close();
 }
 //---------------------------------------------------------------------------
+
 template<class T>
-void TfAdvancedPage::mergeSort(T *arr, int left, int right){
-    int mid;
+void merge(T *arr, int left, int mid, int right){
+	int n1 = mid - left + 1;
+	T *temp_arr = new int [n1];
+	
+	int i = left; // indeks pocz¹tku lewej tablicy
+	int j = mid + 1; // indeks pocz¹tku prawej tablicy
+    int k = 0; // indeks pocz¹tku pomocniczej tablicy
+
+	for(k = 0; k < n1; ++k, ++i){
+		temp_arr[k] = arr[i];
+	}
+	
+	k = 0;
+    i = left;
+
+	while(j <= right && k < n1){
+		if(arr[j] < temp_arr[k]){
+			arr[i++] = arr[j++];
+		}else{
+			arr[i++] = temp_arr[k++];
+		}
+	}
+	while(k < n1){
+		arr[i++] = temp_arr[k++];
+	}
+
+	delete [] temp_arr;
+}
+//---------------------------------------------------------------------------
+
+template<class T>
+void mergeSort(T *arr, int left, int right){
     if(left < right){
-        mid = (left + right) >> 1;
+        int mid = (left + right) >> 1;
         mergeSort(arr, left, mid);
         mergeSort(arr, mid+1, right);
         merge(arr, left, mid, right);
     }
-}
-//---------------------------------------------------------------------------
-template<class T>
-void TfAdvancedPage::merge(T *arr, int l, int  s, int p){
-    T *pom = new T[p-l + 1]; // pomocnicza tablica do ³¹czenia
-    int i = l; // indeks pocz¹tku lewej tablicy
-	int j = s + 1; // indeks pocz¹tku prawej tablicy
-    int k = 0; // indeks pocz¹tku pomocniczej tablicy
-    while(i <= s && j <= p){
-        if(arr[i] <= arr[j])
-            pom[k++] = arr[i++];
-        else
-            pom[k++] = arr[j++];
-    }
-    // reszta elementów lewej po³owy
-    while(i <= s)
-        pom[k++] = arr[i++];
-    // reszta elementów prawej po³owy
-    while(j <= p)
-        pom[k++] = arr[j++];
-    // skopiuj po³¹czon¹ pomocnicz¹ tablice do oryginalnej tabicy
-    for(k = 0, i = l; i <= p; ++i, ++k)
-        arr[i] = pom[k];
- 
-    delete []pom;
 }
 //---------------------------------------------------------------------------
 

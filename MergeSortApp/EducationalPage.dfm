@@ -161,7 +161,7 @@ object fEducationalPage: TfEducationalPage
     Font.Style = []
     ParentFont = False
   end
-  object lMShalf: TLabel
+  object lMSHalf: TLabel
     Left = 256
     Top = 248
     Width = 134
@@ -187,7 +187,7 @@ object fEducationalPage: TfEducationalPage
     Font.Style = []
     ParentFont = False
   end
-  object lCompMShalf: TLabel
+  object lCompMSHalf: TLabel
     Left = 408
     Top = 248
     Width = 9
@@ -213,7 +213,7 @@ object fEducationalPage: TfEducationalPage
     Font.Style = []
     ParentFont = False
   end
-  object lArrMShalf: TLabel
+  object lArrMSHalf: TLabel
     Left = 544
     Top = 248
     Width = 9
