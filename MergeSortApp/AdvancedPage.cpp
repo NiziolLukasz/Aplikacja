@@ -140,7 +140,7 @@ void TfAdvancedPage::loadFileToArray(int*& arr, int &length)
 }
 //---------------------------------------------------------------------------
 
-String TfAdvancedPage::arrayToStr(const int *&arr)
+String TfAdvancedPage::arrayToStr(const int *arr)
 {
    waitSignalOn();
 
@@ -184,7 +184,7 @@ void TfAdvancedPage::saveToFile(AnsiString str)
 }
 //---------------------------------------------------------------------------
 
-bool TfAdvancedPage::isSorted(int*& arr, int length)
+bool TfAdvancedPage::isSorted(const int* arr, const int length)
 {
    waitSignalOn();
 
@@ -202,9 +202,9 @@ bool TfAdvancedPage::isSorted(int*& arr, int length)
 }
 //---------------------------------------------------------------------------
 
-void TfAdvancedPage::checkIsSorted()
+void TfAdvancedPage::checkIsSorted(const int* arr)
 {
-   if(!isSorted(tab, n))
+   if(!isSorted(arr, n))
    {
       ShowMessage("The array is not sorted!!");
       SaveDialog->FileName = "Not sorted array";
@@ -238,14 +238,16 @@ void TfAdvancedPage::sortArray()
 
 void TfAdvancedPage::AlgorithmStart()
 {
-   waitSignalOn();
+    waitSignalOn();
 
-   mergeSort(tab, 0, n-1);
+    int* arr = tab;
+
+   mergeSort(arr, 0, n-1);
 
    waitSignalOff();
 
-   checkIsSorted();
-   saveToFile(arrayToStr(tab));
+   checkIsSorted(arr);
+   saveToFile(arrayToStr(arr));
    bSortFile->Enabled = true;
 }
 //---------------------------------------------------------------------------

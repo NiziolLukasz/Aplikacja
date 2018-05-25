@@ -42,12 +42,12 @@ private:	// User declarations
    void loadFileToArray(int*& arr, int& length);
    void sortArray();
    void saveToFile(AnsiString str);
-   void checkIsSorted();
+   void checkIsSorted(const int* arr);
    void waitSignalOn();
    void waitSignalOff();
 
-   bool isSorted(int*& arr, int length);
-   String arrayToStr(const int*& arr);
+   bool isSorted(const int* arr, const int length);
+   String arrayToStr(const int* arr);
 
    // W¹tki:
    int W_ID; // Indentyfikator w¹tku

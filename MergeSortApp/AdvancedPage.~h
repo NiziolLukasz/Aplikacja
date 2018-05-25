@@ -46,8 +46,8 @@ private:	// User declarations
    void waitSignalOn();
    void waitSignalOff();
 
-   bool isSorted(int*& arr, int length);
-   String arrayToStr(const int*& arr);
+   bool isSorted(const int* arr, const int length);
+   String arrayToStr(const int* arr);
 
    // W¹tki:
    int W_ID; // Indentyfikator w¹tku

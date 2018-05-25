@@ -140,7 +140,7 @@ void TfAdvancedPage::loadFileToArray(int*& arr, int &length)
 }
 //---------------------------------------------------------------------------
 
-String TfAdvancedPage::arrayToStr(const int *&arr)
+String TfAdvancedPage::arrayToStr(const int *arr)
 {
    waitSignalOn();
 
@@ -184,7 +184,7 @@ void TfAdvancedPage::saveToFile(AnsiString str)
 }
 //---------------------------------------------------------------------------
 
-bool TfAdvancedPage::isSorted(int*& arr, int length)
+bool TfAdvancedPage::isSorted(const int* arr, const int length)
 {
    waitSignalOn();
 
