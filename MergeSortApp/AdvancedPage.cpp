@@ -59,7 +59,7 @@ void __fastcall TfAdvancedPage::FormClose(TObject *Sender,
 template<class T>
 void merge(T *arr, int left, int mid, int right){
 	int n1 = mid - left + 1;
-	T *temp_arr = new int [n1];
+	T *temp_arr = new T [n1];
 	
 	int i = left; // indeks pocz¹tku lewej tablicy
 	int j = mid + 1; // indeks pocz¹tku prawej tablicy
@@ -98,49 +98,77 @@ void mergeSort(T *arr, int left, int right){
 }
 //---------------------------------------------------------------------------
 
-void TfAdvancedPage::loadFileToArray(int*& arr, int &length)
+void countsize(std::fstream &f, int& size)
 {
-   std::string stringTab; // Utwo¿enie stringa do przechowania wartoœci z pliku
-   if( OpenDialog->Execute() ) // Otworzenie dialogu, do wybrania pliku
-   {
-      waitSignalOn();
-
-      std::fstream file; // Utworzenie zmiennej plikowej
-      file.open(OpenDialog->FileName.c_str(), std::ios::in); // Otworzenie pliku
-      if( file.good() == true ) // Sprawdzenie czy plik siê otworzy³
-      {
-         getline(file, stringTab); // Pobranie ca³ej lini z pliku
-         file.close(); // Zamknij plik
-      }else
-      {
-         ShowMessage("B³¹d pliku!!!");
-         return;
-      }
-   }
-
-   int pos, j = 0, size = 0; // pos - pozycja ";", j - id tablicy,
-   std::size_t found = stringTab.find(";"); // Wyszukanie ";" w stringu
-   while(found != std::string::npos) // Jeœli wyszukana wartoœæ nie jest maksymaln¹ wartoœci¹ size_t, to...
-   {
-         size++; // Zwiêksz wielkoœæ tablicy o 1
-         found = stringTab.find(";",found+1); // Ponownie wyszukaj ";", zaczynaj¹c od poprzedniego + 1 miejsca
-   }
-   length = size; // Ustaw obliczon¹ wielkoœæ tablicy pod zmienn¹ globaln¹
-   arr = new int [n]; // Stwórz tablice
-
-    while(!stringTab.empty()) // Jeœli string nie jest pusty, to...
+    size = 0;
+    char text;
+    while (!f.eof()) //loops until end of user specified file
     {
-      pos = stringTab.find(";"); // ZnajdŸ miejsce ";"
-      tab[j] = StrToInt(stringTab.substr(0, pos).c_str()); // Skopiuj czêœæ stringa, a potem zamieñ na int i wrzuæ do tablicy
-      stringTab.erase(0, pos + 1); // Usuñ wyko¿ystan¹ ju¿ czêœæ stringa, wraz z ";"
-      j++; // Zwiêksz id tablicy o 1
+        f.get(text); //gets char from input file
+        if(text == ';')
+        {
+            ++size;
+        }
     }
-
-   waitSignalOff();
+    --size;
+    f.clear();
+  f.seekg(0, std::ios::beg);
 }
 //---------------------------------------------------------------------------
 
-String TfAdvancedPage::arrayToStr(const int *arr)
+template<class T>
+void createTable(T*& arr, const int size)
+{
+    arr = new T[size];
+}
+//---------------------------------------------------------------------------
+
+template<class T>
+void fillTable(T*& arr, const int size, std::fstream &f)
+{
+    T temp;
+    int i=0;
+    while(f >> temp)
+    {
+        arr[i++] = temp;
+        f.ignore(); // zignorowanie ";"
+    }
+}
+//---------------------------------------------------------------------------
+
+template<class T>
+void TfAdvancedPage::loadFile(T*& arr, int& size)
+{
+    if( OpenDialog->Execute() ) // Otworzenie dialogu, do wybrania pliku
+    {
+        opened = true;
+        waitSignalOn(); // Zakumnikowanie u¿ytkownika o trwaj¹cych pracach
+
+        std::fstream file(OpenDialog->FileName.c_str(), std::ios::in); // Otworzenie pliku
+        if (!file)
+        {
+            ShowMessage("B³¹d pliku!!!");
+            return;
+        }
+        else
+        {
+            countsize(file, size); // oblicz wielkoœæ tablicy
+            createTable(arr, size); // Stwórz tablice
+            fillTable(arr, size, file);
+        }
+        file.close(); //Zamkniêcie pliku tekstowego
+
+        waitSignalOff(); // Zakumnikowanie u¿ytkownika o zakoñczeniu prac
+    }
+    else
+    {
+        opened = false;
+    }
+}
+//---------------------------------------------------------------------------
+
+template<class T>
+String TfAdvancedPage::arrayToStr(const T *arr)
 {
    waitSignalOn();
 
@@ -156,7 +184,8 @@ String TfAdvancedPage::arrayToStr(const int *arr)
 }
 //---------------------------------------------------------------------------
 
-void TfAdvancedPage::saveToFile(AnsiString str)
+template<class T>
+void TfAdvancedPage::saveToFile(T* arr)
 {
    if(SaveDialog->Execute()) // Otwórz SaveDialog
    {
@@ -169,7 +198,10 @@ void TfAdvancedPage::saveToFile(AnsiString str)
       {
          lSign2->Visible = true;
 
-         file << str.c_str();
+         for(int i=0; i < n; i++)
+         {
+            file << arr[i] << ";";
+         }
          file.close(); // Zamknij plik
 
          lSign2->Visible = false;
@@ -184,7 +216,8 @@ void TfAdvancedPage::saveToFile(AnsiString str)
 }
 //---------------------------------------------------------------------------
 
-bool TfAdvancedPage::isSorted(const int* arr, const int length)
+template<class T>
+bool TfAdvancedPage::isSorted(const T* arr, const int length)
 {
    waitSignalOn();
 
@@ -202,7 +235,8 @@ bool TfAdvancedPage::isSorted(const int* arr, const int length)
 }
 //---------------------------------------------------------------------------
 
-void TfAdvancedPage::checkIsSorted(const int* arr)
+template<class T>
+void TfAdvancedPage::checkIsSorted(const T* arr)
 {
    if(!isSorted(arr, n))
    {
@@ -240,15 +274,16 @@ void TfAdvancedPage::AlgorithmStart()
 {
     waitSignalOn();
 
-    int* arr = tab;
+    mergeSort(tab, 0, n-1);
 
-   mergeSort(arr, 0, n-1);
+    waitSignalOff();
 
-   waitSignalOff();
-
-   checkIsSorted(arr);
-   saveToFile(arrayToStr(arr));
-   bSortFile->Enabled = true;
+    if(opened)
+    {
+        checkIsSorted(tab);
+        saveToFile(tab);
+    }
+    bSortFile->Enabled = true;
 }
 //---------------------------------------------------------------------------
 
@@ -262,14 +297,13 @@ int __fastcall AlgorithmThreadAdv(Pointer Parameter)
 void __fastcall TfAdvancedPage::bSortFileClick(TObject *Sender)
 {
    bSortFile->Enabled = false;
-   loadFileToArray(tab, n);
+   loadFile(tab, n);
+   if(!opened)
+   {
+        return;
+   }
    sortArray();
-
-   // TODELETE
-   //WaitForSingleObject(AlgorithmThreadAdv, INFINITE);
-   //checkIsSorted();
-   //saveToFile(arrayToStr(tab));
-   //bSortFile->Enabled = true;
 }
 //---------------------------------------------------------------------------
+
 

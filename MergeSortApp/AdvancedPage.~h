@@ -38,16 +38,21 @@ private:	// User declarations
    double *tab_double;
    String tab_string;
    int n;
+   bool opened;
 
-   void loadFileToArray(int*& arr, int& length);
+   template<class T>
+   void loadFile(T*& arr, int& length);
    void sortArray();
    void saveToFile(AnsiString str);
-   void checkIsSorted();
+   template<class T>
+   void checkIsSorted(const T* arr);
    void waitSignalOn();
    void waitSignalOff();
 
-   bool isSorted(const int* arr, const int length);
-   String arrayToStr(const int* arr);
+   template<class T>
+   bool isSorted(const T* arr, const int length);
+   template<class T>
+   String arrayToStr(const T* arr);
 
    // W¹tki:
    int W_ID; // Indentyfikator w¹tku
