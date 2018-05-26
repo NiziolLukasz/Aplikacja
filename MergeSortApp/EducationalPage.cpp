@@ -22,7 +22,8 @@ TfEducationalPage *fEducationalPage;
 
 int const max_n = 10000000;
 unsigned long long if_count; // iloœæ zliczonych porównañ
-unsigned long long arr_access; // iloœæ zliczonych dostêpów do tablicy
+unsigned long long arr_access; // iloœæ zliczonych dostêpów do tablic
+unsigned long long arr_changed; // iloœæ zliczonych zmian w tablicy
 
 //---------------------------------------------------------------------------
 __fastcall TfEducationalPage::TfEducationalPage(TComponent* Owner)
@@ -31,20 +32,22 @@ __fastcall TfEducationalPage::TfEducationalPage(TComponent* Owner)
 	srand( time( NULL ) );
 
 	n= sbAmount->Position; // Przypisanie pocz¹tkowej iloœci s³upków
-    if_count = 0; // Przypisanie pocz¹tkowej wartoœci zliczania if'ów
-    arr_access = 0; // Nadanie pocz¹tkowej wartoœci dostêpów do tablicy
-	
+    if_count = 0; // Nadanie pocz¹tkowej wartoœci licznika if'ów
+    arr_access = 0; // Nadanie pocz¹tkowej wartoœci licznika dostêpów do tablicy
+	arr_changed = 0; // Nadanie pocz¹tkowej wartoœci licznika zmian w tablicy
+    time_sum = 0; // Nadanie pocz¹tkowej wartoœci licznika czasu
+
 	first_run = true;
    
     DoubleBuffered = true;
 
-   
     eAmount->Text = sbAmount->Position;
     rgTableTypes->Top = 97;
     fEducationalPage->ClientWidth = 230;  // Zmniejszenie wielkoœci formatki
 }
 //---------------------------------------------------------------------------
 int __fastcall AlgorithmThread(Pointer Parameter);
+//---------------------------------------------------------------------------
 
 void __fastcall TfEducationalPage::mDydClick(TObject *Sender)
 {
@@ -83,79 +86,59 @@ void __fastcall TfEducationalPage::FormClose(TObject *Sender,
 }
 //---------------------------------------------------------------------------
 
-void mergeTwoTables(int *arr, int l, int m, int r) /* l - left, m - middle, r- right */
+void swap(int &a, int &b)
 {
-
-    int i, j, k;
-    int n1 = m - l + 1; // iloœæ elementów w pierwszej podtablicy
-    int n2 =  r - m; // iloœæ elementów w drugiej podtablicy
-
-    // Tworzenie pomocniczych tablic
-    int *L = new int [n1];
-    int *R = new int [n2];
-
-    for (i = 0; i < n1; i++)
-    {
-        L[i] = arr[l + i];
-        arr_access += 1;
-    }
-    for (j = 0; j < n2; j++)
-    {
-        R[j] = arr[m + 1+ j];
-        arr_access += 1;
-    }
-
-    // £¹czenie pomocniczych tablic spowrotem do arr[l..r]
-    i = 0; // Pocz¹tkowy indeks pierwszej podtablicy
-    j = 0; // Pocz¹tkowy indeks drugiej podtablicy
-    k = l; // Pocz¹tkowy indeks po³¹czonej podtablicy
-
-    while (i < n1 && j < n2)
-    {
-        ++if_count;
-        arr_access += 1;
-        if (L[i] <= R[j])
-        {
-            arr[k++] = L[i++];
-            arr_access += 1;
-        }
-        else
-        {
-            arr[k++] = R[j++];
-            arr_access += 1;
-        }
-    }
-
-    while (i < n1)
-    {
-        arr[k++] = L[i++];
-        arr_access += 1;
-    }
-    while (j < n2)
-    {
-        arr[k++] = R[j++];
-        arr_access += 1;
-    }
-
-    // Usuniêcie dodatkowch tablic
-    delete [] L;
-    delete [] R;
+    int k = a;
+    a = b;
+    b = k;
 }
 //---------------------------------------------------------------------------
 
-void mergeSortTwoTables(int *arr, int l, int r)
+template<class T>
+void heapify(T* arr, int n, int root)
 {
-  if (l < r)
-  {
-    // To samo co (l+r)/2, ale unika przepe³nienia dla du¿ego l i r
-    int m = l+(r-l)/2;
+    int largest = root;  // Initialize largest as root
+    int left = 2*root + 1;
+    int right = 2*root + 2;
 
-    // Sortowanie pierwszej i drugiej po³owy tablicy arr
-    mergeSortTwoTables(arr, l, m);
-    mergeSortTwoTables(arr, m+1, r);
+    if(left < n)
+    {
+        ++if_count;
+        arr_access += 2;
+    }
+    if (left < n && arr[left] > arr[largest]) // If left child is larger than root
+        largest = left;
 
-    mergeTwoTables(arr, l, m, r);
-  }
+    if(right < n)
+    {
+        ++if_count;
+        arr_access += 2;
+    }
+    if (right < n && arr[right] > arr[largest]) // If right child is larger than largest so far
+        largest = right;
+
+    if (largest != root) // If largest is not root
+    {
+        arr_access += 2;
+		arr_changed += 2;
+        swap(arr[root], arr[largest]);
+        heapify(arr, n, largest); // Recursively heapify the affected sub-tree
+    }
+}
+
+template<class T>
+void heapSort(T* arr, int n)
+{
+    for (int root = n / 2 - 1; root >= 0; root--) // Build heap (rearrange array)
+        heapify(arr, n, root);
+
+    for (int end=n-1; end>=0; end--) // One by one extract an element from heap
+    {
+        arr_access += 2;
+		arr_changed += 2;
+        swap(arr[0], arr[end]); // Move current root to end
+        heapify(arr, end, 0); // call max heapify on the reduced heap
+    }
 }
 //---------------------------------------------------------------------------
 
@@ -164,28 +147,43 @@ void mergeOneTable(int *arr, int l, int  s, int p){
    int i = l; // indeks pocz¹tku lewej tablicy
    int j = s + 1; // indeks pocz¹tku prawej tablicy
    int k = 0; // indeks pocz¹tku pomocniczej tablicy
-   while(i <= s && j <= p){
+   while(i <= s && j <= p)
+   {
       ++if_count;
-      ++arr_access;
+      arr_access += 2;
       if(arr[i] <= arr[j])
+	  {
          pom[k++] = arr[i++];
-      else
+		arr_access += 2;
+		arr_changed += 1;
+	  }
+	  else
+	  {
          pom[k++] = arr[j++];
+		arr_access += 2;
+		arr_changed += 1;
+	  }
    }
    // reszta elementów lewej po³owy
-   while(i <= s){
-      ++arr_access;
+   while(i <= s)
+   {
       pom[k++] = arr[i++];
+	  arr_access += 2;
+	  arr_changed += 1;
    }
    // reszta elementów prawej po³owy
-   while(j <= p){
-      ++arr_access;
+   while(j <= p)
+   {
       pom[k++] = arr[j++];
+	  arr_access += 2;
+	  arr_changed += 1;
    }
    // skopiuj po³¹czon¹ pomocnicz¹ tablice do oryginalnej tabicy
-   for(k = 0, i = l; i <= p; ++i, ++k){
-      ++arr_access;
+   for(k = 0, i = l; i <= p; ++i, ++k)
+   {
       arr[i] = pom[k];
+	  arr_access += 2;
+	  arr_changed += 1;
    }
 
    delete []pom;
@@ -208,6 +206,12 @@ void mergeSortOneTable(int *arr, int l, int r)
 }
 //---------------------------------------------------------------------------
 
+void mergesortOneTable(int *arr, int n)
+{
+    mergeSortOneTable(arr, 0, n-1);
+}
+//---------------------------------------------------------------------------
+
 void mergeHalfTable(int *arr, int left, int mid, int right){
 	int n1 = mid - left + 1;
 	int *temp_arr = new int [n1];
@@ -218,7 +222,8 @@ void mergeHalfTable(int *arr, int left, int mid, int right){
 
 	for(k = 0; k < n1; ++k, ++i){
 		temp_arr[k] = arr[i];
-        ++arr_access;
+        arr_access += 2;
+		arr_changed += 1;		
 	}
 
 	k = 0;
@@ -226,17 +231,21 @@ void mergeHalfTable(int *arr, int left, int mid, int right){
 
 	while(j <= right && k < n1){
         ++if_count;
+		arr_access += 2;
 		if(arr[j] < temp_arr[k]){
 			arr[i++] = arr[j++];
-            ++arr_access;
+            arr_access += 2;
+			arr_changed += 1;
 		}else{
 			arr[i++] = temp_arr[k++];
-            ++arr_access;
+            arr_access += 2;
+			arr_changed += 1;
 		}
 	}
 	while(k < n1){
 		arr[i++] = temp_arr[k++];
-        ++arr_access;
+        arr_access += 2;
+		arr_changed += 1;
 	}
 
 	delete [] temp_arr;
@@ -253,61 +262,71 @@ void mergeSortHalfTable(int *arr, int left, int right){
 }
 //---------------------------------------------------------------------------
 
-int Rand(int p, int q)
+void mergesortHalfTable(int *arr, int n)
+{
+    mergeSortHalfTable(arr, 0, n-1);
+}
+//---------------------------------------------------------------------------
+
+int randPivot(int p, int q)
 {
     int size = q - p + 1;
     return (p + rand() % size);
 }
 //---------------------------------------------------------------------------
 
-void Swap(int &a, int &b)
-{
-    int k = a;
-    a = b;
-    b = k;
-}
-//---------------------------------------------------------------------------
-
 int Partition(int *arr, int lo, int hi)
 {
     //produce ramdom subscript
-    int t = Rand(lo, hi);
-    Swap(arr[t], arr[hi]);
+    int t = randPivot(lo, hi);
+    swap(arr[t], arr[hi]);
+	arr_access += 2;
+	arr_changed += 2;
 
     int index = lo - 1;
     int key = arr[hi];
+	arr_access += 1;
+	
     for(int i = lo ; i < hi; i++)
     {
         ++if_count;
         if(arr[i] <= key)
         {
-            Swap(arr[++index], arr[i]);
-            ++arr_access;
+            swap(arr[++index], arr[i]);
+            arr_access += 2;
+			arr_changed += 2;
         }
     }
-    Swap(arr[++index], arr[hi]);
+    swap(arr[++index], arr[hi]);
     arr_access += 2;
+	arr_changed += 2;
     return index;
 }
 //---------------------------------------------------------------------------
 
-void QuickSort(int *arr, int lo, int hi)
+void quickSort(int *arr, int lo, int hi)
 {
     if(lo < hi)
     {
         int index = Partition(arr, lo, hi);
-        QuickSort(arr, lo, index-1);
-        QuickSort(arr, index+1, hi);
+        quickSort(arr, lo, index-1);
+        quickSort(arr, index+1, hi);
     }
+}
+//---------------------------------------------------------------------------
+
+void quicksort(int *arr, int n)
+{
+    quickSort(arr, 0, n-1);
 }
 //---------------------------------------------------------------------------
 
 void  TfEducationalPage::clearAllResults()
 {
-   clearResults(lMS2, lCompMS2, lArrMS2);
-   clearResults(lMS1, lCompMS1, lArrMS1);
-   clearResults(lMSHalf, lCompMSHalf, lArrMSHalf);
-   clearResults(lQS, lCompQS, lArrQS);
+   clearResults(lMS1, lCompMS1, lArrAccessMS1, lArrChangedMS1, lSortTimeMS1);
+   clearResults(lMSHalf, lCompMSHalf, lArrAccessMSHalf, lArrChangedMSHalf, lSortTimeMSHalf);
+   clearResults(lHS, lCompHS, lArrAccessHS, lArrChangedHS, lSortTimeHS);
+   clearResults(lQS, lCompQS, lArrAccessQS, lArrChangedQS, lSortTimeQS);
 }
 
 void __fastcall TfEducationalPage::rgTableTypesClick(TObject *Sender)
@@ -379,8 +398,8 @@ void __fastcall TfEducationalPage::bGenerateClick(TObject *Sender)
    {
       deleteTable(tab); // Usuñ tablice
 	  deleteTable(tab_MS1); // Usuñ tablice
-	  deleteTable(tab_MS2); // Usuñ tablice
 	  deleteTable(tab_MSHalf); // Usuñ tablice
+	  deleteTable(tab_HS); // Usuñ tablice
 	  deleteTable(tab_QS); // Usuñ tablice
    }
 
@@ -415,7 +434,8 @@ void __fastcall TfEducationalPage::bGenerateClick(TObject *Sender)
 
    if(option != 8) // Je¿eli nie wczytujemy z piku, to...
    {
-		changeSign("Table generated", clNavy); 
+        copyTables();
+		changeSign("Table generated", clNavy);
    }else
    {
 		changeSign("Loaded", clNavy);
@@ -627,11 +647,13 @@ void TfEducationalPage::deleteTable(int *arr){
 }
 //---------------------------------------------------------------------------
 
-void TfEducationalPage::clearResults(TLabel *algName, TLabel *comp, TLabel *arr)
+void TfEducationalPage::clearResults(TLabel *algName, TLabel *comp, TLabel *access, TLabel *changed, TLabel *time)
 {
-   algName->Color = clBtnFace;
-   comp->Caption = 0;
-   arr->Caption = 0;
+    algName->Color = clBtnFace;
+    comp->Caption = 0;
+    access->Caption = 0;
+    changed->Caption = 0;
+	time->Caption = 0;
 }
 //---------------------------------------------------------------------------
 
@@ -645,10 +667,10 @@ void TfEducationalPage::copyTable(const int *original, int *&tempTable)
 }
 //---------------------------------------------------------------------------
 
-void copyTables(){
+void TfEducationalPage::copyTables(){
     copyTable(tab, tab_MS1);
-    copyTable(tab, tab_MS2);
     copyTable(tab, tab_MSHalf);
+	copyTable(tab, tab_HS);
     copyTable(tab, tab_QS);
 }
 
@@ -658,12 +680,7 @@ void __fastcall TfEducationalPage::bStartClick(TObject *Sender)
    PanelLeft->Enabled = false; // Zablokowanie lewego panelu. Uniemo¿liwienie zmian, podczas dzia³ania algorytmu
    bGenerate->Enabled = false; // Zablokowanie przycisku "Generate again". Tak jak w lini wy¿ej, tylko ¿e z efektem wizuanym
 
-   comparision_sum = 0.0;
-   access_sum = 0.0;
-
    changeSign("Sorting...", clGreen);
-
-   copyTables();
 
    W_ID = BeginThread(NULL, 0, AlgorithmThread, this, 0, W_PD); // Zaczêcie w¹tku i uruchomienie algorytmów
 }
@@ -695,31 +712,36 @@ void __fastcall TfEducationalPage::tFormatAnimTimer(TObject *Sender)
 {
    fEducationalPage->Width += 20;
    fEducationalPage->Left -= 10;
-   if(fEducationalPage->Width >= 640)
+   if(fEducationalPage->Width >= 882)
    {
       tFormatAnim->Enabled = false;
    }
 }
 //---------------------------------------------------------------------------
 
-void TfEducationalPage::compAccessSum()
+void TfEducationalPage::sumResults(float time)
 {
    float div = StrToFloat(eRepeat->Text);
    comparision_sum += if_count / div;
    access_sum += arr_access / div;
+   changed_sum += arr_changed / div;
+   time_sum += time / div;
    if_count = 0;
    arr_access = 0;
+   arr_changed = 0;
 }
 //---------------------------------------------------------------------------
 
-void TfEducationalPage::sort(void (*algorithm)(int*, int, int), int* array, int length,
-                    int repeat, TLabel* lName, TLabel* lComp, TLabel* lAccess){
+void TfEducationalPage::sort(void (*algorithm)(int*, int), int* array, int length,
+                    int repeat, TLabel* lName, TLabel* lComp, TLabel* lAccess, TLabel *lChanged, TLabel* lTime){
     for(int index = 0; index < repeat; ++index)
     {
-        algorithm(array, 0, length-1); //Merge Sort with 2 tables
-        compAccessSum();
+        clock_t begin_time = clock();
+        algorithm(array, length);
+        float time = float(clock() - begin_time ) / CLOCKS_PER_SEC;
+        sumResults(time);
     }
-    showResults(array, lName, lComp, lAccess);
+    showResults(array, lName, lComp, lAccess, lChanged, lTime);
 }
 //---------------------------------------------------------------------------
 
@@ -727,10 +749,10 @@ void TfEducationalPage::AlgorithmStart()
 {
    int repeat = StrToInt(eRepeat->Text);
 
-   sort(&mergeSortTwoTables, tab_MS2, n, repeat, lMS2, lCompMS2, lArrMS2);
-   sort(&mergeSortOneTable, tab_MS1, n, repeat, lMS1, lCompMS1, lArrMS1);
-   sort(&mergeSortHalfTable, tab_MSHalf, n, repeat, lMSHalf, lCompMSHalf, lArrMSHalf);
-   sort(&QuickSort, tab_QS, n, repeat, lQS, lCompQS, lArrQS);
+   sort(&mergesortOneTable, tab_MS1, n, repeat, lMS1, lCompMS1, lArrAccessMS1, lArrChangedMS1, lSortTimeMS1);
+   sort(&mergesortHalfTable, tab_MSHalf, n, repeat, lMSHalf, lCompMSHalf, lArrAccessMSHalf, lArrChangedMSHalf, lSortTimeMSHalf);
+   sort(&heapSort, tab_HS, n, repeat, lHS, lCompHS, lArrAccessHS, lArrChangedHS, lSortTimeHS);
+   sort(&quicksort, tab_QS, n, repeat, lQS, lCompQS, lArrAccessQS, lArrChangedQS, lSortTimeQS);
 
    end();
 }
@@ -746,19 +768,23 @@ int __fastcall AlgorithmThread(Pointer Parameter)
 
 float TfEducationalPage::round(float var)
 {
-    int value = (int)(var * 100 + .5);
+    long long value = (long long)(var * 100 + .5);
     return (float)value / 100;
 }
 //---------------------------------------------------------------------------
 
-void TfEducationalPage::showResults(int *table, TLabel *algName, TLabel *comparisions, TLabel *access)
+void TfEducationalPage::showResults(int *table, TLabel *algName, TLabel *comparisions, TLabel *access, TLabel *changed, TLabel *time)
 {
    comparisions->Caption = round(comparision_sum);
    access->Caption = round(access_sum);
-   comparision_sum = 0.0;
-   access_sum = 0.0;
+   changed->Caption = round(changed_sum);
+   time->Caption = round(time_sum);
+   comparision_sum = 0;
+   access_sum = 0;
+   changed_sum = 0;
+   time_sum = 0;
 
-   if(algName->Color == clRed)
+   if(algName->Color != clRed)
    {
 	   if(isSorted(table))
 	   {
@@ -781,8 +807,8 @@ void TfEducationalPage::end()
    bGenerate->Enabled = true; // Odblokowanie przycisku "Generate again". Tak jak w lini wy¿ej, tylko ¿e z efektem wizuanym
 
    if(lMS1->Color != clRed &&
-        lMS2->Color != clRed &&
         lMSHalf->Color != clRed &&
+		lHS->Color != clRed &&
         lQS->Color != clRed)
    {
         bSaveSorted->Enabled = true; // Odblokuj przycisk "Save..." od tablicy posortowanej
@@ -887,11 +913,11 @@ void TfEducationalPage::checkRepeat()
 
 void __fastcall TfEducationalPage::bSaveResultsClick(TObject *Sender)
 {
-   AnsiString results = lAlgoritmName->Caption + "\t\t" +  lComparisons->Caption + "\t\t" + lArrAccess->Caption + "\n" +
-                        lMS2->Caption + "\t" + lCompMS2->Caption + "\t\t\t" + lArrMS2->Caption + "\n" +
-                        lMS1->Caption + "\t" + lCompMS1->Caption + "\t\t\t" + lArrMS1->Caption + "\n" +
-                        lMSHalf->Caption + "\t" + lCompMSHalf->Caption + "\t\t\t" + lArrMSHalf->Caption + "\n" +
-                        lQS->Caption + "\t\t" + lCompQS->Caption + "\t\t\t" + lArrQS->Caption + "\n";
+   AnsiString results = lAlgoritmName->Caption + "\t\t" +  lComparisons->Caption + "\t\t" + lArrAccess->Caption + "\t\t" + lArrChanged->Caption + "\t\t\t\t" + lSortTime->Caption + "\n" +
+                        lMS1->Caption + "\t" + lCompMS1->Caption + "\t\t\t\t" + lArrAccessMS1->Caption + "\t\t\t\t" + lArrChangedMS1->Caption + "\t\t\t\t" + lSortTimeMS1->Caption + "\n" +
+                        lMSHalf->Caption + "\t" + lCompMSHalf->Caption + "\t\t\t\t" + lArrAccessMSHalf->Caption + "\t\t\t\t" + lArrChangedMSHalf->Caption + "\t\t\t\t" + lSortTimeMSHalf->Caption + "\n" +
+						lHS->Caption + "\t\t\t" + lCompHS->Caption + "\t\t\t\t" + lArrAccessHS->Caption + "\t\t\t\t" + lArrChangedHS->Caption + "\t\t\t\t" + lSortTimeHS->Caption + "\n" +
+                        lQS->Caption + "\t\t\t" + lCompQS->Caption + "\t\t\t\t" + lArrAccessQS->Caption + "\t\t\t\t" + lArrChangedQS->Caption + "\t\t\t\t" + lSortTimeQS->Caption + "\n";
 
    SaveDialog->FileName = "Results";
    saveToFile(results);
@@ -900,7 +926,7 @@ void __fastcall TfEducationalPage::bSaveResultsClick(TObject *Sender)
 
 void __fastcall TfEducationalPage::eRepeatExit(TObject *Sender)
 {
-   checkRepeat();   
+   checkRepeat();
 }
 //---------------------------------------------------------------------------
 
@@ -917,5 +943,6 @@ void TfEducationalPage::PageChangeEdu()
    fEducationalPage->Left = 840; // przesuniêcie formatki na œrodek ekranu
    fEducationalPage->ClientWidth = 230;  // Zmniejszenie wielkoœci formatki
 }
+
 
 

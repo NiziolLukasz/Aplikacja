@@ -43,7 +43,8 @@ private:	// User declarations
    template<class T>
    void loadFile(T*& arr, int& length);
    void sortArray();
-   void saveToFile(AnsiString str);
+   template<class T>
+   void saveToFile(T* arr);
    template<class T>
    void checkIsSorted(const T* arr);
    void waitSignalOn();

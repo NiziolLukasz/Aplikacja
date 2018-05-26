@@ -32,10 +32,10 @@ __published:	// IDE-managed Components
    TButton *bStart;
    TLabel *lSign;
    TTimer *tFormatAnim;
-   TLabel *lCompMS2;
+    TLabel *lCompHS;
    TLabel *lComparisons;
    TLabel *lArrAccess;
-   TLabel *lArrMS2;
+    TLabel *lArrAccessHS;
    TOpenDialog *OpenDialog;
    TLabel *lSaveUnsorted;
    TLabel *lSaveSorted;
@@ -48,17 +48,27 @@ __published:	// IDE-managed Components
    TEdit *eRepeat;
    TLabel *lAmountName;
    TLabel *lAlgoritmName;
-   TLabel *lMS2;
+    TLabel *lHS;
    TLabel *lMS1;
     TLabel *lMSHalf;
    TLabel *lCompMS1;
     TLabel *lCompMSHalf;
-   TLabel *lArrMS1;
-    TLabel *lArrMSHalf;
+    TLabel *lArrAccessMS1;
+    TLabel *lArrAccessMSHalf;
    TLabel *lQS;
-   TLabel *lArrQS;
+    TLabel *lArrAccessQS;
    TLabel *lCompQS;
    TButton *bSaveResults;
+    TLabel *lArrChanged;
+    TLabel *lArrChangedHS;
+    TLabel *lArrChangedMS1;
+    TLabel *lArrChangedMSHalf;
+    TLabel *lArrChangedQS;
+    TLabel *lSortTime;
+    TLabel *lSortTimeHS;
+    TLabel *lSortTimeMS1;
+    TLabel *lSortTimeMSHalf;
+    TLabel *lSortTimeQS;
    void __fastcall mDydClick(TObject *Sender);
    void __fastcall mAdvClick(TObject *Sender);
    void __fastcall mExitClick(TObject *Sender);
@@ -79,31 +89,19 @@ private:	// User declarations
    int n; // aktualna wielkoœæ tablicy
    float comparision_sum;
    float access_sum;
+   float changed_sum;
+   float time_sum;
    int option;
    bool first_run;
 
    int *tab; // Tablica wartoœci
    int *tab_MS1; // Tablica pomocznicza
-   int *tab_MS2; // Tablica pomocznicza
+   int *tab_HS; // Tablica pomocznicza
    int *tab_MSHalf; // Tablica pomocznicza
    int *tab_QS; // Tablica pomocznicza
 
-   //  void mergeTwoTables(int *arr, int l, int m, int r); // Algorytm ³¹czenia dwóch tablic
-   //  void mergeSortTwoTables(int *arr, int l, int r); // Algorytm sortowania dwóch tablic
-
-   //  void mergeOneTable(int *arr, int l, int  s, int p); // Algorytm ³¹czenia jednej tablicy
-   //  void mergeSortOneTable(int *arr, int l, int r); // Algorytm sortowania jednej tablicy
-
-    //  void mergeHalfTable(int *arr, int left, int mid, int right);
-    //  void mergeSortHalfTable(int *arr, int left, int right);
-
-   //  int Rand(int p, int q);
-   //  void Swap(int &a, int &b);
-   //  int Partition(int arr[], int lo, int hi);
-   //  void QuickSort(int arr[], int lo, int hi);
-
-   void sort(void (*algorithm)(int*, int, int), int* array, int length,
-                    int repeat, TLabel* lName, TLabel* lComp, TLabel* lAccess);
+   void sort(void (*algorithm)(int*, int), int* array, int length,
+            int repeat, TLabel* lName, TLabel* lComp, TLabel* lAccess, TLabel *lChanged, TLabel* lTime);
 
    // Funkcje generuj¹ce tablice:
    void randomTable(); // Tablica losowa
@@ -119,17 +117,17 @@ private:	// User declarations
    void end();
    void saveToFile(AnsiString str);
    void showElements();
-   void showResults(int *table, TLabel *algName, TLabel *comparisions, TLabel *access);
-   void clearResults(TLabel *algName, TLabel *comp, TLabel *arr);
+   void showResults(int *table, TLabel *algName, TLabel *comparisions, TLabel *access, TLabel *changed, TLabel *time);
+   void clearResults(TLabel *algName, TLabel *comp, TLabel *access, TLabel *changed, TLabel *time);
    void clearAllResults();
 
    bool isSorted(int *table);
    void checkAmount();
    void checkRepeat();
-   void compAccessSum();
+   void sumResults(float time);
    void changeSign(String text, TColor color);
    void PageChangeEdu();
-   void copyTable(int *original, int *&tempTable);
+   void copyTable(const int *original, int *&tempTable);
    void copyTables();
    float round(float var);
 

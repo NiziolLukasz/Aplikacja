@@ -59,7 +59,7 @@ void __fastcall TfAdvancedPage::FormClose(TObject *Sender,
 template<class T>
 void merge(T *arr, int left, int mid, int right){
 	int n1 = mid - left + 1;
-	T *temp_arr = new int [n1];
+	T *temp_arr = new T [n1];
 	
 	int i = left; // indeks pocz¹tku lewej tablicy
 	int j = mid + 1; // indeks pocz¹tku prawej tablicy
@@ -167,7 +167,8 @@ void TfAdvancedPage::loadFile(T*& arr, int& size)
 }
 //---------------------------------------------------------------------------
 
-String TfAdvancedPage::arrayToStr(const int *arr)
+template<class T>
+String TfAdvancedPage::arrayToStr(const T *arr)
 {
    waitSignalOn();
 
@@ -183,7 +184,8 @@ String TfAdvancedPage::arrayToStr(const int *arr)
 }
 //---------------------------------------------------------------------------
 
-void TfAdvancedPage::saveToFile(AnsiString str)
+template<class T>
+void TfAdvancedPage::saveToFile(T* arr)
 {
    if(SaveDialog->Execute()) // Otwórz SaveDialog
    {
@@ -196,7 +198,10 @@ void TfAdvancedPage::saveToFile(AnsiString str)
       {
          lSign2->Visible = true;
 
-         file << str.c_str();
+         for(int i=0; i < n; i++)
+         {
+            file << arr[i] << ";";
+         }
          file.close(); // Zamknij plik
 
          lSign2->Visible = false;
@@ -211,7 +216,8 @@ void TfAdvancedPage::saveToFile(AnsiString str)
 }
 //---------------------------------------------------------------------------
 
-bool TfAdvancedPage::isSorted(const int* arr, const int length)
+template<class T>
+bool TfAdvancedPage::isSorted(const T* arr, const int length)
 {
    waitSignalOn();
 
@@ -229,7 +235,8 @@ bool TfAdvancedPage::isSorted(const int* arr, const int length)
 }
 //---------------------------------------------------------------------------
 
-void TfAdvancedPage::checkIsSorted(const int* arr)
+template<class T>
+void TfAdvancedPage::checkIsSorted(const T* arr)
 {
    if(!isSorted(arr, n))
    {
@@ -267,14 +274,14 @@ void TfAdvancedPage::AlgorithmStart()
 {
     waitSignalOn();
 
-    mergeSort(tab_double, 0, n-1);
+    mergeSort(tab, 0, n-1);
 
     waitSignalOff();
 
     if(opened)
     {
-        checkIsSorted(tab_double);
-        saveToFile(arrayToStr(tab_double));
+        checkIsSorted(tab);
+        saveToFile(tab);
     }
     bSortFile->Enabled = true;
 }

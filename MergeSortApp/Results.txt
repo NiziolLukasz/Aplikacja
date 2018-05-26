@@ -1,0 +1,5 @@
+Algorithm Name 		Comparisons: 		Array access: 		Array changed: 
+MS with 1 table 	8691				57286				19952
+MS with half table 	8691				46134				14376
+HeapSort			16862				51890				18166
+QuickSort 			10322				12516				11838

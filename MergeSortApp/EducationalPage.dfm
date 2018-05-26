@@ -1,10 +1,10 @@
 object fEducationalPage: TfEducationalPage
-  Left = 912
-  Top = 208
+  Left = 850
+  Top = 164
   BorderStyle = bsToolWindow
   Caption = 'Educational Page'
   ClientHeight = 559
-  ClientWidth = 648
+  ClientWidth = 866
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clCaptionText
@@ -18,7 +18,7 @@ object fEducationalPage: TfEducationalPage
   PixelsPerInch = 96
   TextHeight = 13
   object lSign: TLabel
-    Left = 256
+    Left = 264
     Top = 392
     Width = 40
     Height = 25
@@ -30,9 +30,9 @@ object fEducationalPage: TfEducationalPage
     Font.Style = []
     ParentFont = False
   end
-  object lCompMS2: TLabel
-    Left = 408
-    Top = 168
+  object lCompHS: TLabel
+    Left = 400
+    Top = 248
     Width = 9
     Height = 20
     Caption = '0'
@@ -57,7 +57,7 @@ object fEducationalPage: TfEducationalPage
     ParentFont = False
   end
   object lArrAccess: TLabel
-    Left = 528
+    Left = 512
     Top = 120
     Width = 107
     Height = 20
@@ -69,9 +69,9 @@ object fEducationalPage: TfEducationalPage
     Font.Style = []
     ParentFont = False
   end
-  object lArrMS2: TLabel
-    Left = 544
-    Top = 168
+  object lArrAccessHS: TLabel
+    Left = 520
+    Top = 248
     Width = 9
     Height = 20
     Caption = '0'
@@ -84,7 +84,7 @@ object fEducationalPage: TfEducationalPage
   end
   object lSaveUnsorted: TLabel
     Left = 248
-    Top = 484
+    Top = 476
     Width = 119
     Height = 20
     Caption = 'Unsorted array: '
@@ -109,7 +109,7 @@ object fEducationalPage: TfEducationalPage
     ParentFont = False
   end
   object lSign2: TLabel
-    Left = 440
+    Left = 584
     Top = 392
     Width = 114
     Height = 25
@@ -125,9 +125,9 @@ object fEducationalPage: TfEducationalPage
   object lAlgoritmName: TLabel
     Left = 240
     Top = 120
-    Width = 114
+    Width = 123
     Height = 20
-    Caption = 'Algoritm Name '
+    Caption = 'Algorithm Name '
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -16
@@ -135,12 +135,12 @@ object fEducationalPage: TfEducationalPage
     Font.Style = []
     ParentFont = False
   end
-  object lMS2: TLabel
-    Left = 256
-    Top = 168
-    Width = 125
+  object lHS: TLabel
+    Left = 248
+    Top = 248
+    Width = 71
     Height = 20
-    Caption = 'MS with 2 tables '
+    Caption = 'HeapSort'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -16
@@ -149,8 +149,8 @@ object fEducationalPage: TfEducationalPage
     ParentFont = False
   end
   object lMS1: TLabel
-    Left = 256
-    Top = 208
+    Left = 248
+    Top = 168
     Width = 116
     Height = 20
     Caption = 'MS with 1 table '
@@ -162,8 +162,8 @@ object fEducationalPage: TfEducationalPage
     ParentFont = False
   end
   object lMSHalf: TLabel
-    Left = 256
-    Top = 248
+    Left = 248
+    Top = 208
     Width = 134
     Height = 20
     Caption = 'MS with half table '
@@ -175,8 +175,8 @@ object fEducationalPage: TfEducationalPage
     ParentFont = False
   end
   object lCompMS1: TLabel
-    Left = 408
-    Top = 208
+    Left = 400
+    Top = 168
     Width = 9
     Height = 20
     Caption = '0'
@@ -188,20 +188,7 @@ object fEducationalPage: TfEducationalPage
     ParentFont = False
   end
   object lCompMSHalf: TLabel
-    Left = 408
-    Top = 248
-    Width = 9
-    Height = 20
-    Caption = '0'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -16
-    Font.Name = 'MS Sans Serif'
-    Font.Style = []
-    ParentFont = False
-  end
-  object lArrMS1: TLabel
-    Left = 544
+    Left = 400
     Top = 208
     Width = 9
     Height = 20
@@ -213,9 +200,22 @@ object fEducationalPage: TfEducationalPage
     Font.Style = []
     ParentFont = False
   end
-  object lArrMSHalf: TLabel
-    Left = 544
-    Top = 248
+  object lArrAccessMS1: TLabel
+    Left = 520
+    Top = 168
+    Width = 9
+    Height = 20
+    Caption = '0'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+  end
+  object lArrAccessMSHalf: TLabel
+    Left = 520
+    Top = 208
     Width = 9
     Height = 20
     Caption = '0'
@@ -227,11 +227,11 @@ object fEducationalPage: TfEducationalPage
     ParentFont = False
   end
   object lQS: TLabel
-    Left = 256
+    Left = 248
     Top = 288
-    Width = 82
+    Width = 78
     Height = 20
-    Caption = 'Quick Sort '
+    Caption = 'QuickSort '
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -16
@@ -239,8 +239,8 @@ object fEducationalPage: TfEducationalPage
     Font.Style = []
     ParentFont = False
   end
-  object lArrQS: TLabel
-    Left = 544
+  object lArrAccessQS: TLabel
+    Left = 520
     Top = 288
     Width = 9
     Height = 20
@@ -253,7 +253,137 @@ object fEducationalPage: TfEducationalPage
     ParentFont = False
   end
   object lCompQS: TLabel
-    Left = 408
+    Left = 400
+    Top = 288
+    Width = 9
+    Height = 20
+    Caption = '0'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+  end
+  object lArrChanged: TLabel
+    Left = 632
+    Top = 120
+    Width = 116
+    Height = 20
+    Caption = 'Array changed: '
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+  end
+  object lArrChangedHS: TLabel
+    Left = 640
+    Top = 248
+    Width = 9
+    Height = 20
+    Caption = '0'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+  end
+  object lArrChangedMS1: TLabel
+    Left = 640
+    Top = 168
+    Width = 9
+    Height = 20
+    Caption = '0'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+  end
+  object lArrChangedMSHalf: TLabel
+    Left = 640
+    Top = 208
+    Width = 9
+    Height = 20
+    Caption = '0'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+  end
+  object lArrChangedQS: TLabel
+    Left = 640
+    Top = 288
+    Width = 9
+    Height = 20
+    Caption = '0'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+  end
+  object lSortTime: TLabel
+    Left = 760
+    Top = 120
+    Width = 85
+    Height = 20
+    Caption = 'Time (sec):'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+  end
+  object lSortTimeHS: TLabel
+    Left = 768
+    Top = 248
+    Width = 9
+    Height = 20
+    Caption = '0'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+  end
+  object lSortTimeMS1: TLabel
+    Left = 768
+    Top = 168
+    Width = 9
+    Height = 20
+    Caption = '0'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+  end
+  object lSortTimeMSHalf: TLabel
+    Left = 768
+    Top = 208
+    Width = 9
+    Height = 20
+    Caption = '0'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+  end
+  object lSortTimeQS: TLabel
+    Left = 768
     Top = 288
     Width = 9
     Height = 20
@@ -376,7 +506,7 @@ object fEducationalPage: TfEducationalPage
     end
   end
   object bStart: TButton
-    Left = 362
+    Left = 506
     Top = 9
     Width = 109
     Height = 73
@@ -392,8 +522,8 @@ object fEducationalPage: TfEducationalPage
     OnClick = bStartClick
   end
   object bSaveUnsorted: TButton
-    Left = 384
-    Top = 480
+    Left = 392
+    Top = 472
     Width = 89
     Height = 25
     Caption = 'Save table...'
@@ -402,7 +532,7 @@ object fEducationalPage: TfEducationalPage
     OnClick = bSaveUnsortedClick
   end
   object bSaveSorted: TButton
-    Left = 384
+    Left = 392
     Top = 520
     Width = 89
     Height = 25
@@ -412,7 +542,7 @@ object fEducationalPage: TfEducationalPage
     OnClick = bSaveSortedClick
   end
   object bSaveResults: TButton
-    Left = 504
+    Left = 512
     Top = 520
     Width = 89
     Height = 25
@@ -422,7 +552,8 @@ object fEducationalPage: TfEducationalPage
     OnClick = bSaveResultsClick
   end
   object MainMenu: TMainMenu
-    Left = 664
+    Left = 272
+    Top = 8
     object mFile: TMenuItem
       Caption = 'File'
       object mStart: TMenuItem
@@ -462,13 +593,13 @@ object fEducationalPage: TfEducationalPage
   object OpenDialog: TOpenDialog
     DefaultExt = '.txt'
     Filter = 'Text documents ( *.txt )|*.txt|All files ( *.* )|*.*'
-    Left = 584
-    Top = 8
+    Left = 272
+    Top = 40
   end
   object SaveDialog: TSaveDialog
     DefaultExt = '.txt'
     Filter = 'Text documents ( *.txt )|*.txt|All files ( *.* )|*.*'
-    Left = 552
-    Top = 8
+    Left = 240
+    Top = 40
   end
 end
