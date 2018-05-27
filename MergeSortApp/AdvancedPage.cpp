@@ -124,14 +124,14 @@ void createTable(T*& arr, const int size)
 //---------------------------------------------------------------------------
 
 template<class T>
-void fillTable(T*& arr, const int size, std::fstream &f)
+void fillTableFromFile(T*& arr, const int size, std::fstream &f)
 {
     T temp;
     int i=0;
     while(f >> temp)
     {
         arr[i++] = temp;
-        f.ignore(); // zignorowanie ";"
+        f.ignore(); // zignorowanie znaku rozdzielaj¹cego
     }
 }
 //---------------------------------------------------------------------------
@@ -154,7 +154,7 @@ void TfAdvancedPage::loadFile(T*& arr, int& size)
         {
             countsize(file, size); // oblicz wielkoœæ tablicy
             createTable(arr, size); // Stwórz tablice
-            fillTable(arr, size, file);
+            fillTableFromFile(arr, size, file);
         }
         file.close(); //Zamkniêcie pliku tekstowego
 
@@ -269,9 +269,16 @@ void TfAdvancedPage::sortArray()
    W_ID = BeginThread(NULL, 0, AlgorithmThreadAdv, this, 0, W_PD); // Zaczêcie w¹tku i uruchomienie algorytmów
 }
 //---------------------------------------------------------------------------
-
-void TfAdvancedPage::AlgorithmStart()
+template<class T>
+void TfAdvancedPage::start(T*& tab)
 {
+    loadFile(tab, n);
+    if(!opened)
+    {
+        bSortFile->Enabled = true;
+        return;
+    }
+
     waitSignalOn();
 
     mergeSort(tab, 0, n-1);
@@ -282,8 +289,22 @@ void TfAdvancedPage::AlgorithmStart()
     {
         checkIsSorted(tab);
         saveToFile(tab);
+        delete [] tab; // TODO Zapytac dlaczego bez & wywala blad przy 2 sortowaniu stringa
     }
     bSortFile->Enabled = true;
+}
+
+void TfAdvancedPage::AlgorithmStart()
+{
+    switch(rgTypes->ItemIndex)
+    {
+        case 0: start(tab_int);
+                break;
+        case 1: start(tab_double);
+                break;
+        case 2: start(tab_string);
+                break;
+    }
 }
 //---------------------------------------------------------------------------
 
@@ -297,13 +318,10 @@ int __fastcall AlgorithmThreadAdv(Pointer Parameter)
 void __fastcall TfAdvancedPage::bSortFileClick(TObject *Sender)
 {
    bSortFile->Enabled = false;
-   loadFile(tab, n);
-   if(!opened)
-   {
-        return;
-   }
    sortArray();
 }
 //---------------------------------------------------------------------------
+
+
 
 

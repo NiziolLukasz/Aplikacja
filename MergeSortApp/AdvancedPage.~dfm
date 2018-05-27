@@ -1,10 +1,10 @@
 object fAdvancedPage: TfAdvancedPage
-  Left = 1155
-  Top = 149
+  Left = 1158
+  Top = 151
   BorderStyle = bsToolWindow
   Caption = 'Advanced Page'
   ClientHeight = 112
-  ClientWidth = 140
+  ClientWidth = 280
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -45,6 +45,19 @@ object fAdvancedPage: TfAdvancedPage
     ParentFont = False
     TabOrder = 0
     OnClick = bSortFileClick
+  end
+  object rgTypes: TRadioGroup
+    Left = 152
+    Top = 8
+    Width = 113
+    Height = 89
+    Caption = 'Table types:   '
+    ItemIndex = 0
+    Items.Strings = (
+      'Integer'
+      'Double'
+      'String')
+    TabOrder = 1
   end
   object MainMenu: TMainMenu
     Left = 664

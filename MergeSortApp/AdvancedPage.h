@@ -9,6 +9,7 @@
 #include <Forms.hpp>
 #include <Menus.hpp>
 #include <Dialogs.hpp>
+#include <ExtCtrls.hpp>
 //---------------------------------------------------------------------------
 class TfAdvancedPage : public TForm
 {
@@ -26,6 +27,7 @@ __published:	// IDE-managed Components
    TOpenDialog *OpenDialog;
    TSaveDialog *SaveDialog;
    TLabel *lSign2;
+    TRadioGroup *rgTypes;
    void __fastcall mDidClick(TObject *Sender);
    void __fastcall mEduClick(TObject *Sender);
    void __fastcall mExitClick(TObject *Sender);
@@ -34,11 +36,11 @@ __published:	// IDE-managed Components
    void __fastcall bSortFileClick(TObject *Sender);
 private:	// User declarations
 
-   int *tab;
-   double *tab_double;
-   String tab_string;
-   int n;
-   bool opened;
+    int* tab_int;
+    double *tab_double;
+    char* tab_string;
+    int n;
+    bool opened;
 
    template<class T>
    void loadFile(T*& arr, int& length);
@@ -51,6 +53,8 @@ private:	// User declarations
    void waitSignalOff();
 
    template<class T>
+   void start(T*& tab);
+   template<class T>
    bool isSorted(const T* arr, const int length);
    template<class T>
    String arrayToStr(const T* arr);
@@ -60,7 +64,7 @@ private:	// User declarations
    unsigned int W_PD; // Pseudo-identyfikator w¹tku
 
 public:		// User declarations
-   void AlgorithmStart(); // Funkcja dzia³aj¹ca na innym w¹tku
+    void AlgorithmStart(); // Funkcja dzia³aj¹ca na innym w¹tku
 
         __fastcall TfAdvancedPage(TComponent* Owner);
 };
