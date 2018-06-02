@@ -38,7 +38,7 @@ private:	// User declarations
 
     int* tab_int;
     double *tab_double;
-    char* tab_string;
+    string tab_string;
     int n;
     bool opened;
 

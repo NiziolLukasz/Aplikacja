@@ -198,7 +198,7 @@ object fDidacticPage: TfDidacticPage
       Top = 97
       Width = 166
       Height = 320
-      Caption = 'Table types: '
+      Caption = 'Types of table: '
       Color = clBtnFace
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText

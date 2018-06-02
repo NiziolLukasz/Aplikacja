@@ -1,6 +1,6 @@
 object fEducationalPage: TfEducationalPage
-  Left = 850
-  Top = 164
+  Left = 864
+  Top = 254
   BorderStyle = bsToolWindow
   Caption = 'Educational Page'
   ClientHeight = 559
@@ -46,9 +46,9 @@ object fEducationalPage: TfEducationalPage
   object lComparisons: TLabel
     Left = 392
     Top = 120
-    Width = 108
+    Width = 104
     Height = 20
-    Caption = 'Comparisons: '
+    Caption = 'Comparisons:'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -16
@@ -59,9 +59,9 @@ object fEducationalPage: TfEducationalPage
   object lArrAccess: TLabel
     Left = 512
     Top = 120
-    Width = 107
+    Width = 103
     Height = 20
-    Caption = 'Array access: '
+    Caption = 'Array access:'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -16
@@ -125,9 +125,9 @@ object fEducationalPage: TfEducationalPage
   object lAlgoritmName: TLabel
     Left = 240
     Top = 120
-    Width = 123
+    Width = 119
     Height = 20
-    Caption = 'Algorithm Name '
+    Caption = 'Algorithm Name'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -16
@@ -151,9 +151,9 @@ object fEducationalPage: TfEducationalPage
   object lMS1: TLabel
     Left = 248
     Top = 168
-    Width = 116
+    Width = 112
     Height = 20
-    Caption = 'MS with 1 table '
+    Caption = 'MS with 1 table'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -16
@@ -164,9 +164,9 @@ object fEducationalPage: TfEducationalPage
   object lMSHalf: TLabel
     Left = 248
     Top = 208
-    Width = 134
+    Width = 130
     Height = 20
-    Caption = 'MS with half table '
+    Caption = 'MS with half table'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -16
@@ -229,9 +229,9 @@ object fEducationalPage: TfEducationalPage
   object lQS: TLabel
     Left = 248
     Top = 288
-    Width = 78
+    Width = 74
     Height = 20
-    Caption = 'QuickSort '
+    Caption = 'QuickSort'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -16
@@ -268,9 +268,9 @@ object fEducationalPage: TfEducationalPage
   object lArrChanged: TLabel
     Left = 632
     Top = 120
-    Width = 116
+    Width = 112
     Height = 20
-    Caption = 'Array changed: '
+    Caption = 'Array changed:'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -16
@@ -333,9 +333,9 @@ object fEducationalPage: TfEducationalPage
   object lSortTime: TLabel
     Left = 760
     Top = 120
-    Width = 85
+    Width = 81
     Height = 20
-    Caption = 'Time (sec):'
+    Caption = 'Time (ms):'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -16
@@ -435,7 +435,7 @@ object fEducationalPage: TfEducationalPage
       Top = 33
       Width = 166
       Height = 320
-      Caption = 'Table types: '
+      Caption = 'Types of table: '
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -13

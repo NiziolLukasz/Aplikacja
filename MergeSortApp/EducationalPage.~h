@@ -79,7 +79,6 @@ __published:	// IDE-managed Components
    void __fastcall sbAmountChange(TObject *Sender);
    void __fastcall bStartClick(TObject *Sender);
    void __fastcall tFormatAnimTimer(TObject *Sender);
-   void __fastcall bLoadFileClick(TObject *Sender);
    void __fastcall bSaveUnsortedClick(TObject *Sender);
    void __fastcall bSaveSortedClick(TObject *Sender);
    void __fastcall bSaveResultsClick(TObject *Sender);
@@ -93,6 +92,7 @@ private:	// User declarations
    float time_sum;
    int option;
    bool first_run;
+   bool opened;
 
    int *tab; // Tablica wartoœci
    int *tab_MS1; // Tablica pomocznicza
@@ -104,41 +104,64 @@ private:	// User declarations
             int repeat, TLabel* lName, TLabel* lComp, TLabel* lAccess, TLabel *lChanged, TLabel* lTime);
 
    // Funkcje generuj¹ce tablice:
-   void randomTable(); // Tablica losowa
-   void reversedTable(); // Tablica odwrócona
-   void constantTable(); // Tablica sta³a
-   void arrowDownTable(); // Tablica "strza³ka w dó³"
-   void arrowUpTable(); // Tablica "strza³ka w górê"
-   void almostSortedTable(); // Tablica prawie posortowana
-   void sortedTable(); // Tablica posortowana
-   void fewUniqueTable(); // Tablica "kilka unikalnych"
-   void fromFile(); // Tablica wczytana z pliku
-   void deleteTable(int *arr); // Usuniêcie tablicy
+   template<class T>
+   void randomTable(T*& arr, int length); // Tablica losowa
+   template<class T>
+   void reversedTable(T*& arr, int length); // Tablica odwrócona
+   template<class T>
+   void constantTable(T*& arr, int length); // Tablica sta³a
+   template<class T>
+   void arrowDownTable(T*& arr, int length); // Tablica "strza³ka w dó³"
+   template<class T>
+   void arrowUpTable(T*& arr, int length); // Tablica "strza³ka w górê"
+   template<class T>
+   void almostSortedTable(T*& arr, int length); // Tablica prawie posortowana
+   template<class T>
+   void sortedTable(T*& arr, int length); // Tablica posortowana
+   template<class T>
+   void fewUniqueTable(T*& arr, int length); // Tablica "kilka unikalnych"
+   template<class T>
+   void fromFile(T *&arr, int& length); // Tablica wczytana z pliku
+   template<class T>
+   void deleteTable(T*& arr); // Usuniêcie tablicy
+
+    void countsize(std::fstream &f, int& size);
+    template<class T>
+    void createTable(T*& arr, const int size);
+    template<class T>
+    void fillTableFromFile(T*& arr, const int size, std::fstream &f);
+
    void end();
-   void saveToFile(AnsiString str);
+   template<class T>
+   void saveToFile(T* arr);
    void showElements();
-   void showResults(int *table, TLabel *algName, TLabel *comparisions, TLabel *access, TLabel *changed, TLabel *time);
-   void clearResults(TLabel *algName, TLabel *comp, TLabel *access, TLabel *changed, TLabel *time);
+   void showResults(int *table, TLabel *algName, TLabel *comparisions, TLabel *access, TLabel *changed, TLabel *stime);
+   void clearResults(TLabel *algName, TLabel *comp, TLabel *access, TLabel *changed, TLabel *stime);
    void clearAllResults();
+   void waitSignalOn();
+   void waitSignalOff();
 
    bool isSorted(int *table);
    void checkAmount();
    void checkRepeat();
-   void sumResults(float time);
+   void sumResults(long long stime);
    void changeSign(String text, TColor color);
    void PageChangeEdu();
-   void copyTable(const int *original, int *&tempTable);
-   void copyTables();
+   template<class T>
+   void copyTable(const T *original, T *&tempTable);
+   template<class T>
+   void copyTables(const T* arr);
    float round(float var);
 
-   String getTable(int *arr); // Zwraca Stringa z wartoœciami tabeli np. "26;54;23;"
+   template<class T>
+   String getTable(T *arr); // Zwraca Stringa z wartoœciami tabeli np. "26;54;23;"
 
    // W¹tki:
    int W_ID; // Indentyfikator w¹tku
    unsigned int W_PD; // Pseudo-identyfikator w¹tku
 
 public:		// User declarations
-   void AlgorithmStart(); // Funkcja dzia³aj¹ca na innym w¹tku
+   void AlgorithmStartEdu(); // Funkcja dzia³aj¹ca na innym w¹tku
         __fastcall TfEducationalPage(TComponent* Owner);
 };
 //---------------------------------------------------------------------------

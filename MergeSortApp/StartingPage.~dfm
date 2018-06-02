@@ -1,6 +1,6 @@
 object fStartingPage: TfStartingPage
-  Left = 794
-  Top = 240
+  Left = 681
+  Top = 295
   BorderStyle = bsToolWindow
   Caption = 'Starting Page'
   ClientHeight = 116
