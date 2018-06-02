@@ -294,7 +294,7 @@ void TfAdvancedPage::start(T*& tab)
     bSortFile->Enabled = true;
 }
 
-void TfAdvancedPage::AlgorithmStart()
+void TfAdvancedPage::AlgorithmStartAdv()
 {
     switch(rgTypes->ItemIndex)
     {
@@ -310,7 +310,7 @@ void TfAdvancedPage::AlgorithmStart()
 
 int __fastcall AlgorithmThreadAdv(Pointer Parameter)
 {
-   fAdvancedPage->AlgorithmStart();
+   fAdvancedPage->AlgorithmStartAdv();
    ExitThread(GetExitCodeThread(AlgorithmThreadAdv, NULL)); // usuniêcie w¹tku z pamiêci, od tego momentu w¹tku nie mo¿na ju¿ wstrzymaæ.
    return 0;
 }

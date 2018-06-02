@@ -1,6 +1,6 @@
 object fAdvancedPage: TfAdvancedPage
-  Left = 1159
-  Top = 152
+  Left = 835
+  Top = 276
   BorderStyle = bsToolWindow
   Caption = 'Advanced Page'
   ClientHeight = 112

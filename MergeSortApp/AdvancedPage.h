@@ -64,7 +64,7 @@ private:	// User declarations
    unsigned int W_PD; // Pseudo-identyfikator w¹tku
 
 public:		// User declarations
-    void AlgorithmStart(); // Funkcja dzia³aj¹ca na innym w¹tku
+    void AlgorithmStartAdv(); // Funkcja dzia³aj¹ca na innym w¹tku
 
         __fastcall TfAdvancedPage(TComponent* Owner);
 };

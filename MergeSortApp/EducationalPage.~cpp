@@ -879,6 +879,11 @@ void TfEducationalPage::changeSign(String text, TColor color)
 }
 
 //---------------------------------------------------------------------------
+template <class T>
+bool isString(T* t) { return false;  } // normal case returns false
+
+template <>
+bool isString(char* t) { return true; }  // but for char* or String.c_str() returns true
 
 template<class T>
 void TfEducationalPage::saveToFile(T* arr)
@@ -894,9 +899,16 @@ void TfEducationalPage::saveToFile(T* arr)
       {
          lSign2->Visible = true;
 
-         for(int i=0; i < n; i++)
+         if(isString(arr))
          {
-            file << arr[i] << ";";
+            file << arr;
+         }
+         else
+         {
+           for(int i=0; i < n; i++)
+           {
+              file << arr[i] << ";";
+           }
          }
          file.close(); // Zamknij plik
 
