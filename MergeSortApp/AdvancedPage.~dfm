@@ -1,10 +1,10 @@
 object fAdvancedPage: TfAdvancedPage
-  Left = 1159
-  Top = 152
+  Left = 1477
+  Top = 142
   BorderStyle = bsToolWindow
   Caption = 'Advanced Page'
-  ClientHeight = 112
-  ClientWidth = 280
+  ClientHeight = 108
+  ClientWidth = 283
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -85,7 +85,7 @@ object fAdvancedPage: TfAdvancedPage
     end
     object mHelp: TMenuItem
       Caption = 'Help'
-      object mAbout: TMenuItem
+      object About1: TMenuItem
         Caption = 'About...'
       end
     end

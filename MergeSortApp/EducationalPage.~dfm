@@ -1,5 +1,5 @@
 object fEducationalPage: TfEducationalPage
-  Left = 864
+  Left = 914
   Top = 254
   BorderStyle = bsToolWindow
   Caption = 'Educational Page'
@@ -576,9 +576,9 @@ object fEducationalPage: TfEducationalPage
         OnClick = mExitClick
       end
     end
-    object mHelp: TMenuItem
+    object About1: TMenuItem
       Caption = 'Help'
-      object mAbout: TMenuItem
+      object About2: TMenuItem
         Caption = 'About...'
       end
     end

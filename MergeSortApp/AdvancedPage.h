@@ -22,12 +22,12 @@ __published:	// IDE-managed Components
    TMenuItem *mEdu;
    TMenuItem *mExit;
    TMenuItem *mHelp;
-   TMenuItem *mAbout;
    TButton *bSortFile;
    TOpenDialog *OpenDialog;
    TSaveDialog *SaveDialog;
    TLabel *lSign2;
     TRadioGroup *rgTypes;
+   TMenuItem *About1;
    void __fastcall mDidClick(TObject *Sender);
    void __fastcall mEduClick(TObject *Sender);
    void __fastcall mExitClick(TObject *Sender);

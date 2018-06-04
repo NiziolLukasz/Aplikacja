@@ -692,4 +692,3 @@ void TfDidacticPage::PageChangeDid()
    sbAmount->Visible = false; //
    bGenerate->Visible = false; //
 }
-

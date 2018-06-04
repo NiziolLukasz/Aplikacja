@@ -1,9 +1,10 @@
-Type of table: Random
+Type of table: Few unique
 Table type: Integer
+Number of repetitions: 1
 Size of the table: 1000
 
 Algorithm Name		Comparisons:		Array access:		Array changed:		Time (ms):
-MS with 1 table            8715                57334                19952               0
-MS with half table        10058                47472                13678               0
-HeapSort                  16847                70066                18186               0
-QuickSort                 16286                42232                 4830               0
+MS with 1 table            8723                57350                19952               0
+MS with half table        10102                47686                13741               0
+HeapSort                  16841                69898                18108               0
+QuickSort                 18601                46594                 4696               0

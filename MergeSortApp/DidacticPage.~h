@@ -49,7 +49,6 @@ __published:	// IDE-managed Components
    TButton *bSkip;
    TLabel *lArrAccessName;
    TLabel *lArrAccessAmount;
-   TMenuItem *About1;
         void __fastcall bGenerateClick(TObject *Sender);
         void __fastcall bStartClick(TObject *Sender);
         void __fastcall sbAmountChange(TObject *Sender);

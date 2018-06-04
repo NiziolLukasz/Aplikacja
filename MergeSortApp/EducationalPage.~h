@@ -22,8 +22,6 @@ __published:	// IDE-managed Components
    TMenuItem *mGoTo;
    TMenuItem *mAdv;
    TMenuItem *mExit;
-   TMenuItem *mHelp;
-   TMenuItem *mAbout;
    TMenuItem *mDyd;
    TPanel *PanelLeft;
    TScrollBar *sbAmount;
@@ -69,6 +67,8 @@ __published:	// IDE-managed Components
     TLabel *lSortTimeMS1;
     TLabel *lSortTimeMSHalf;
     TLabel *lSortTimeQS;
+    TMenuItem *About1;
+   TMenuItem *About2;
    void __fastcall mDydClick(TObject *Sender);
    void __fastcall mAdvClick(TObject *Sender);
    void __fastcall mExitClick(TObject *Sender);
@@ -93,6 +93,7 @@ private:	// User declarations
    int option;
    bool first_run;
    bool opened;
+   int stime;
 
    int *tab; // Tablica wartoœci
    int *tab_MS1; // Tablica pomocznicza
@@ -142,9 +143,8 @@ private:	// User declarations
    void waitSignalOff();
 
    bool isSorted(int *table);
-   void checkAmount();
-   void checkRepeat();
-   void sumResults(long long stime);
+   
+   void sumResults();
    void changeSign(String text, TColor color);
    void PageChangeEdu();
    template<class T>
@@ -153,8 +153,12 @@ private:	// User declarations
    void copyTables(const T* arr);
    float round(float var);
 
-   template<class T>
-   String getTable(T *arr); // Zwraca Stringa z wartoœciami tabeli np. "26;54;23;"
+   bool isAmountGood();
+   void checkAmount();
+   bool isRepeatGood();
+   void checkRepeat();
+
+   
 
    // W¹tki:
    int W_ID; // Indentyfikator w¹tku

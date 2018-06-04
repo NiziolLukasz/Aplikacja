@@ -1,5 +1,5 @@
 object fEducationalPage: TfEducationalPage
-  Left = 864
+  Left = 914
   Top = 254
   BorderStyle = bsToolWindow
   Caption = 'Educational Page'
@@ -151,9 +151,9 @@ object fEducationalPage: TfEducationalPage
   object lMS1: TLabel
     Left = 248
     Top = 168
-    Width = 112
+    Width = 78
     Height = 20
-    Caption = 'MS with 1 table'
+    Caption = 'MergeSort'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -16
@@ -164,9 +164,9 @@ object fEducationalPage: TfEducationalPage
   object lMSHalf: TLabel
     Left = 248
     Top = 208
-    Width = 130
+    Width = 113
     Height = 20
-    Caption = 'MS with half table'
+    Caption = 'MergeSort Half'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -16
@@ -576,9 +576,9 @@ object fEducationalPage: TfEducationalPage
         OnClick = mExitClick
       end
     end
-    object mHelp: TMenuItem
+    object About1: TMenuItem
       Caption = 'Help'
-      object mAbout: TMenuItem
+      object About2: TMenuItem
         Caption = 'About...'
       end
     end

@@ -128,11 +128,13 @@ void fillTableFromFile(T*& arr, const int size, std::fstream &f)
 {
     T temp;
     int i=0;
+
     while(f >> temp)
     {
         arr[i++] = temp;
         f.ignore(); // zignorowanie znaku rozdzielaj¹cego
     }
+
 }
 //---------------------------------------------------------------------------
 
@@ -321,6 +323,7 @@ void __fastcall TfAdvancedPage::bSortFileClick(TObject *Sender)
    sortArray();
 }
 //---------------------------------------------------------------------------
+
 
 
 

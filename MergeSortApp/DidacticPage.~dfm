@@ -1,6 +1,6 @@
 object fDidacticPage: TfDidacticPage
-  Left = 840
-  Top = 211
+  Left = 826
+  Top = 397
   BorderStyle = bsToolWindow
   Caption = 'Didactic Page'
   ClientHeight = 558
@@ -198,7 +198,7 @@ object fDidacticPage: TfDidacticPage
       Top = 97
       Width = 166
       Height = 320
-      Caption = 'Table types: '
+      Caption = 'Types of table: '
       Color = clBtnFace
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -584,10 +584,7 @@ object fDidacticPage: TfDidacticPage
       end
     end
     object mHelp: TMenuItem
-      Caption = 'Help'
-      object mAbout: TMenuItem
-        Caption = 'About...'
-      end
+      Caption = 'About'
     end
   end
   object tAnim: TTimer

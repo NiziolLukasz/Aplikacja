@@ -373,8 +373,8 @@ void __fastcall TfEducationalPage::rgTableTypesClick(TObject *Sender)
 void TfEducationalPage::showElements()
 {
    bGenerate->Visible = true;
-   lRepeat->Visible = false;
-   eRepeat->Visible = false;
+   lRepeat->Visible = true;
+   eRepeat->Visible = true;
 
    option = rgTableTypes->ItemIndex;
    if(option == 8)
@@ -383,17 +383,11 @@ void TfEducationalPage::showElements()
       eAmount->Visible = false;
       sbAmount->Visible = false;
 
-      bGenerate->Top = 368;
+      bGenerate->Top = 408;
       bGenerate->Caption = "Load file...";
    }
    else
    {
-      if(option == 0)
-      {
-         lRepeat->Visible = true;
-         eRepeat->Visible = true;
-      }
-
       lAmountName->Visible = true;
       eAmount->Visible = true;
       sbAmount->Visible = true;
@@ -581,8 +575,6 @@ void TfEducationalPage::fewUniqueTable(T*& arr, int length)
     int tab_length;
     if(length > 10000)
         tab_length = 0.001 * length;
-    else if(length > 1000)
-        tab_length = 0.01 * length;
     else if(length > 100)
         tab_length = 0.1 * length;
     else
@@ -705,7 +697,6 @@ void TfEducationalPage::clearResults(TLabel *algName, TLabel *comp, TLabel *acce
 template<class T>
 void TfEducationalPage::copyTable(const T *original, T *&tempTable)
 {
-	createTable(tempTable, n);
 	for(int i=0; i < n; i++)
 	{
 		tempTable[i] = original[i];
@@ -715,9 +706,13 @@ void TfEducationalPage::copyTable(const T *original, T *&tempTable)
 
 template<class T>
 void TfEducationalPage::copyTables(const T* arr){
-    copyTable(arr, tab_MS1);
-    copyTable(arr, tab_MSHalf);
+    createTable(tab_MS1, n);
+	copyTable(arr, tab_MS1);
+	createTable(tab_MSHalf, n);
+	copyTable(arr, tab_MSHalf);
+	createTable(tab_HS, n);
 	copyTable(arr, tab_HS);
+	createTable(tab_QS, n);
     copyTable(arr, tab_QS);
 }
 
@@ -730,18 +725,6 @@ void __fastcall TfEducationalPage::bStartClick(TObject *Sender)
    changeSign("Sorting...", clGreen);
 
    W_ID = BeginThread(NULL, 0, AlgorithmThread, this, 0, W_PD); // Zaczêcie w¹tku i uruchomienie algorytmów
-}
-//---------------------------------------------------------------------------
-
-template<class T>
-String TfEducationalPage::getTable(T *arr)
-{
-   AnsiString table = "";
-   for(int i=0; i < n; i++)
-   {
-      table += IntToStr(arr[i]) + ";";
-   }
-   return table;
 }
 //---------------------------------------------------------------------------
 
@@ -767,7 +750,7 @@ void __fastcall TfEducationalPage::tFormatAnimTimer(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void TfEducationalPage::sumResults(long long stime)
+void TfEducationalPage::sumResults()
 {
    float div = StrToFloat(eRepeat->Text);
    comparision_sum += if_count / div;
@@ -777,6 +760,7 @@ void TfEducationalPage::sumResults(long long stime)
    if_count = 0;
    arr_access = 0;
    arr_changed = 0;
+   stime = 0;
 }
 //---------------------------------------------------------------------------
 
@@ -786,10 +770,11 @@ void TfEducationalPage::sort(void (*algorithm)(int*, int), int* array, int lengt
     waitSignalOn();
 	for(int index = 0; index < repeat; ++index)
     {
+        copyTable(tab, array);
         clock_t begin_time = clock();
         algorithm(array, length);
-        long long stime = (long long)(clock() - begin_time );
-        sumResults(stime);
+        stime = (int)(clock() - begin_time );
+        sumResults();
     }
 	waitSignalOff();
     showResults(array, lName, lComp, lAccess, lChanged, lTime);
@@ -807,7 +792,19 @@ void TfEducationalPage::AlgorithmStartEdu()
    sort(&mergesortOneTable, tab_MS1, n, repeat, lMS1, lCompMS1, lArrAccessMS1, lArrChangedMS1, lSortTimeMS1);
    sort(&mergesortHalfTable, tab_MSHalf, n, repeat, lMSHalf, lCompMSHalf, lArrAccessMSHalf, lArrChangedMSHalf, lSortTimeMSHalf);
    sort(&heapSort, tab_HS, n, repeat, lHS, lCompHS, lArrAccessHS, lArrChangedHS, lSortTimeHS);
-   sort(&quickSort, tab_QS, n, repeat, lQS, lCompQS, lArrAccessQS, lArrChangedQS, lSortTimeQS);
+
+   if((eAmount->Text > 61000 && rgTableTypes->ItemIndex == 5) ||
+      ((rgTableTypes->ItemIndex == 1 || rgTableTypes->ItemIndex == 2 || rgTableTypes->ItemIndex == 7) && eAmount->Text > 28000))
+   {
+      lCompQS->Caption = "Stack";
+      lArrAccessQS->Caption = "Over";
+      lArrChangedQS->Caption = "Flow";
+      lSortTimeQS->Caption = "!";
+   }
+   else
+   {
+       sort(&quickSort, tab_QS, n, repeat, lQS, lCompQS, lArrAccessQS, lArrChangedQS, lSortTimeQS);
+   }
 
    end();
 }
@@ -945,13 +942,16 @@ void __fastcall TfEducationalPage::bSaveSortedClick(TObject *Sender)
 	waitSignalOff();
 }	
 //---------------------------------------------------------------------------
-
+bool TfEducationalPage::isAmountGood()
+{
+    int value;
+	return ( TryStrToInt(eAmount->Text, value) ||
+			value > sbAmount->Max ||
+			value < sbAmount->Min );
+}
 void TfEducationalPage::checkAmount()
 {
-   int value;
-    if( !TryStrToInt(eAmount->Text, value) ||
-         value > sbAmount->Max ||
-         value < sbAmount->Min )
+    if( !isAmountGood() )
     {
         ShowMessage("Invalid integer value entered, \ntry again between "
                      + IntToStr(sbAmount->Min) + " - " + IntToStr(sbAmount->Max));
@@ -959,21 +959,23 @@ void TfEducationalPage::checkAmount()
         eAmount->SetFocus();
     }
 
-    sbAmount->Position = value;
+    sbAmount->Position = StrToInt(eAmount->Text);
     Repaint();
 }
 //---------------------------------------------------------------------------
-
+bool TfEducationalPage::isRepeatGood()
+{
+    int value;
+	return (TryStrToInt(eRepeat->Text, value) || 
+			( StrToInt(eRepeat->Text)) < 1);
+}
 void TfEducationalPage::checkRepeat()
 {
-   int value;
-    if( !TryStrToInt(eRepeat->Text, value) ||
-         ( StrToInt(eRepeat->Text)) < 1 )
+    if( !isRepeatGood() )
     {
         ShowMessage("Invalid integer value entered, try again.");
         eRepeat->Text = 1;
         eRepeat->SetFocus();
-
     }
 }
 //---------------------------------------------------------------------------
@@ -983,6 +985,7 @@ void __fastcall TfEducationalPage::bSaveResultsClick(TObject *Sender)
     std::ostringstream str;
     str << "Type of table: " << rgTableTypes->Items->Strings[rgTableTypes->ItemIndex].c_str() << "\n"
         << "Table type: " << "Integer" << "\n"
+        << "Number of repetitions: " << StrToInt(eRepeat->Text) << "\n"
         << "Size of the table: " << n << "\n\n"
         << lAlgoritmName->Caption.c_str() << "\t\t" << lComparisons->Caption.c_str() << "\t\t" << lArrAccess->Caption.c_str() << "\t\t" << lArrChanged->Caption.c_str() << "\t\t" << lSortTime->Caption.c_str() << "\n"
         << lMS1->Caption.c_str() << std::setw(16) << lCompMS1->Caption.c_str() << std::setw(21) << lArrAccessMS1->Caption.c_str() << std::setw(21) << lArrChangedMS1->Caption.c_str() << std::setw(16) << lSortTimeMS1->Caption.c_str() << "\n"
@@ -1012,6 +1015,10 @@ void __fastcall TfEducationalPage::eAmountExit(TObject *Sender)
 
 void TfEducationalPage::PageChangeEdu()
 {
+   eRepeat->Text = 1;
+   eAmount->Text = 1000;
+   sbAmount->Position = 1000;
+
    rgTableTypes->Top = 97;
    bGenerate->Visible = false;
    lRepeat->Visible = false;
@@ -1019,9 +1026,7 @@ void TfEducationalPage::PageChangeEdu()
    lAmountName->Visible = false;
    eAmount->Visible = false;
    sbAmount->Visible = false;
-   eRepeat->Text = 1;
-   eAmount->Text = 1000;
-   sbAmount->Position = 1000;
+   rgTableTypes->ItemIndex = -1;
 
    fEducationalPage->Left = 840; // przesuniêcie formatki na œrodek ekranu
    fEducationalPage->ClientWidth = 230;  // Zmniejszenie wielkoœci formatki
@@ -1041,6 +1046,8 @@ void TfEducationalPage::waitSignalOff()
    Repaint();
 }
 //---------------------------------------------------------------------------
+
+
 
 
 

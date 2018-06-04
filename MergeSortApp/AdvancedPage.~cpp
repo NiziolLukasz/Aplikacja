@@ -128,11 +128,13 @@ void fillTableFromFile(T*& arr, const int size, std::fstream &f)
 {
     T temp;
     int i=0;
+
     while(f >> temp)
     {
         arr[i++] = temp;
         f.ignore(); // zignorowanie znaku rozdzielaj¹cego
     }
+
 }
 //---------------------------------------------------------------------------
 
@@ -294,7 +296,7 @@ void TfAdvancedPage::start(T*& tab)
     bSortFile->Enabled = true;
 }
 
-void TfAdvancedPage::AlgorithmStart()
+void TfAdvancedPage::AlgorithmStartAdv()
 {
     switch(rgTypes->ItemIndex)
     {
@@ -302,7 +304,7 @@ void TfAdvancedPage::AlgorithmStart()
                 break;
         case 1: start(tab_double);
                 break;
-        case 2: start(tab_string);
+        case 2: start(tab_s);
                 break;
     }
 }
@@ -310,7 +312,7 @@ void TfAdvancedPage::AlgorithmStart()
 
 int __fastcall AlgorithmThreadAdv(Pointer Parameter)
 {
-   fAdvancedPage->AlgorithmStart();
+   fAdvancedPage->AlgorithmStartAdv();
    ExitThread(GetExitCodeThread(AlgorithmThreadAdv, NULL)); // usuniêcie w¹tku z pamiêci, od tego momentu w¹tku nie mo¿na ju¿ wstrzymaæ.
    return 0;
 }
@@ -321,6 +323,7 @@ void __fastcall TfAdvancedPage::bSortFileClick(TObject *Sender)
    sortArray();
 }
 //---------------------------------------------------------------------------
+
 
 
 

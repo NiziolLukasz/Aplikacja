@@ -1,6 +1,6 @@
 object fDidacticPage: TfDidacticPage
-  Left = 840
-  Top = 211
+  Left = 826
+  Top = 397
   BorderStyle = bsToolWindow
   Caption = 'Didactic Page'
   ClientHeight = 558
@@ -585,7 +585,7 @@ object fDidacticPage: TfDidacticPage
     end
     object mHelp: TMenuItem
       Caption = 'Help'
-      object mAbout: TMenuItem
+      object About1: TMenuItem
         Caption = 'About...'
       end
     end
