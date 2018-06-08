@@ -50,6 +50,12 @@ __published:	// IDE-managed Components
    TLabel *lArrAccessName;
    TLabel *lArrAccessAmount;
    TMenuItem *About1;
+   TLabel *lChangedName;
+   TLabel *lChangedAmount;
+   TShape *sWall;
+   TShape *sRedPom;
+   TLabel *lOriginal;
+   TLabel *lTemp;
         void __fastcall bGenerateClick(TObject *Sender);
         void __fastcall bStartClick(TObject *Sender);
         void __fastcall sbAmountChange(TObject *Sender);
@@ -70,7 +76,10 @@ __published:	// IDE-managed Components
 private:	// User declarations
    int max_n; // Maxymalna iloœc s³upków
    int n; // Aktualna iloœc s³ópków
+   int max_n_pom;
+   int n_pom;
    int center; // Œrodek formatki dla wyœwietlanych s³upków
+   int center2;
    int delay; // Wartoœæ opóŸnienia sortowania
    int if_count; // Iloœæ zliczonych porównañ
    int arr_access; // Iloœæ zliczonych dostêpów do tablicy
@@ -84,30 +93,32 @@ private:	// User declarations
    int how_much; // Jak daleko ma siê przesun¹æ obiekt
    int last; // Pocz¹tkowa/ostatnia pozycja obiektu
 
-   // W¹tki:
-   int W_ID; // Indentyfikator w¹tku
-   unsigned int W_PD; // Pseudo-identyfikator w¹tku
-
+   TLabel *ltab[30];
+   TLabel *ltemp[15];
    TShape *tab[30]; // Tablica Shape
+   TShape *temp_arr[15]; // Tablica Shape pomocnicza prawa
    void merge(TShape *arr[], int l, int m, int r); // Algorytm ³¹czenia
    void mergeSort(TShape *arr[], int l, int r); // Algorytm sortowania
 
    void unlock(); // Funkcja odblokowuj¹ca przyciski, po zatrzymaniu dzia³ania algorytmu
 
    // Funkcje generuj¹ce tablice:
-   void randomTable(); // Tablica losowa
-   void reversedTable(); // Tablica odwrócona
-   void constantTable(); // Tablica sta³a
-   void arrowDownTable(); // Tablica "strza³ka w dó³"
-   void arrowUpTable(); // Tablica "strza³ka w górê"
-   void almostSortedTable(); // Tablica prawie posortowana
-   void sortedTable(); // Tablica posortowana
-   void fewUniqueTable(); // Tablica "kilka unikalnych"
-
-   void deleteTable(); // "Usuniêcie" tablicy
+   void randomTable(TShape *arr[], TLabel *label[]); // Tablica losowa
+   void reversedTable(TShape *arr[], TLabel *label[]); // Tablica odwrócona
+   void constantTable(TShape *arr[], TLabel *label[]); // Tablica sta³a
+   void arrowDownTable(TShape *arr[], TLabel *label[]); // Tablica "strza³ka w dó³"
+   void arrowUpTable(TShape *arr[], TLabel *label[]); // Tablica "strza³ka w górê"
+   void almostSortedTable(TShape *arr[], TLabel *label[]); // Tablica prawie posortowana
+   void sortedTable(TShape *arr[], TLabel *label[]); // Tablica posortowana
+   void fewUniqueTable(TShape *arr[], TLabel *label[]); // Tablica "kilka unikalnych"
+   template<class T>
+   void deleteTable(T *arr[], int length); // "Usuniêcie" tablicy
 
    void PageChangeDid();
 
+   // W¹tki:
+   int W_ID; // Indentyfikator w¹tku
+   unsigned int W_PD; // Pseudo-identyfikator w¹tku
 public:		// User declarations
    void mergeSortStart(); // Funkcja dzia³aj¹ca na innym w¹tku
 

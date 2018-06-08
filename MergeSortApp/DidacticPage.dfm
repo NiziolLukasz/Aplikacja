@@ -1,10 +1,10 @@
 object fDidacticPage: TfDidacticPage
-  Left = 882
-  Top = 237
+  Left = 342
+  Top = 209
   BorderStyle = bsToolWindow
   Caption = 'Didactic Page'
-  ClientHeight = 558
-  ClientWidth = 994
+  ClientHeight = 554
+  ClientWidth = 1486
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -21,91 +21,81 @@ object fDidacticPage: TfDidacticPage
   object sRed: TShape
     Left = 240
     Top = 400
-    Width = 15
+    Width = 20
     Height = 6
     Brush.Color = clRed
     Enabled = False
     Visible = False
   end
   object sYellow: TShape
-    Left = 248
+    Left = 240
     Top = 408
-    Width = 15
+    Width = 20
     Height = 6
     Brush.Color = clYellow
     Enabled = False
     Visible = False
   end
   object sBlue: TShape
-    Left = 256
+    Left = 288
     Top = 400
-    Width = 15
+    Width = 20
     Height = 6
     Brush.Color = clBlue
     Enabled = False
     Visible = False
   end
-  object lComparisonsName: TLabel
-    Left = 240
-    Top = 432
-    Width = 86
-    Height = 16
-    Caption = 'Comparisons: '
+  object sWall: TShape
+    Left = 928
+    Top = -8
+    Width = 9
+    Height = 449
+    Brush.Color = clBlack
+  end
+  object sRedPom: TShape
+    Left = 264
+    Top = 400
+    Width = 20
+    Height = 6
+    Brush.Color = clRed
+    Enabled = False
+    Visible = False
+  end
+  object lOriginal: TLabel
+    Left = 464
+    Top = 8
+    Width = 183
+    Height = 36
+    Caption = 'Original Array'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -13
+    Font.Height = -31
     Font.Name = 'MS Sans Serif'
     Font.Style = []
     ParentFont = False
   end
-  object lComparisonsAmount: TLabel
-    Left = 328
-    Top = 432
-    Width = 7
-    Height = 16
-    Caption = '0'
+  object lTemp: TLabel
+    Left = 1000
+    Top = 8
+    Width = 222
+    Height = 36
+    Caption = 'Temporary Array'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -13
-    Font.Name = 'MS Sans Serif'
-    Font.Style = []
-    ParentFont = False
-  end
-  object lArrAccessName: TLabel
-    Left = 384
-    Top = 432
-    Width = 79
-    Height = 16
-    Caption = 'Array access'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -13
-    Font.Name = 'MS Sans Serif'
-    Font.Style = []
-    ParentFont = False
-  end
-  object lArrAccessAmount: TLabel
-    Left = 472
-    Top = 432
-    Width = 7
-    Height = 16
-    Caption = '0'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -13
+    Font.Height = -31
     Font.Name = 'MS Sans Serif'
     Font.Style = []
     ParentFont = False
   end
   object PanelBottom: TPanel
     Left = 224
-    Top = 447
-    Width = 553
-    Height = 111
+    Top = 440
+    Width = 1049
+    Height = 118
     Align = alCustom
     TabOrder = 2
     object lDelayName: TLabel
-      Left = 232
+      Left = 456
       Top = 64
       Width = 42
       Height = 16
@@ -118,7 +108,7 @@ object fDidacticPage: TfDidacticPage
       ParentFont = False
     end
     object lDelayNumber: TLabel
-      Left = 280
+      Left = 504
       Top = 64
       Width = 32
       Height = 16
@@ -130,8 +120,86 @@ object fDidacticPage: TfDidacticPage
       Font.Style = []
       ParentFont = False
     end
+    object lComparisonsName: TLabel
+      Left = 24
+      Top = 15
+      Width = 108
+      Height = 20
+      Caption = 'Comparisons: '
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -16
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+    end
+    object lArrAccessAmount: TLabel
+      Left = 152
+      Top = 79
+      Width = 9
+      Height = 20
+      Caption = '0'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -16
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+    end
+    object lArrAccessName: TLabel
+      Left = 24
+      Top = 79
+      Width = 103
+      Height = 20
+      Caption = 'Array access:'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -16
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+    end
+    object lComparisonsAmount: TLabel
+      Left = 152
+      Top = 15
+      Width = 9
+      Height = 20
+      Caption = '0'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -16
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+    end
+    object lChangedName: TLabel
+      Left = 24
+      Top = 47
+      Width = 112
+      Height = 20
+      Caption = 'Array changed:'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -16
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+    end
+    object lChangedAmount: TLabel
+      Left = 152
+      Top = 47
+      Width = 9
+      Height = 20
+      Caption = '0'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -16
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+    end
     object sbDelay: TScrollBar
-      Left = 104
+      Left = 328
       Top = 16
       Width = 345
       Height = 25
@@ -147,7 +215,7 @@ object fDidacticPage: TfDidacticPage
     Left = 0
     Top = 0
     Width = 233
-    Height = 558
+    Height = 554
     Align = alLeft
     TabOrder = 0
     object lAmount: TLabel
@@ -221,7 +289,7 @@ object fDidacticPage: TfDidacticPage
     end
   end
   object PanelRight: TPanel
-    Left = 774
+    Left = 1258
     Top = 0
     Width = 220
     Height = 557

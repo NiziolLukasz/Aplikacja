@@ -24,9 +24,12 @@ TfDidacticPage *fDidacticPage;
 __fastcall TfDidacticPage::TfDidacticPage(TComponent* Owner)
         : TForm(Owner)
 {
+   srand( time( NULL ) );
   max_n = 30; // Okreœlenie maksmalnej iloœci s³upków
+  max_n_pom = 15;
   center = (fDidacticPage->Width - PanelLeft->Width
-                  - PanelRight->Width)/ 2 + PanelLeft->Width - 10;  // Obliczenie œrodka formatki dla wyœwietlanych s³upków
+                  - PanelRight->Width - 280)/ 2 + PanelLeft->Width - 30;  // Obliczenie œrodka formatki dla wyœwietlanych s³upków
+  center2 = (PanelRight->Left - sWall->Left)/2 + sWall->Left;
   delay = sbDelay->Position; // Nadanie pocz¹tkowej wartoœci opóŸnienia
   if_count = 0; // Nadanie pocz¹tkowej wartoœci porównañ
   arr_access = 0; // Nadanie pocz¹tkowej wartoœci dostêpów do tablicy
@@ -41,11 +44,36 @@ __fastcall TfDidacticPage::TfDidacticPage(TComponent* Owner)
   {
       tab[i] = new TShape((TComponent*)(NULL));
       tab[i]->Parent = this;
-      tab[i]->Width = 0;
+      tab[i]->Width = 20;
       tab[i]->Height = 0;
       tab[i]->Left = 0;
       tab[i]->Top = 0;
       tab[i]->Brush->Color = clWhite;
+
+      ltab[i] = new TLabel((TComponent*)(NULL));
+      ltab[i]->Parent = this;
+      ltab[i]->Width = 10;
+      ltab[i]->Height = 10;
+      ltab[i]->Left = 0;
+      ltab[i]->Top = 0;
+  }
+
+  for(int i=0; i < max_n_pom; i++)  // Stworzenie "niewidocznych" s³upków, dla dalszego u¿ytku
+  {
+      temp_arr[i] = new TShape((TComponent*)(NULL));
+      temp_arr[i]->Parent = this;
+      temp_arr[i]->Width = 0;
+      temp_arr[i]->Height = 0;
+      temp_arr[i]->Left = 0;
+      temp_arr[i]->Top = 0;
+      temp_arr[i]->Brush->Color = clWhite;
+
+      ltemp[i] = new TLabel((TComponent*)(NULL));
+      ltemp[i]->Parent = this;
+      ltemp[i]->Width = 10;
+      ltemp[i]->Height = 10;
+      ltemp[i]->Left = 0;
+      ltemp[i]->Top = 0;
   }
 
   DoubleBuffered = true;
@@ -70,16 +98,27 @@ int __fastcall mergeSortThread(Pointer Parameter)
 
 void TfDidacticPage::merge(TShape *arr[], int l, int m, int r){
 	int n1 = m - l + 1;
-	int *temp_arr = new int [n1];
+	//int *temp_arr = new int [n1];
 
 	int i = l; // indeks pocz¹tku lewej tablicy
 	int j = m + 1; // indeks pocz¹tku prawej tablicy
    int k = 0; // indeks pocz¹tku pomocniczej tablicy
 
-	for(k = 0; k < n1; ++k, ++i){
-		temp_arr[k] = -arr[i]->Height;
+	for(k = 0; k < n1; ++k, ++i)
+   {
+		temp_arr[k]->Height = arr[i]->Height;
+
+      temp_arr[k]->Width = 20;
+      temp_arr[k]->Left = (temp_arr[k]->Width) * (k%n1) + center2 - (n1*temp_arr[k]->Width)/2;
+      temp_arr[k]->Top = 400;
+
+      ltemp[k]->Left = temp_arr[k]->Left;
+      ltemp[k]->Top = temp_arr[k]->Top + temp_arr[k]->Height - 15;
+      ltemp[k]->Caption = -temp_arr[k]->Height;
+
 		arr_changed += 1; // Element aplikacji
 		arr_access += 2;
+      lChangedAmount->Caption = arr_changed;
 		lArrAccessAmount->Caption = arr_access;
 	}
 
@@ -89,10 +128,12 @@ void TfDidacticPage::merge(TShape *arr[], int l, int m, int r){
 	// Uwidocznienie znaczników
     sBlue->Visible = true;
     sRed->Visible = true;
+    sRedPom->Visible = true;
     sYellow->Visible = true;
 
     //Przesuniêcie znaczników na miejsce startowe
     sRed->Left = arr[k + l]->Left;
+    sRedPom->Left = temp_arr[k]->Left;
     sBlue->Left = arr[j]->Left;
     sYellow->Left = arr[i]->Left;
 
@@ -104,10 +145,11 @@ void TfDidacticPage::merge(TShape *arr[], int l, int m, int r){
       SuspendThread((Pointer)W_ID); // Zatrzymanie w¹tku inaczej zatrzymanie sortowania
     }else
       Sleep(delay);
-	
+
     while(j <= r && k < n1)
     {
         sRed->Left = arr[k + l]->Left;
+        sRedPom->Left = temp_arr[k]->Left;
         sBlue->Left = arr[j]->Left;
         sYellow->Left = arr[i]->Left;
 
@@ -115,16 +157,20 @@ void TfDidacticPage::merge(TShape *arr[], int l, int m, int r){
         arr_access += 2; // Element aplikacji
         lArrAccessAmount->Caption = arr_access;
 
-		if(-arr[j]->Height < temp_arr[k])
+		if(-arr[j]->Height < -temp_arr[k]->Height)
       {
           arr[i]->Height = arr[j]->Height;
+          ltab[i]->Top = arr[i]->Top + arr[i]->Height - 15;
+          ltab[i]->Caption = -arr[i]->Height;
           j++;
 
           arr_access += 2; // Element aplikacji
           arr_changed += 1; // Element aplikacji
 		}else
       {
-          arr[i]->Height = -temp_arr[k];
+          arr[i]->Height = temp_arr[k]->Height;
+          ltab[i]->Top = arr[i]->Top + arr[i]->Height - 15;
+          ltab[i]->Caption = -arr[i]->Height;
           k++;
 
           arr_access += 2; // Element aplikacji
@@ -132,6 +178,7 @@ void TfDidacticPage::merge(TShape *arr[], int l, int m, int r){
       }
       i++;
 		lArrAccessAmount->Caption = arr_access;
+      lChangedAmount->Caption = arr_changed;
 		Repaint();
 		
 		if(right_click) // Je¿eli zosta³ klikniêty przycisk "w prawo" w "Step by step"
@@ -145,13 +192,19 @@ void TfDidacticPage::merge(TShape *arr[], int l, int m, int r){
     while(k < n1)
     {
 		sRed->Left = arr[k + l]->Left;
+      sRedPom->Left = temp_arr[k]->Left;
       sYellow->Left = arr[i]->Left;
 
-		arr[i++]->Height = -temp_arr[k++];
+		arr[i]->Height = temp_arr[k]->Height;
+      ltab[i]->Top = arr[i]->Top + arr[i]->Height - 15;
+      ltab[i]->Caption = -arr[i]->Height;
 
+      i++;
+      k++;
       arr_access += 2; // Element aplikacji
 		arr_changed += 1; // Element aplikacji
 		lArrAccessAmount->Caption = arr_access;
+      lChangedAmount->Caption = arr_changed;
 		Repaint();
 		
 		if(right_click) // Je¿eli zosta³ klikniêty przycisk "w prawo" w "Step by step"
@@ -161,7 +214,9 @@ void TfDidacticPage::merge(TShape *arr[], int l, int m, int r){
       }else
         Sleep(delay);
 	}
-	delete [] temp_arr;
+   deleteTable(temp_arr, n1);
+   deleteTable(ltemp, n1);
+	//delete [] temp_arr;
 }
 //---------------------------------------------------------------------------
 
@@ -177,10 +232,12 @@ void TfDidacticPage::mergeSort(TShape *arr[], int l, int r)
     for(int i=m; i>=0; i--) // Rozsuniêcie lewej czêœci tablicy
     {
         arr[i]->Left += -4;
+        ltab[i]->Left = arr[i]->Left;
     }
     for(int i=m+1; i<n; i++) // Rozsuniêcie prawej czêœci tablicy
     {
         arr[i]->Left += 4;
+        ltab[i]->Left = arr[i]->Left;
     }
     Repaint();
     
@@ -198,10 +255,12 @@ void TfDidacticPage::mergeSort(TShape *arr[], int l, int r)
     for(int i=m; i>=0; i--) // Zsuniêcie lewej czêœci tablicy
     {
         arr[i]->Left += 4;
+        ltab[i]->Left = arr[i]->Left;
     }
     for(int i=m+1; i<n; i++) // Zsuniêcie prawej czêœci tablicy
     {
         arr[i]->Left += -4;
+        ltab[i]->Left = arr[i]->Left;
     }
     Repaint();
 
@@ -217,6 +276,7 @@ void TfDidacticPage::mergeSort(TShape *arr[], int l, int r)
 
     // Wy³¹czenie widocznoœci wskaŸników po ukoñczeniu funkcji merge
     sRed->Visible = false;
+    sRedPom->Visible = false;
     sBlue->Visible = false;
     sYellow->Visible = false;
   }
@@ -224,7 +284,8 @@ void TfDidacticPage::mergeSort(TShape *arr[], int l, int r)
 
 void __fastcall TfDidacticPage::bGenerateClick(TObject *Sender)
 {
-  lComparisonsAmount->Caption = if_count = 0; // resetujê licznik porównañ
+  lComparisonsAmount->Caption = if_count = 0; // Zresetowanie licznika porównañ
+  lChangedAmount->Caption = arr_changed = 0; // Zresetowanie licznika przestawieñ
   lArrAccessAmount->Caption = arr_access = 0; // Zresetowanie licznika dostêpów
 
   PanelRight->Enabled = true; // Odblokowanie prawego panelu. Odblokowanie mo¿liwoœci kontroli algorytmu.
@@ -233,30 +294,33 @@ void __fastcall TfDidacticPage::bGenerateClick(TObject *Sender)
   n = sbAmount->Position; // Przypisanie pocz¹tkowej iloœci s³upków
   int option = rgTableTypes->ItemIndex; // Sprawdzenie wybranej opcji w tabeli "Table types"
 
+  deleteTable(tab, max_n);
+  deleteTable(ltab, max_n);
+  
   switch(option) // Utworzenie tablicy wed³ug wybranej opcji
   {
-    case 0: randomTable();
+    case 0: randomTable(tab, ltab);
             bGenerate->Enabled = true;
             break;
-    case 1: reversedTable();
+    case 1: reversedTable(tab, ltab);
             bGenerate->Enabled = false;
             break;
-    case 2: constantTable();
+    case 2: constantTable(tab, ltab);
             bGenerate->Enabled = true;
             break;
-    case 3: arrowUpTable();
+    case 3: arrowUpTable(tab, ltab);
             bGenerate->Enabled = false;
             break;
-    case 4: arrowDownTable();
+    case 4: arrowDownTable(tab, ltab);
             bGenerate->Enabled = false;
             break;
-    case 5: almostSortedTable();
+    case 5: almostSortedTable(tab, ltab);
             bGenerate->Enabled = true;
             break;
-    case 6: fewUniqueTable();
+    case 6: fewUniqueTable(tab, ltab);
             bGenerate->Enabled = true;
             break;
-    case 7: sortedTable();
+    case 7: sortedTable(tab, ltab);
             bGenerate->Enabled = false;
             break;
   }
@@ -331,110 +395,111 @@ void __fastcall TfDidacticPage::mStartClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void TfDidacticPage::randomTable()
+void TfDidacticPage::randomTable(TShape *arr[], TLabel *label[])
 {
-    deleteTable();
-
-    srand( time( NULL ) );
-
     for(int i=0; i < n; i++)
     {
-        tab[i]->Width = 15;
-        tab[i]->Height = -((rand() % 300) + 5);
-        tab[i]->Left = (tab[i]->Width) * (i%n) + center - (n*tab[i]->Width)/2;
-        tab[i]->Top = 400;
+        arr[i]->Height = -((rand() % 300) + 5);
+        arr[i]->Left = (arr[i]->Width) * (i%n) + center - (n*arr[i]->Width)/2;
+        arr[i]->Top = 400;
+
+        label[i]->Left = arr[i]->Left;
+        label[i]->Top = arr[i]->Top + arr[i]->Height - 15;
+        label[i]->Caption = -arr[i]->Height;
     }
     Repaint();
 }
 //---------------------------------------------------------------------------
 
-void TfDidacticPage::reversedTable()
+void TfDidacticPage::reversedTable(TShape *arr[], TLabel *label[])
 {
-    deleteTable();
-
     for(int i=0, j=n; i < n; i++, j--)
     {
-        tab[i]->Width = 15;
-        tab[i]->Height = -10 * (j+1);
-        tab[i]->Left = (tab[i]->Width) * (i%n) + center - (n*tab[i]->Width)/2;
-        tab[i]->Top = 400;
+        arr[i]->Height = -10 * (j+1);
+        arr[i]->Left = (arr[i]->Width) * (i%n) + center - (n*arr[i]->Width)/2;
+        arr[i]->Top = 400;
+
+        label[i]->Left = arr[i]->Left;
+        label[i]->Top = arr[i]->Top + arr[i]->Height - 15;
+        label[i]->Caption = -arr[i]->Height;
     }
     Repaint();
 }
 //---------------------------------------------------------------------------
 
-void TfDidacticPage::constantTable()
+void TfDidacticPage::constantTable(TShape *arr[], TLabel *label[])
 {
-  deleteTable();
-
-  srand( time( NULL ) );
-
   int height =  (rand() % 300) + 2;
 
   for(int i=0; i < n; i++)
   {
-      tab[i]->Width = 15;
-      tab[i]->Height = - height;
-      tab[i]->Left = (tab[i]->Width) * (i%n) + center - (n*tab[i]->Width)/2;
-      tab[i]->Top = 400;
+      arr[i]->Height = - height;
+      arr[i]->Left = (arr[i]->Width) * (i%n) + center - (n*arr[i]->Width)/2;
+      arr[i]->Top = 400;
+
+      label[i]->Left = arr[i]->Left;
+      label[i]->Top = arr[i]->Top + arr[i]->Height - 15;
+      label[i]->Caption = -arr[i]->Height;
   }
   Repaint();
 }
 //---------------------------------------------------------------------------
 
 
-void TfDidacticPage::arrowDownTable()
+void TfDidacticPage::arrowDownTable(TShape *arr[], TLabel *label[])
 {
-  deleteTable();
   int temp = 0;
   if(n > 20 && n < 28)
-     temp = 40;
+     temp = 20;
   else if(n >= 28)
-     temp = 60;
+     temp = 20;
   for(int i=0, j = n; i < n; i++, j--)
   {
       if(j <= i)
          j = i + 1;
-      tab[i]->Width = 15;
-      tab[i]->Height = (-10 * (2.5*j)) + (10 * n) + temp;
-      tab[i]->Left = (tab[i]->Width) * (i%n) + center - (n*tab[i]->Width)/2;
-      tab[i]->Top = 400;
+      arr[i]->Height = (-10 * (2.1*j)) + (10 * n) + temp;
+      arr[i]->Left = (arr[i]->Width) * (i%n) + center - (n*arr[i]->Width)/2;
+      arr[i]->Top = 400;
+
+      label[i]->Left = arr[i]->Left;
+      label[i]->Top = arr[i]->Top + arr[i]->Height - 15;
+      label[i]->Caption = -arr[i]->Height;
   }
   Repaint();
 }
 //---------------------------------------------------------------------------
 
-void TfDidacticPage::arrowUpTable()
+void TfDidacticPage::arrowUpTable(TShape *arr[], TLabel *label[])
 {
-  deleteTable();
-
   for(int i=0, j = 0; i < n; i++)
   {
       if(i > n/2)
          j--;
       else
          j++;
-      tab[i]->Width = 15;
-      tab[i]->Height = (-10 * (2.5*j));
-      tab[i]->Left = (tab[i]->Width) * (i%n) + center - (n*tab[i]->Width)/2;
-      tab[i]->Top = 400;
+      arr[i]->Height = (-10 * (2.1*j));
+      arr[i]->Left = (arr[i]->Width) * (i%n) + center - (n*arr[i]->Width)/2;
+      arr[i]->Top = 400;
+
+      label[i]->Left = arr[i]->Left;
+      label[i]->Top = arr[i]->Top + arr[i]->Height - 15;
+      label[i]->Caption = -arr[i]->Height;
   }
   Repaint();
 }
 //---------------------------------------------------------------------------
 
-void TfDidacticPage::almostSortedTable()
+void TfDidacticPage::almostSortedTable(TShape *arr[], TLabel *label[])
 {
-  deleteTable();
-
-  srand( time( NULL ) );
-
   for(int i=0; i < n; i++)
   {
-    tab[i]->Width = 15;
-    tab[i]->Height = -10 * (i+1);
-    tab[i]->Left = (tab[i]->Width) * (i%n) + center - (n*tab[i]->Width)/2;
-    tab[i]->Top = 400;
+      arr[i]->Height = -10 * (i+1);
+      arr[i]->Left = (arr[i]->Width) * (i%n) + center - (n*arr[i]->Width)/2;
+      arr[i]->Top = 400;
+
+      label[i]->Left = arr[i]->Left;
+      label[i]->Top = arr[i]->Top + arr[i]->Height - 15;
+      label[i]->Caption = -arr[i]->Height;
   }
   int rand1;
   if(n > 4)
@@ -442,23 +507,26 @@ void TfDidacticPage::almostSortedTable()
      for(int i=0; i < n/4; i++)
      {
         rand1 = rand() % n;
-        tab[rand1]->Height = -((rand() % 300) + 5);
+        arr[rand1]->Height = -((rand() % 300) + 5);
+
+        label[rand1]->Top = arr[rand1]->Top + arr[rand1]->Height - 15;
+        label[rand1]->Caption = -arr[rand1]->Height;
      }
   }
   else
   {
      rand1 = rand() % n;
-     tab[rand1]->Height = -((rand() % 300) + 5);
+     arr[rand1]->Height = -((rand() % 300) + 5);
+
+     label[rand1]->Top = arr[rand1]->Top + arr[rand1]->Height - 15;
+     label[rand1]->Caption = -arr[rand1]->Height;
   }
   Repaint();
 }
 //---------------------------------------------------------------------------
 
-void TfDidacticPage::fewUniqueTable()
+void TfDidacticPage::fewUniqueTable(TShape *arr[], TLabel *label[])
 {
-  deleteTable();
-
-  srand( time( NULL ) );
   int tab_length = (n>9)? 5 : 2;
   int *tabRand = new int[tab_length];
   int *temp = new int[n];
@@ -474,14 +542,17 @@ void TfDidacticPage::fewUniqueTable()
   int rand1;
   for(int i=0; i < n; i++)
   {
-      tab[i]->Width = 15;
       do{
               rand1 = rand() % n;
       }while(temp[rand1] == 0);
-      tab[i]->Height = temp[rand1];
+      arr[i]->Height = temp[rand1];
       temp[rand1] = 0;
-      tab[i]->Left = (tab[i]->Width) * (i%n) + center - (n*tab[i]->Width)/2;
-      tab[i]->Top = 400;
+      arr[i]->Left = (arr[i]->Width) * (i%n) + center - (n*arr[i]->Width)/2;
+      arr[i]->Top = 400;
+
+      label[i]->Left = arr[i]->Left;
+      label[i]->Top = arr[i]->Top + arr[i]->Height - 15;
+      label[i]->Caption = -arr[i]->Height;
   }
   Repaint();
   delete [] tabRand;
@@ -489,16 +560,17 @@ void TfDidacticPage::fewUniqueTable()
 }
 //---------------------------------------------------------------------------
 
-void TfDidacticPage::sortedTable()
+void TfDidacticPage::sortedTable(TShape *arr[], TLabel *label[])
 {
-  deleteTable();
-
   for(int i=0; i < n; i++)
   {
-    tab[i]->Width = 15;
-    tab[i]->Height = -10 * (i+1);
-    tab[i]->Left = (tab[i]->Width) * (i%n) + center - (n*tab[i]->Width)/2;
-    tab[i]->Top = 400;
+      arr[i]->Height = -10 * (i+1);
+      arr[i]->Left = (arr[i]->Width) * (i%n) + center - (n*arr[i]->Width)/2;
+      arr[i]->Top = 400;
+
+      label[i]->Left = arr[i]->Left;
+      label[i]->Top = arr[i]->Top + arr[i]->Height - 15;
+      label[i]->Caption = -arr[i]->Height;
   }
   Repaint();
 }
@@ -519,14 +591,12 @@ void __fastcall TfDidacticPage::rgTableTypesClick(TObject *Sender)
    bGenerateClick(this); // Wygenerowanie wybranej tablicy
 }
 //---------------------------------------------------------------------------
-void TfDidacticPage::deleteTable(){
-  for(int i=0; i < max_n; i++)
+template <class T>
+void TfDidacticPage::deleteTable(T *arr[], int length){
+  for(int i=0; i < length; i++)
   {
-      tab[i]->Width = 0;
-      tab[i]->Height = 0;
-      tab[i]->Left = 0;
-      tab[i]->Top = 0;
-      tab[i]->Brush->Color = clWhite;
+      arr[i]->Left = 0;
+      arr[i]->Top = 0;
   }
   Repaint();
 }
@@ -576,7 +646,7 @@ void __fastcall TfDidacticPage::tFormatAnimTimer(TObject *Sender)
 {
    fDidacticPage->Width += 20;
    fDidacticPage->Left -= 10;
-   if(fDidacticPage->Width >= 990)
+   if(fDidacticPage->Width >= 1460)
    {
       tFormatAnim->Enabled = false;
    }

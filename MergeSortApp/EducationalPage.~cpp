@@ -23,9 +23,9 @@
 TfEducationalPage *fEducationalPage;
 
 int const max_n = 10000000;
-unsigned long long if_count; // iloœæ zliczonych porównañ
-unsigned long long arr_access; // iloœæ zliczonych dostêpów do tablic
-unsigned long long arr_changed; // iloœæ zliczonych zmian w tablicy
+unsigned long long if_countEdu; // iloœæ zliczonych porównañ
+unsigned long long arr_accessEdu; // iloœæ zliczonych dostêpów do tablic
+unsigned long long arr_changedEdu; // iloœæ zliczonych zmian w tablicy
 
 //---------------------------------------------------------------------------
 __fastcall TfEducationalPage::TfEducationalPage(TComponent* Owner)
@@ -34,9 +34,9 @@ __fastcall TfEducationalPage::TfEducationalPage(TComponent* Owner)
 	srand( time( NULL ) );
 
 	n= sbAmount->Position; // Przypisanie pocz¹tkowej iloœci s³upków
-    if_count = 0; // Nadanie pocz¹tkowej wartoœci licznika if'ów
-    arr_access = 0; // Nadanie pocz¹tkowej wartoœci licznika dostêpów do tablicy
-	arr_changed = 0; // Nadanie pocz¹tkowej wartoœci licznika zmian w tablicy
+    if_countEdu = 0; // Nadanie pocz¹tkowej wartoœci licznika if'ów
+    arr_accessEdu = 0; // Nadanie pocz¹tkowej wartoœci licznika dostêpów do tablicy
+	arr_changedEdu = 0; // Nadanie pocz¹tkowej wartoœci licznika zmian w tablicy
     time_sum = 0; // Nadanie pocz¹tkowej wartoœci licznika czasu
 
 	first_run = true;
@@ -105,24 +105,24 @@ void heapify(T* arr, int n, int root)
 
     if(left < n) // Element aplikacji
     {
-        ++if_count;
-        arr_access += 2;
+        ++if_countEdu;
+        arr_accessEdu += 2;
     }
     if (left < n && arr[left] > arr[largest]) // If left child is larger than root
         largest = left;
 
     if(right < n) // Element aplikacji
     {
-        ++if_count;
-        arr_access += 2;
+        ++if_countEdu;
+        arr_accessEdu += 2;
     }
     if (right < n && arr[right] > arr[largest]) // If right child is larger than largest so far
         largest = right;
 
     if (largest != root) // If largest is not root
     {
-        arr_access += 4; // Element aplikacji
-		arr_changed += 2; // Element aplikacji
+        arr_accessEdu += 4; // Element aplikacji
+		arr_changedEdu += 2; // Element aplikacji
         swap(arr[root], arr[largest]);
         heapify(arr, n, largest); // Recursively heapify the affected sub-tree
     }
@@ -136,8 +136,8 @@ void heapSort(T* arr, int n)
 
     for (int end=n-1; end>=0; end--) // One by one extract an element from heap
     {
-        arr_access += 4; // Element aplikacji
-		arr_changed += 2; // Element aplikacji
+        arr_accessEdu += 4; // Element aplikacji
+		arr_changedEdu += 2; // Element aplikacji
         swap(arr[0], arr[end]); // Move current root to end
         heapify(arr, end, 0); // call max heapify on the reduced heap
     }
@@ -152,41 +152,41 @@ void mergeOneTable(T *arr, int l, int  s, int p){
    int k = 0; // indeks pocz¹tku pomocniczej tablicy
    while(i <= s && j <= p)
    {
-      ++if_count; // Element aplikacji
-      arr_access += 2; // Element aplikacji
+      ++if_countEdu; // Element aplikacji
+      arr_accessEdu += 2; // Element aplikacji
       if(arr[i] <= arr[j])
 	  {
          pom[k++] = arr[i++];
-		arr_access += 2; // Element aplikacji
-		arr_changed += 1; // Element aplikacji
+		arr_accessEdu += 2; // Element aplikacji
+		arr_changedEdu += 1; // Element aplikacji
 	  }
 	  else
 	  {
          pom[k++] = arr[j++];
-		arr_access += 2; // Element aplikacji
-		arr_changed += 1; // Element aplikacji
+		arr_accessEdu += 2; // Element aplikacji
+		arr_changedEdu += 1; // Element aplikacji
 	  }
    }
    // reszta elementów lewej po³owy
    while(i <= s)
    {
       pom[k++] = arr[i++];
-	  arr_access += 2; // Element aplikacji
-	  arr_changed += 1; // Element aplikacji
+	  arr_accessEdu += 2; // Element aplikacji
+	  arr_changedEdu += 1; // Element aplikacji
    }
    // reszta elementów prawej po³owy
    while(j <= p)
    {
       pom[k++] = arr[j++];
-	  arr_access += 2; // Element aplikacji
-	  arr_changed += 1; // Element aplikacji
+	  arr_accessEdu += 2; // Element aplikacji
+	  arr_changedEdu += 1; // Element aplikacji
    }
    // skopiuj po³¹czon¹ pomocnicz¹ tablice do oryginalnej tabicy
    for(k = 0, i = l; i <= p; ++i, ++k)
    {
       arr[i] = pom[k];
-	  arr_access += 2; // Element aplikacji
-	  arr_changed += 1; // Element aplikacji
+	  arr_accessEdu += 2; // Element aplikacji
+	  arr_changedEdu += 1; // Element aplikacji
    }
 
    delete []pom;
@@ -228,36 +228,34 @@ void mergeHalfTable(T *arr, int left, int mid, int right){
 
 	for(k = 0; k < n1; ++k, ++i){
 		temp_arr[k] = arr[i];
-        arr_access += 2; // Element aplikacji
-		arr_changed += 1; // Element aplikacji
+        arr_accessEdu += 2; // Element aplikacji
+		arr_changedEdu += 1; // Element aplikacji
 	}
 
 	k = 0;
     i = left;
 
-    ++if_count; // Element aplikacji
-    arr_access += 2; // Element aplikacji
 	while(j <= right && k < n1)
     {
-        ++if_count; // Element aplikacji
-		arr_access += 2; // Element aplikacji
+        ++if_countEdu; // Element aplikacji
+		arr_accessEdu += 2; // Element aplikacji
 		if(arr[j] < temp_arr[k])
         {
 			arr[i++] = arr[j++];
-            arr_access += 2; // Element aplikacji
-			arr_changed += 1; // Element aplikacji
+            arr_accessEdu += 2; // Element aplikacji
+			arr_changedEdu += 1; // Element aplikacji
 		}else
         {
 			arr[i++] = temp_arr[k++];
-            arr_access += 2; // Element aplikacji
-			arr_changed += 1; // Element aplikacji
+            arr_accessEdu += 2; // Element aplikacji
+			arr_changedEdu += 1; // Element aplikacji
 		}
 	}
 	while(k < n1)
     {
 		arr[i++] = temp_arr[k++];
-        arr_access += 2; // Element aplikacji
-		arr_changed += 1; // Element aplikacji
+        arr_accessEdu += 2; // Element aplikacji
+		arr_changedEdu += 1; // Element aplikacji
 	}
 	delete [] temp_arr;
 }
@@ -294,37 +292,37 @@ void quicksort(T *x ,int first,int last)
 
         while(i<j)
         {
-            arr_access += 2; // Element aplikacji
-            ++if_count; // Element aplikacji
+            arr_accessEdu += 2; // Element aplikacji
+            ++if_countEdu; // Element aplikacji
 			while(x[i]<=x[pivot]&&i<last)
             {
 				i++;
-                arr_access += 2; // Element aplikacji
-                ++if_count; // Element aplikacji
+                arr_accessEdu += 2; // Element aplikacji
+                ++if_countEdu; // Element aplikacji
             }
-            arr_access += 2; // Element aplikacji
-            ++if_count; // Element aplikacji
+            arr_accessEdu += 2; // Element aplikacji
+            ++if_countEdu; // Element aplikacji
 			while(x[j]>x[pivot])
             {
 				j--;
-                arr_access += 2; // Element aplikacji
-                ++if_count; // Element aplikacji
+                arr_accessEdu += 2; // Element aplikacji
+                ++if_countEdu; // Element aplikacji
             }
 			if(i<j)
             {
 				temp=x[i];
 				x[i]=x[j];
 				x[j]=temp;
-                arr_access += 4; // Element aplikacji
-                arr_changed += 2; // Element aplikacji
+                arr_accessEdu += 4; // Element aplikacji
+                arr_changedEdu += 2; // Element aplikacji
 			}
 		}
 
         temp=x[pivot];
 		x[pivot]=x[j];
 		x[j]=temp;
-        arr_access += 4; // Element aplikacji
-        arr_changed += 2; // Element aplikacji
+        arr_accessEdu += 4; // Element aplikacji
+        arr_changedEdu += 2; // Element aplikacji
 
 		quicksort(x,first,j-1);
 		quicksort(x,j+1,last);
@@ -746,13 +744,13 @@ void __fastcall TfEducationalPage::tFormatAnimTimer(TObject *Sender)
 void TfEducationalPage::sumResults()
 {
    float div = StrToFloat(eRepeat->Text);
-   comparision_sum += if_count / div;
-   access_sum += arr_access / div;
-   changed_sum += arr_changed / div;
+   comparision_sum += if_countEdu / div;
+   access_sum += arr_accessEdu / div;
+   changed_sum += arr_changedEdu / div;
    time_sum += stime / div;
-   if_count = 0;
-   arr_access = 0;
-   arr_changed = 0;
+   if_countEdu = 0;
+   arr_accessEdu = 0;
+   arr_changedEdu = 0;
    stime = 0;
 }
 //---------------------------------------------------------------------------
