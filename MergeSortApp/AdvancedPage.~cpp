@@ -304,7 +304,7 @@ void TfAdvancedPage::AlgorithmStartAdv()
                 break;
         case 1: start(tab_double);
                 break;
-        case 2: start(tab_s);
+        case 2: start(tab_string);
                 break;
     }
 }

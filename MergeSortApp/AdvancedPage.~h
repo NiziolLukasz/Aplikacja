@@ -39,7 +39,6 @@ private:	// User declarations
     int* tab_int;
     double *tab_double;
     char* tab_string;
-    AnsiString tab_s [];
     int n;
     bool opened;
 

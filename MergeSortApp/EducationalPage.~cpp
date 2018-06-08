@@ -219,12 +219,6 @@ void mergesortOneTable(T *arr, int length)
 
 template<class T>
 void mergeHalfTable(T *arr, int left, int mid, int right){
-    arr_access += 2;
-    ++if_count;
-    if(arr[mid] <= arr[mid+1])
-    {
-        return;
-    }
 	int n1 = mid - left + 1;
 	T *temp_arr = new T [n1];
 
@@ -361,7 +355,6 @@ void __fastcall TfEducationalPage::rgTableTypesClick(TObject *Sender)
 	changeSign("Setup...", clGray);
 
    rgTableTypes->Top = 33;
-   eRepeat->Text = 1;
 
    if(fEducationalPage->Width < 640)
       tFormatAnim->Enabled = true; // W³¹czenie animacji rozsuniêcia formatki
@@ -706,14 +699,14 @@ void TfEducationalPage::copyTable(const T *original, T *&tempTable)
 
 template<class T>
 void TfEducationalPage::copyTables(const T* arr){
-    createTable(tab_MS1, n);
-	copyTable(arr, tab_MS1);
-	createTable(tab_MSHalf, n);
+   createTable(tab_MS1, n);
+   copyTable(arr, tab_MS1);
+   createTable(tab_MSHalf, n);
 	copyTable(arr, tab_MSHalf);
 	createTable(tab_HS, n);
 	copyTable(arr, tab_HS);
 	createTable(tab_QS, n);
-    copyTable(arr, tab_QS);
+   copyTable(arr, tab_QS);
 }
 
 void __fastcall TfEducationalPage::bStartClick(TObject *Sender)
@@ -793,8 +786,8 @@ void TfEducationalPage::AlgorithmStartEdu()
    sort(&mergesortHalfTable, tab_MSHalf, n, repeat, lMSHalf, lCompMSHalf, lArrAccessMSHalf, lArrChangedMSHalf, lSortTimeMSHalf);
    sort(&heapSort, tab_HS, n, repeat, lHS, lCompHS, lArrAccessHS, lArrChangedHS, lSortTimeHS);
 
-   if((eAmount->Text > 61000 && rgTableTypes->ItemIndex == 5) ||
-      ((rgTableTypes->ItemIndex == 1 || rgTableTypes->ItemIndex == 2 || rgTableTypes->ItemIndex == 7) && eAmount->Text > 28000))
+   if((StrToInt(eAmount->Text) > 61000 && rgTableTypes->ItemIndex == 5) ||
+      ((rgTableTypes->ItemIndex == 1 || rgTableTypes->ItemIndex == 2 || rgTableTypes->ItemIndex == 7) && StrToInt(eAmount->Text) > 28000))
    {
       lCompQS->Caption = "Stack";
       lArrAccessQS->Caption = "Over";

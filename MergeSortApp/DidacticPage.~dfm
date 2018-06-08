@@ -584,7 +584,10 @@ object fDidacticPage: TfDidacticPage
       end
     end
     object mHelp: TMenuItem
-      Caption = 'About'
+      Caption = 'Help'
+      object About1: TMenuItem
+        Caption = 'About...'
+      end
     end
   end
   object tAnim: TTimer
