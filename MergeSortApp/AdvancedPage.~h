@@ -38,15 +38,21 @@ private:	// User declarations
 
     int* tab_int;
     double *tab_double;
-    char* tab_string;
+    AnsiString* tab_string;
     int n;
     bool opened;
+    
 
    template<class T>
    void loadFile(T*& arr, int& length);
+   std::string loadStringFromFile();
    void sortArray();
    template<class T>
    void saveToFile(T* arr);
+   void saveStirngToFile(AnsiString* str);
+   int stringSize(std::string str);
+   void stringToArray(AnsiString* arr, std::string str);
+
    template<class T>
    void checkIsSorted(const T* arr);
    void waitSignalOn();
@@ -54,6 +60,7 @@ private:	// User declarations
 
    template<class T>
    void start(T*& tab);
+   void startString();
    template<class T>
    bool isSorted(const T* arr, const int length);
    template<class T>

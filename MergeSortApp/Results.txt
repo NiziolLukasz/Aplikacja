@@ -1,10 +1,10 @@
-Type of table: Arrow up
+Type of table: Few unique
 Table type: Integer
-Number of repetitions: 1
-Size of the table: 11
+Number of repetitions: 100
+Size of the table: 1000000
 
 Algorithm Name		Comparisons:		Array access:		Array changed:		Time (ms):
-MergeSort              23                  202                   78               0
-MergeSort Half           23                  158                   56               0
-HeapSort                     41                  190                   54               0
-QuickSort                    60                  160                   20               0
+MergeSort        18671732            117149024             39902812          472,01
+MergeSort Half     18671732             96156072             29406356          417,34
+HeapSort               36776788            149691248             38068932          574,07
+QuickSort             540137536           1093580416              6652499         2047,32

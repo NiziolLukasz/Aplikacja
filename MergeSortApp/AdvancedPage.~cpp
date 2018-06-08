@@ -68,7 +68,7 @@ void merge(T *arr, int left, int mid, int right){
 	for(k = 0; k < n1; ++k, ++i){
 		temp_arr[k] = arr[i];
 	}
-	
+
 	k = 0;
     i = left;
 
@@ -150,7 +150,7 @@ void TfAdvancedPage::loadFile(T*& arr, int& size)
         if (!file)
         {
             ShowMessage("B³¹d pliku!!!");
-            return;
+            opened = false;
         }
         else
         {
@@ -198,7 +198,6 @@ void TfAdvancedPage::saveToFile(T* arr)
 
       if( file.good() == true ) // Sprawdzenie czy plik siê otworzy³
       {
-         lSign2->Visible = true;
 
          for(int i=0; i < n; i++)
          {
@@ -206,7 +205,6 @@ void TfAdvancedPage::saveToFile(T* arr)
          }
          file.close(); // Zamknij plik
 
-         lSign2->Visible = false;
       }else
       {
          ShowMessage("B³¹d pliku!!!");
@@ -274,13 +272,12 @@ void TfAdvancedPage::sortArray()
 template<class T>
 void TfAdvancedPage::start(T*& tab)
 {
-    loadFile(tab, n);
+   loadFile(tab, n);
     if(!opened)
     {
         bSortFile->Enabled = true;
         return;
     }
-
     waitSignalOn();
 
     mergeSort(tab, 0, n-1);
@@ -291,7 +288,7 @@ void TfAdvancedPage::start(T*& tab)
     {
         checkIsSorted(tab);
         saveToFile(tab);
-        delete [] tab; // TODO Zapytac dlaczego bez & wywala blad przy 2 sortowaniu stringa
+        delete [] tab;
     }
     bSortFile->Enabled = true;
 }
@@ -304,7 +301,7 @@ void TfAdvancedPage::AlgorithmStartAdv()
                 break;
         case 1: start(tab_double);
                 break;
-        case 2: start(tab_string);
+        case 2: startString();
                 break;
     }
 }
@@ -324,6 +321,115 @@ void __fastcall TfAdvancedPage::bSortFileClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+int TfAdvancedPage::stringSize(std::string str)
+{
+   int size = 0;
+   std::size_t found = str.find(";"); // Wyszukanie ";" w stringu
+   while(found != std::string::npos) // Jeœli wyszukana wartoœæ nie jest maksymaln¹ wartoœci¹ size_t, to...
+   {
+         ++size; // Zwiêksz wielkoœæ tablicy o 1
+         found = str.find(";",found+1); // Ponownie wyszukaj ";", zaczynaj¹c od poprzedniego + 1 miejsca
+   }
+   return size;
+}
+//---------------------------------------------------------------------------
+
+void TfAdvancedPage::stringToArray(AnsiString* arr, std::string str)
+{
+   int pos, j= 0;
+   while(!str.empty()) // Jeœli string nie jest pusty, to...
+   {
+       pos = str.find(";"); // ZnajdŸ miejsce ";"
+       arr[j] = str.substr(0, pos).c_str(); // Skopiuj czêœæ stringa
+       str.erase(0, pos + 1); // Usuñ wyko¿ystan¹ ju¿ czêœæ stringa, wraz z ";"
+       j++; // Zwiêksz id tablicy o 1
+   }
+}
+//---------------------------------------------------------------------------
+
+std::string TfAdvancedPage::loadStringFromFile()
+{
+   std::string str; // Utwo¿enie stringa do przechowania wartoœci z pliku
+   if( OpenDialog->Execute() ) // Otworzenie dialogu, do wybrania pliku
+   {
+       opened = true;
+
+       waitSignalOn(); // Zakumnikowanie u¿ytkownika o trwaj¹cych pracach
+       std::fstream file(OpenDialog->FileName.c_str(), std::ios::in); // Otworzenie pliku
+       if (!file)
+       {
+           ShowMessage("B³¹d pliku!!!");
+           opened = false;
+       }
+       else
+       {
+           getline(file, str); // Pobranie ca³ej lini z pliku
+       }
+       file.close(); //Zamkniêcie pliku tekstowego
+
+       waitSignalOff(); // Zakumnikowanie u¿ytkownika o zakoñczeniu prac
+   }
+   else
+   {
+       opened = false;
+   }
+
+   return str;
+}
+//---------------------------------------------------------------------------
+
+void TfAdvancedPage::saveStirngToFile(AnsiString* str)
+{
+   if(SaveDialog->Execute()) // Otwórz SaveDialog
+    {
+      waitSignalOn();
+
+      std::fstream file; // Utworzenie zmiennej plikowej
+      file.open(SaveDialog->FileName.c_str(), std::ios::out); // Otworzenie pliku
+
+      if( file.good() == true ) // Sprawdzenie czy plik siê otworzy³
+      {
+         for(int i=0; i < n; i++)
+         {
+            file << str[i].c_str() << ";";
+         }
+         file.close(); // Zamknij plik
+      }else
+      {
+         ShowMessage("B³¹d pliku!!!");
+      }
+      waitSignalOff();
+    }
+}
+//---------------------------------------------------------------------------
+void TfAdvancedPage::startString()
+{
+   std::string str = loadStringFromFile(); // Utwo¿enie stringa do przechowania wartoœci z pliku
+   
+   if(!opened)
+    {
+        bSortFile->Enabled = true;
+        return;
+    }   
+	
+   n = stringSize(str);
+   tab_string = new AnsiString [n];
+   stringToArray(tab_string, str);
+   
+   waitSignalOn();
+
+   mergeSort(tab_string, 0, n-1);
+
+   waitSignalOff();
+	
+	if(opened)
+    {
+		checkIsSorted(tab_string);
+		saveStirngToFile(tab_string);
+		delete [] tab_string;
+	}
+   bSortFile->Enabled = true;
+}
 
 
 
