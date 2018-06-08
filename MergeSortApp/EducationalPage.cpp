@@ -235,8 +235,6 @@ void mergeHalfTable(T *arr, int left, int mid, int right){
 	k = 0;
     i = left;
 
-    ++if_count; // Element aplikacji
-    arr_access += 2; // Element aplikacji
 	while(j <= right && k < n1)
     {
         ++if_count; // Element aplikacji

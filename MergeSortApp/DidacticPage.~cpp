@@ -30,6 +30,7 @@ __fastcall TfDidacticPage::TfDidacticPage(TComponent* Owner)
   delay = sbDelay->Position; // Nadanie pocz¹tkowej wartoœci opóŸnienia
   if_count = 0; // Nadanie pocz¹tkowej wartoœci porównañ
   arr_access = 0; // Nadanie pocz¹tkowej wartoœci dostêpów do tablicy
+  arr_changed = 0;
 
   fDidacticPage->ClientWidth = 230;  // Zmniejszenie wielkoœci formatki
 
@@ -65,141 +66,104 @@ int __fastcall mergeSortThread(Pointer Parameter)
    ExitThread(GetExitCodeThread(mergeSortThread, NULL)); // usuniêcie w¹tku z pamiêci, od tego momentu w¹tku nie mo¿na ju¿ wstrzymaæ.
    return 0;
 }
+//---------------------------------------------------------------------------
 
+void TfDidacticPage::merge(TShape *arr[], int l, int m, int r){
+	int n1 = m - l + 1;
+	int *temp_arr = new int [n1];
 
-/* £¹czy dwie podtablice arr[].
-   Pierwsza podtablica to arr[l..m]
-   Druga podtablica to arr[m+1..r]
-*/
-void TfDidacticPage::merge(TShape *arr[], int l, int m, int r) /* l - left, m - middle, r- right */
-{
+	int i = l; // indeks pocz¹tku lewej tablicy
+	int j = m + 1; // indeks pocz¹tku prawej tablicy
+   int k = 0; // indeks pocz¹tku pomocniczej tablicy
 
-    int i, j, k;
-    int n1 = m - l + 1; // iloœæ elementów w pierwszej podtablicy
-    int n2 =  r - m; // iloœæ elementów w drugiej podtablicy
+	for(k = 0; k < n1; ++k, ++i){
+		temp_arr[k] = -arr[i]->Height;
+		arr_changed += 1; // Element aplikacji
+		arr_access += 2;
+		lArrAccessAmount->Caption = arr_access;
+	}
 
-    // Tworzenie pomocniczych tablic
-    int *L = new int [n1];
-    int *R = new int [n2];
-
-    // Skopiowanie danych do pomocniczych tablic L[] i R[]
-    for (i = 0; i < n1; i++)
-    {
-        L[i] = -arr[l + i]->Height;
-        lArrAccessAmount->Caption = ++arr_access;
-    }
-    for (j = 0; j < n2; j++)
-    {
-        R[j] = -arr[m + 1+ j]->Height;
-        lArrAccessAmount->Caption = ++arr_access;
-    }
-
-    // £¹czenie pomocniczych tablic spowrotem do arr[l..r]
-    i = 0; // Pocz¹tkowy indeks pierwszej podtablicy
-    j = 0; // Pocz¹tkowy indeks drugiej podtablicy
-    k = l; // Pocz¹tkowy indeks po³¹czonej podtablicy
-
-    // Uwidocznienie znaczników
+   k = 0;
+   i = l;
+	
+	// Uwidocznienie znaczników
     sBlue->Visible = true;
     sRed->Visible = true;
     sYellow->Visible = true;
 
     //Przesuniêcie znaczników na miejsce startowe
-    sRed->Left = arr[i + l]->Left;
-    sBlue->Left = arr[m + 1+ j]->Left;
-    sYellow->Left = arr[k]->Left;
+    sRed->Left = arr[k + l]->Left;
+    sBlue->Left = arr[j]->Left;
+    sYellow->Left = arr[i]->Left;
 
-    Repaint();
-    
-    if(right_click) // Je¿eli zosta³ klikniêty przycisk "w prawo" w "Step by step"
+	Repaint();
+	
+	if(right_click) // Je¿eli zosta³ klikniêty przycisk "w prawo" w "Step by step"
     {
       right_click = false; // Zmiana "flagi" na wy³¹czon¹, poniewa¿ czynnoœæ zosta³a ju¿ wykonana
       SuspendThread((Pointer)W_ID); // Zatrzymanie w¹tku inaczej zatrzymanie sortowania
     }else
       Sleep(delay);
-
-    while (i < n1 && j < n2)
+	
+    while(j <= r && k < n1)
     {
-        sRed->Left = arr[i + l]->Left;
-        sBlue->Left = arr[m + 1+ j]->Left;
-        sYellow->Left = arr[k]->Left;
+        sRed->Left = arr[k + l]->Left;
+        sBlue->Left = arr[j]->Left;
+        sYellow->Left = arr[i]->Left;
 
-        lComparisonsAmount->Caption = ++if_count;
-        ++arr_access;
-        lArrAccessAmount->Caption = ++arr_access;
-        if (L[i] <= R[j])
-        {
-            arr[k]->Height = -L[i];
-            i++;
-        }
-        else
-        {
-            arr[k]->Height = -R[j];
-            j++;
-        }
-        lArrAccessAmount->Caption = ++arr_access;
-        Repaint();
+        lComparisonsAmount->Caption = ++if_count; // Element aplikacji
+        arr_access += 2; // Element aplikacji
+        lArrAccessAmount->Caption = arr_access;
 
-        if(right_click) // Je¿eli zosta³ klikniêty przycisk "w prawo" w "Step by step"
-        {
-            right_click = false; // Zmiana "flagi" na wy³¹czon¹, poniewa¿ czynnoœæ zosta³a ju¿ wykonana
-            SuspendThread((Pointer)W_ID); // Zatrzymanie w¹tku inaczej zatrzymanie sortowania
-        }else
-          Sleep(delay);
+		if(-arr[j]->Height < temp_arr[k])
+      {
+          arr[i]->Height = arr[j]->Height;
+          j++;
 
-        k++;
+          arr_access += 2; // Element aplikacji
+          arr_changed += 1; // Element aplikacji
+		}else
+      {
+          arr[i]->Height = -temp_arr[k];
+          k++;
+
+          arr_access += 2; // Element aplikacji
+          arr_changed += 1; // Element aplikacji
+      }
+      i++;
+		lArrAccessAmount->Caption = arr_access;
+		Repaint();
+		
+		if(right_click) // Je¿eli zosta³ klikniêty przycisk "w prawo" w "Step by step"
+      {
+          right_click = false; // Zmiana "flagi" na wy³¹czon¹, poniewa¿ czynnoœæ zosta³a ju¿ wykonana
+          SuspendThread((Pointer)W_ID); // Zatrzymanie w¹tku inaczej zatrzymanie sortowania
+      }else
+        Sleep(delay);
     }
-    // Skopiowanie pozosta³ych elementów podtablicy L[], jeœli jakieœ istniej¹
-    while (i < n1)
+    sBlue->Visible = false;
+    while(k < n1)
     {
-        sRed->Left = arr[i + l]->Left;
-        sYellow->Left = arr[k]->Left;
+		sRed->Left = arr[k + l]->Left;
+      sYellow->Left = arr[i]->Left;
 
-        arr[k]->Height = -L[i];
+		arr[i++]->Height = -temp_arr[k++];
 
-        lArrAccessAmount->Caption = ++arr_access;
-
-        i++;
-        k++;
-
-        Repaint();
-
-
-        if(right_click) // Je¿eli zosta³ klikniêty przycisk "w prawo" w "Step by step"
-        {
-            right_click = false; // Zmiana "flagi" na wy³¹czon¹, poniewa¿ czynnoœæ zosta³a ju¿ wykonana
-            SuspendThread((Pointer)W_ID); // Zatrzymanie w¹tku inaczej zatrzymanie sortowania
-        }else
-          Sleep(delay);
-    }
-    // Skopiowanie pozosta³ych elementów podtablicy R[], jeœli jakieœ istniej¹
-    lComparisonsAmount->Caption = ++if_count;
-    while (j < n2)
-    {
-        sBlue->Left = arr[m + 1+ j]->Left;
-        sYellow->Left = arr[k]->Left;
-
-        arr[k]->Height = -R[j];
-
-        lArrAccessAmount->Caption = ++arr_access;
-
-        j++;
-        k++;
-        Repaint();
-
-
-        if(right_click) // Je¿eli zosta³ klikniêty przycisk "w prawo" w "Step by step"
-        {
-            right_click = false; // Zmiana "flagi" na wy³¹czon¹, poniewa¿ czynnoœæ zosta³a ju¿ wykonana
-            SuspendThread((Pointer)W_ID); // Zatrzymanie w¹tku inaczej zatrzymanie sortowania
-        }else
-          Sleep(delay);
-    }
-
-    // Usuniêcie dodatkowch tablic
-    delete [] L;
-    delete [] R;
+      arr_access += 2; // Element aplikacji
+		arr_changed += 1; // Element aplikacji
+		lArrAccessAmount->Caption = arr_access;
+		Repaint();
+		
+		if(right_click) // Je¿eli zosta³ klikniêty przycisk "w prawo" w "Step by step"
+      {
+          right_click = false; // Zmiana "flagi" na wy³¹czon¹, poniewa¿ czynnoœæ zosta³a ju¿ wykonana
+          SuspendThread((Pointer)W_ID); // Zatrzymanie w¹tku inaczej zatrzymanie sortowania
+      }else
+        Sleep(delay);
+	}
+	delete [] temp_arr;
 }
+//---------------------------------------------------------------------------
 
 void TfDidacticPage::mergeSort(TShape *arr[], int l, int r)
 {

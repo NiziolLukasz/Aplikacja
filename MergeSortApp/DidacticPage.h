@@ -74,6 +74,7 @@ private:	// User declarations
    int delay; // Wartoœæ opóŸnienia sortowania
    int if_count; // Iloœæ zliczonych porównañ
    int arr_access; // Iloœæ zliczonych dostêpów do tablicy
+   int arr_changed;
 
    bool running; // True: dzia³anie algorytmu trwa; false: algorytm nieuruchomiony
    bool right_click; // True: wciœniêty przycisk "Step by step"; false: nic siê nie dzieje

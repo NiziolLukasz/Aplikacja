@@ -1,6 +1,6 @@
 object fDidacticPage: TfDidacticPage
-  Left = 826
-  Top = 397
+  Left = 882
+  Top = 237
   BorderStyle = bsToolWindow
   Caption = 'Didactic Page'
   ClientHeight = 558
