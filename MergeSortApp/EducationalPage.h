@@ -69,6 +69,7 @@ __published:	// IDE-managed Components
     TLabel *lSortTimeQS;
     TMenuItem *About1;
    TMenuItem *About2;
+   TPanel *PanelBottom;
    void __fastcall mDydClick(TObject *Sender);
    void __fastcall mAdvClick(TObject *Sender);
    void __fastcall mExitClick(TObject *Sender);
@@ -101,7 +102,8 @@ private:	// User declarations
    int *tab_MSHalf; // Tablica pomocznicza
    int *tab_QS; // Tablica pomocznicza
 
-   void sort(void (*algorithm)(int*, int), int* array, int length,
+   void sort(void (*algorithm1)(int*, int), void (*algorithm2)(int*, int),
+            int* array, int length,
             int repeat, TLabel* lName, TLabel* lComp, TLabel* lAccess, TLabel *lChanged, TLabel* lTime);
 
    // Funkcje generuj¹ce tablice:

@@ -1,8 +1,8 @@
 object fEducationalPage: TfEducationalPage
-  Left = 914
-  Top = 254
+  Left = 835
+  Top = 194
   BorderStyle = bsToolWindow
-  Caption = 'Educational Page'
+  Caption = 'Testing Page'
   ClientHeight = 559
   ClientWidth = 866
   Color = clBtnFace
@@ -19,7 +19,7 @@ object fEducationalPage: TfEducationalPage
   TextHeight = 13
   object lSign: TLabel
     Left = 264
-    Top = 392
+    Top = 368
     Width = 40
     Height = 25
     Caption = 'Sign'
@@ -57,7 +57,7 @@ object fEducationalPage: TfEducationalPage
     ParentFont = False
   end
   object lArrAccess: TLabel
-    Left = 512
+    Left = 640
     Top = 120
     Width = 103
     Height = 20
@@ -70,7 +70,7 @@ object fEducationalPage: TfEducationalPage
     ParentFont = False
   end
   object lArrAccessHS: TLabel
-    Left = 520
+    Left = 648
     Top = 248
     Width = 9
     Height = 20
@@ -82,35 +82,9 @@ object fEducationalPage: TfEducationalPage
     Font.Style = []
     ParentFont = False
   end
-  object lSaveUnsorted: TLabel
-    Left = 248
-    Top = 476
-    Width = 119
-    Height = 20
-    Caption = 'Unsorted array: '
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -16
-    Font.Name = 'MS Sans Serif'
-    Font.Style = []
-    ParentFont = False
-  end
-  object lSaveSorted: TLabel
-    Left = 248
-    Top = 524
-    Width = 100
-    Height = 20
-    Caption = 'Sorted array: '
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -16
-    Font.Name = 'MS Sans Serif'
-    Font.Style = []
-    ParentFont = False
-  end
   object lSign2: TLabel
     Left = 584
-    Top = 392
+    Top = 368
     Width = 114
     Height = 25
     Caption = 'Please wait...'
@@ -201,7 +175,7 @@ object fEducationalPage: TfEducationalPage
     ParentFont = False
   end
   object lArrAccessMS1: TLabel
-    Left = 520
+    Left = 648
     Top = 168
     Width = 9
     Height = 20
@@ -214,7 +188,7 @@ object fEducationalPage: TfEducationalPage
     ParentFont = False
   end
   object lArrAccessMSHalf: TLabel
-    Left = 520
+    Left = 648
     Top = 208
     Width = 9
     Height = 20
@@ -240,7 +214,7 @@ object fEducationalPage: TfEducationalPage
     ParentFont = False
   end
   object lArrAccessQS: TLabel
-    Left = 520
+    Left = 648
     Top = 288
     Width = 9
     Height = 20
@@ -266,7 +240,7 @@ object fEducationalPage: TfEducationalPage
     ParentFont = False
   end
   object lArrChanged: TLabel
-    Left = 632
+    Left = 512
     Top = 120
     Width = 112
     Height = 20
@@ -279,7 +253,7 @@ object fEducationalPage: TfEducationalPage
     ParentFont = False
   end
   object lArrChangedHS: TLabel
-    Left = 640
+    Left = 520
     Top = 248
     Width = 9
     Height = 20
@@ -292,7 +266,7 @@ object fEducationalPage: TfEducationalPage
     ParentFont = False
   end
   object lArrChangedMS1: TLabel
-    Left = 640
+    Left = 520
     Top = 168
     Width = 9
     Height = 20
@@ -305,7 +279,7 @@ object fEducationalPage: TfEducationalPage
     ParentFont = False
   end
   object lArrChangedMSHalf: TLabel
-    Left = 640
+    Left = 520
     Top = 208
     Width = 9
     Height = 20
@@ -318,7 +292,7 @@ object fEducationalPage: TfEducationalPage
     ParentFont = False
   end
   object lArrChangedQS: TLabel
-    Left = 640
+    Left = 520
     Top = 288
     Width = 9
     Height = 20
@@ -398,7 +372,7 @@ object fEducationalPage: TfEducationalPage
   object PanelLeft: TPanel
     Left = 0
     Top = 0
-    Width = 233
+    Width = 235
     Height = 559
     Align = alLeft
     TabOrder = 0
@@ -521,35 +495,68 @@ object fEducationalPage: TfEducationalPage
     TabOrder = 1
     OnClick = bStartClick
   end
-  object bSaveUnsorted: TButton
-    Left = 392
-    Top = 472
-    Width = 89
-    Height = 25
-    Caption = 'Save table...'
-    Enabled = False
+  object PanelBottom: TPanel
+    Left = 235
+    Top = 432
+    Width = 665
+    Height = 129
     TabOrder = 2
-    OnClick = bSaveUnsortedClick
-  end
-  object bSaveSorted: TButton
-    Left = 392
-    Top = 520
-    Width = 89
-    Height = 25
-    Caption = 'Save table...'
-    Enabled = False
-    TabOrder = 3
-    OnClick = bSaveSortedClick
-  end
-  object bSaveResults: TButton
-    Left = 512
-    Top = 520
-    Width = 89
-    Height = 25
-    Caption = 'Save results...'
-    Enabled = False
-    TabOrder = 4
-    OnClick = bSaveResultsClick
+    object lSaveUnsorted: TLabel
+      Left = 25
+      Top = 37
+      Width = 120
+      Height = 20
+      Caption = 'Unsorted array: '
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -16
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+    end
+    object lSaveSorted: TLabel
+      Left = 25
+      Top = 85
+      Width = 120
+      Height = 20
+      Caption = 'Sorted array: '
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -16
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+    end
+    object bSaveUnsorted: TButton
+      Left = 170
+      Top = 32
+      Width = 90
+      Height = 25
+      Caption = 'Save table...'
+      Enabled = False
+      TabOrder = 0
+      OnClick = bSaveUnsortedClick
+    end
+    object bSaveSorted: TButton
+      Left = 170
+      Top = 80
+      Width = 90
+      Height = 25
+      Caption = 'Save table...'
+      Enabled = False
+      TabOrder = 1
+      OnClick = bSaveSortedClick
+    end
+    object bSaveResults: TButton
+      Left = 280
+      Top = 80
+      Width = 89
+      Height = 25
+      Caption = 'Save results...'
+      Enabled = False
+      TabOrder = 2
+      OnClick = bSaveResultsClick
+    end
   end
   object MainMenu: TMainMenu
     Left = 272

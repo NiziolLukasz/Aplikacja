@@ -96,8 +96,9 @@ void swap(int &a, int &b)
 }
 //---------------------------------------------------------------------------
 
+// For aplication countings
 template<class T>
-void heapify(T* arr, int n, int root)
+void heapify_App(T* arr, int n, int root)
 {
     int largest = root;  // Initialize largest as root
     int left = 2*root + 1;
@@ -124,28 +125,68 @@ void heapify(T* arr, int n, int root)
         arr_accessEdu += 4; // Element aplikacji
 		arr_changedEdu += 2; // Element aplikacji
         swap(arr[root], arr[largest]);
-        heapify(arr, n, largest); // Recursively heapify the affected sub-tree
+        heapify_App(arr, n, largest); // Recursively heapify the affected sub-tree
     }
 }
 
+// For aplication countings
 template<class T>
-void heapSort(T* arr, int n)
+void heapSort_App(T* arr, int n)
 {
     for (int root = n / 2 - 1; root >= 0; root--) // Build heap (rearrange array)
-        heapify(arr, n, root);
+        heapify_App(arr, n, root);
 
     for (int end=n-1; end>=0; end--) // One by one extract an element from heap
     {
         arr_accessEdu += 4; // Element aplikacji
 		arr_changedEdu += 2; // Element aplikacji
         swap(arr[0], arr[end]); // Move current root to end
-        heapify(arr, end, 0); // call max heapify on the reduced heap
+        heapify_App(arr, end, 0); // call max heapify on the reduced heap
     }
 }
 //---------------------------------------------------------------------------
+//---------------------------------------------------------------------------
 
+// For time count
+template <class T>
+void heapify_Time(T* arr, int n, int root)
+{
+    int largest = root;  // Initialize largest as root
+    int left = 2*root + 1;
+    int right = 2*root + 2;
+
+    if (left < n && arr[left] > arr[largest]) // If left child is larger than root
+        largest = left;
+
+    if (right < n && arr[right] > arr[largest]) // If right child is larger than largest so far
+        largest = right;
+
+    if (largest != root) // If largest is not root
+    {
+        swap(arr[root], arr[largest]);
+        heapify_Time(arr, n, largest); // Recursively heapify the affected sub-tree
+    }
+}
+
+// For time count
 template<class T>
-void mergeOneTable(T *arr, int l, int  s, int p){
+void heapSort_Time(T* arr, int n)
+{
+    for (int root = n / 2 - 1; root >= 0; root--) // Build heap (rearrange array)
+        heapify_Time(arr, n, root);
+
+    for (int end=n-1; end>=0; end--) // One by one extract an element from heap
+    {
+        swap(arr[0], arr[end]); // Move current root to end
+        heapify_Time(arr, end, 0); // call max heapify on the reduced heap
+    }
+}
+//---------------------------------------------------------------------------
+//---------------------------------------------------------------------------
+
+// For application countings
+template<class T>
+void merge_App(T *arr, int l, int  s, int p){
    T *pom = new T[p-l + 1]; // pomocnicza tablica do ³¹czenia
    int i = l; // indeks pocz¹tku lewej tablicy
    int j = s + 1; // indeks pocz¹tku prawej tablicy
@@ -193,8 +234,9 @@ void mergeOneTable(T *arr, int l, int  s, int p){
 }
 //---------------------------------------------------------------------------
 
+// For application countings
 template<class T>
-void mergeSortOneTable(T *arr, int l, int r)
+void mergeSort_App(T *arr, int l, int r)
 {
   if (l < r)
   {
@@ -202,23 +244,90 @@ void mergeSortOneTable(T *arr, int l, int r)
     int m = l+(r-l)/2;
 
     // Sortowanie pierwszej i drugiej po³owy tablicy arr
-    mergeSortOneTable(arr, l, m);
-    mergeSortOneTable(arr, m+1, r);
+    mergeSort_App(arr, l, m);
+    mergeSort_App(arr, m+1, r);
 
-    mergeOneTable(arr, l, m, r);
+    merge_App(arr, l, m, r);
   }
 }
 //---------------------------------------------------------------------------
 
+// For application countings
 template<class T>
-void mergesortOneTable(T *arr, int length)
+void mergesort_App(T *arr, int length)
 {
-    mergeSortOneTable(arr, 0, length-1);
+    mergeSort_App(arr, 0, length-1);
+}
+//---------------------------------------------------------------------------
+//---------------------------------------------------------------------------
+
+// For time count
+template<class T>
+void merge_Time(T *arr, int l, int  s, int p){
+   T *pom = new T[p-l + 1]; // pomocnicza tablica do ³¹czenia
+   int i = l; // indeks pocz¹tku lewej tablicy
+   int j = s + 1; // indeks pocz¹tku prawej tablicy
+   int k = 0; // indeks pocz¹tku pomocniczej tablicy
+   while(i <= s && j <= p)
+   {
+      if(arr[i] <= arr[j])
+	  {
+         pom[k++] = arr[i++];
+	  }
+	  else
+	  {
+         pom[k++] = arr[j++];
+	  }
+   }
+   // reszta elementów lewej po³owy
+   while(i <= s)
+   {
+      pom[k++] = arr[i++];
+   }
+   // reszta elementów prawej po³owy
+   while(j <= p)
+   {
+      pom[k++] = arr[j++];
+   }
+   // skopiuj po³¹czon¹ pomocnicz¹ tablice do oryginalnej tabicy
+   for(k = 0, i = l; i <= p; ++i, ++k)
+   {
+      arr[i] = pom[k];
+   }
+
+   delete []pom;
 }
 //---------------------------------------------------------------------------
 
+// For time count
 template<class T>
-void mergeHalfTable(T *arr, int left, int mid, int right){
+void mergeSort_Time(T *arr, int l, int r)
+{
+  if (l < r)
+  {
+    // To samo co (l+r)/2, ale unika przepe³nienia dla du¿ego l i r
+    int m = l+(r-l)/2;
+
+    // Sortowanie pierwszej i drugiej po³owy tablicy arr
+    mergeSort_Time(arr, l, m);
+    mergeSort_Time(arr, m+1, r);
+
+    merge_Time(arr, l, m, r);
+  }
+}
+//---------------------------------------------------------------------------
+// For time count
+template<class T>
+void mergesort_Time(T *arr, int length)
+{
+    mergeSort_Time(arr, 0, length-1);
+}
+//---------------------------------------------------------------------------
+//---------------------------------------------------------------------------
+
+// For application countings
+template<class T>
+void mergeHalf_App(T *arr, int left, int mid, int right){
 	int n1 = mid - left + 1;
 	T *temp_arr = new T [n1];
 
@@ -261,26 +370,86 @@ void mergeHalfTable(T *arr, int left, int mid, int right){
 }
 //---------------------------------------------------------------------------
 
+// For application countings
 template<class T>
-void mergeSortHalfTable(T *arr, int left, int right){
+void mergeSortHalf_App(T *arr, int left, int right){
     if(left < right){
         int mid = (left + right) >> 1;
-        mergeSortHalfTable(arr, left, mid);
-        mergeSortHalfTable(arr, mid+1, right);
-        mergeHalfTable(arr, left, mid, right);
+        mergeSortHalf_App(arr, left, mid);
+        mergeSortHalf_App(arr, mid+1, right);
+        mergeHalf_App(arr, left, mid, right);
     }
 }
 //---------------------------------------------------------------------------
 
+// For application countings
 template<class T>
-void mergesortHalfTable(T *arr, int length)
+void mergesortHalf_App(T *arr, int length)
 {
-    mergeSortHalfTable(arr, 0, length-1);
+    mergeSortHalf_App(arr, 0, length-1);
+}
+//---------------------------------------------------------------------------
+//---------------------------------------------------------------------------
+
+// For time count
+template<class T>
+void mergeHalf_Time(T *arr, int left, int mid, int right){
+	int n1 = mid - left + 1;
+	T *temp_arr = new T [n1];
+
+	int i = left; // indeks pocz¹tku lewej tablicy
+	int j = mid + 1; // indeks pocz¹tku prawej tablicy
+    int k = 0; // indeks pocz¹tku pomocniczej tablicy
+
+	for(k = 0; k < n1; ++k, ++i){
+		temp_arr[k] = arr[i];
+	}
+
+	k = 0;
+    i = left;
+
+	while(j <= right && k < n1)
+    {
+		if(arr[j] < temp_arr[k])
+        {
+			arr[i++] = arr[j++];
+		}else
+        {
+			arr[i++] = temp_arr[k++];
+		}
+	}
+	while(k < n1)
+    {
+		arr[i++] = temp_arr[k++];
+	}
+	delete [] temp_arr;
 }
 //---------------------------------------------------------------------------
 
+// For time count
 template<class T>
-void quicksort(T *x ,int first,int last)
+void mergeSortHalf_Time(T *arr, int left, int right){
+    if(left < right){
+        int mid = (left + right) >> 1;
+        mergeSortHalf_Time(arr, left, mid);
+        mergeSortHalf_Time(arr, mid+1, right);
+        mergeHalf_Time(arr, left, mid, right);
+    }
+}
+//---------------------------------------------------------------------------
+
+// For time count
+template<class T>
+void mergesortHalf_Time(T *arr, int length)
+{
+    mergeSortHalf_Time(arr, 0, length-1);
+}
+//---------------------------------------------------------------------------
+//---------------------------------------------------------------------------
+
+// For application countings
+template<class T>
+void quicksort_App(T *x ,int first,int last)
 {
     int pivot,j,temp,i;
 
@@ -324,19 +493,72 @@ void quicksort(T *x ,int first,int last)
         arr_accessEdu += 4; // Element aplikacji
         arr_changedEdu += 2; // Element aplikacji
 
-		quicksort(x,first,j-1);
-		quicksort(x,j+1,last);
+		quicksort_App(x,first,j-1);
+		quicksort_App(x,j+1,last);
 
     }
 }
 //---------------------------------------------------------------------------
 
+// For application countings
 template<class T>
-void quickSort(T *arr, int length)
+void quickSort_App(T *arr, int length)
 {
-    quicksort(arr, 0, length-1);
+    quicksort_App(arr, 0, length-1);
 }
 //---------------------------------------------------------------------------
+//---------------------------------------------------------------------------
+
+// For time count
+template<class T>
+void quicksort_Time(T *x ,int first,int last)
+{
+    int pivot,j,temp,i;
+
+    if(first<last)
+    {
+		pivot=first;
+		i=first;
+		j=last;
+
+        while(i<j)
+        {
+			while(x[i]<=x[pivot]&&i<last)
+            {
+				i++;
+            }
+			while(x[j]>x[pivot])
+            {
+				j--;
+            }
+			if(i<j)
+            {
+				temp=x[i];
+				x[i]=x[j];
+				x[j]=temp;
+			}
+		}
+
+        temp=x[pivot];
+		x[pivot]=x[j];
+		x[j]=temp;
+
+		quicksort_Time(x,first,j-1);
+		quicksort_Time(x,j+1,last);
+
+    }
+}
+//---------------------------------------------------------------------------
+
+// For time count
+template<class T>
+void quickSort_Time(T *arr, int length)
+{
+    quicksort_Time(arr, 0, length-1);
+}
+//---------------------------------------------------------------------------
+//---------------------------------------------------------------------------
+
 
 void  TfEducationalPage::clearAllResults()
 {
@@ -408,10 +630,6 @@ void __fastcall TfEducationalPage::bGenerateClick(TObject *Sender)
    {
 	   waitSignalOn();
       deleteTable(tab); // Usuñ tablice
-	  deleteTable(tab_MS1); // Usuñ tablice
-	  deleteTable(tab_MSHalf); // Usuñ tablice
-	  deleteTable(tab_HS); // Usuñ tablice
-	  deleteTable(tab_QS); // Usuñ tablice
 	  waitSignalOff();
    }
 
@@ -743,11 +961,11 @@ void __fastcall TfEducationalPage::tFormatAnimTimer(TObject *Sender)
 
 void TfEducationalPage::sumResults()
 {
-   float div = StrToFloat(eRepeat->Text);
-   comparision_sum += if_countEdu / div;
-   access_sum += arr_accessEdu / div;
-   changed_sum += arr_changedEdu / div;
-   time_sum += stime / div;
+   float div = StrToFloat(eRepeat->Text) * 1.0;
+   comparision_sum += if_countEdu / div * 1.0;
+   access_sum += arr_accessEdu / div * 1.0;
+   changed_sum += arr_changedEdu / div * 1.0;
+   time_sum += stime / div * 1.0;
    if_countEdu = 0;
    arr_accessEdu = 0;
    arr_changedEdu = 0;
@@ -755,20 +973,23 @@ void TfEducationalPage::sumResults()
 }
 //---------------------------------------------------------------------------
 
-void TfEducationalPage::sort(void (*algorithm)(int*, int), int* array, int length,
-                    int repeat, TLabel* lName, TLabel* lComp, TLabel* lAccess, TLabel *lChanged, TLabel* lTime)
+void TfEducationalPage::sort(void (*algorithm1)(int*, int), void (*algorithm2)(int*, int),
+                     int* array, int length,
+                     int repeat, TLabel* lName, TLabel* lComp, TLabel* lAccess, TLabel *lChanged, TLabel* lTime)
 {
-    waitSignalOn();
+   waitSignalOn();
 	for(int index = 0; index < repeat; ++index)
-    {
+   {
         copyTable(tab, array);
         clock_t begin_time = clock();
-        algorithm(array, length);
+        algorithm1(array, length);
         stime = (int)(clock() - begin_time );
+        copyTable(tab, array);
+        algorithm2(array, length);
         sumResults();
-    }
+   }
 	waitSignalOff();
-    showResults(array, lName, lComp, lAccess, lChanged, lTime);
+   showResults(array, lName, lComp, lAccess, lChanged, lTime);
 }
 //---------------------------------------------------------------------------
 
@@ -780,9 +1001,9 @@ void TfEducationalPage::AlgorithmStartEdu()
    copyTables(tab);
    waitSignalOff();
 
-   sort(&mergesortOneTable, tab_MS1, n, repeat, lMS1, lCompMS1, lArrAccessMS1, lArrChangedMS1, lSortTimeMS1);
-   sort(&mergesortHalfTable, tab_MSHalf, n, repeat, lMSHalf, lCompMSHalf, lArrAccessMSHalf, lArrChangedMSHalf, lSortTimeMSHalf);
-   sort(&heapSort, tab_HS, n, repeat, lHS, lCompHS, lArrAccessHS, lArrChangedHS, lSortTimeHS);
+   sort(&mergesort_Time, &mergesort_App, tab_MS1, n, repeat, lMS1, lCompMS1, lArrAccessMS1, lArrChangedMS1, lSortTimeMS1);
+   sort(&mergesortHalf_Time, &mergesortHalf_App, tab_MSHalf, n, repeat, lMSHalf, lCompMSHalf, lArrAccessMSHalf, lArrChangedMSHalf, lSortTimeMSHalf);
+   sort(&heapSort_Time, &heapSort_App, tab_HS, n, repeat, lHS, lCompHS, lArrAccessHS, lArrChangedHS, lSortTimeHS);
 
    if((StrToInt(eAmount->Text) > 61000 && rgTableTypes->ItemIndex == 5) ||
       ((rgTableTypes->ItemIndex == 1 || rgTableTypes->ItemIndex == 2 || rgTableTypes->ItemIndex == 7) && StrToInt(eAmount->Text) > 28000))
@@ -794,8 +1015,13 @@ void TfEducationalPage::AlgorithmStartEdu()
    }
    else
    {
-       sort(&quickSort, tab_QS, n, repeat, lQS, lCompQS, lArrAccessQS, lArrChangedQS, lSortTimeQS);
+       sort(&quickSort_Time, &quickSort_App, tab_QS, n, repeat, lQS, lCompQS, lArrAccessQS, lArrChangedQS, lSortTimeQS);
    }
+
+   deleteTable(tab_MS1); // Usuñ tablice
+   deleteTable(tab_MSHalf); // Usuñ tablice
+   deleteTable(tab_HS); // Usuñ tablice
+   deleteTable(tab_QS); // Usuñ tablice
 
    end();
 }
@@ -804,7 +1030,7 @@ void TfEducationalPage::AlgorithmStartEdu()
 int __fastcall AlgorithmThread(Pointer Parameter)
 {
    fEducationalPage->AlgorithmStartEdu();
-   ExitThread(GetExitCodeThread(AlgorithmThread, NULL)); // usuniêcie w¹tku z pamiêci, od tego momentu w¹tku nie mo¿na ju¿ wstrzymaæ.
+   ExitThread(GetExitCodeThread(AlgorithmThread, NULL)); // usuniêcie w¹tku z pamiêci.
    return 0;
 }
 //---------------------------------------------------------------------------
@@ -819,12 +1045,12 @@ float TfEducationalPage::round(float var)
 void TfEducationalPage::showResults(int *table, TLabel *algName, TLabel *comparisions, TLabel *access, TLabel *changed, TLabel *stime)
 {
    comparisions->Caption = round(comparision_sum);
-   access->Caption = round(access_sum);
    changed->Caption = round(changed_sum);
+   access->Caption = round(access_sum);
    stime->Caption = round(time_sum);
    comparision_sum = 0;
-   access_sum = 0;
    changed_sum = 0;
+   access_sum = 0;
    time_sum = 0;
 
    if(algName->Color != clRed)
@@ -978,11 +1204,11 @@ void __fastcall TfEducationalPage::bSaveResultsClick(TObject *Sender)
         << "Table type: " << "Integer" << "\n"
         << "Number of repetitions: " << StrToInt(eRepeat->Text) << "\n"
         << "Size of the table: " << n << "\n\n"
-        << lAlgoritmName->Caption.c_str() << "\t\t" << lComparisons->Caption.c_str() << "\t\t" << lArrAccess->Caption.c_str() << "\t\t" << lArrChanged->Caption.c_str() << "\t\t" << lSortTime->Caption.c_str() << "\n"
-        << lMS1->Caption.c_str() << std::setw(16) << lCompMS1->Caption.c_str() << std::setw(21) << lArrAccessMS1->Caption.c_str() << std::setw(21) << lArrChangedMS1->Caption.c_str() << std::setw(16) << lSortTimeMS1->Caption.c_str() << "\n"
-        << lMSHalf->Caption.c_str() << std::setw(13) << lCompMSHalf->Caption.c_str() << std::setw(21) << lArrAccessMSHalf->Caption.c_str() << std::setw(21) << lArrChangedMSHalf->Caption.c_str() << std::setw(16) << lSortTimeMSHalf->Caption.c_str() << "\n"
-        << lHS->Caption.c_str() << std::setw(23) << lCompHS->Caption.c_str() << std::setw(21) << lArrAccessHS->Caption.c_str() << std::setw(21) << lArrChangedHS->Caption.c_str() << std::setw(16) << lSortTimeHS->Caption.c_str() << "\n"
-        << lQS->Caption.c_str() << std::setw(22) << lCompQS->Caption.c_str() << std::setw(21) << lArrAccessQS->Caption.c_str() << std::setw(21) << lArrChangedQS->Caption.c_str() << std::setw(16) << lSortTimeQS->Caption.c_str() << "\n"
+        << lAlgoritmName->Caption.c_str() << "\t\t" << lComparisons->Caption.c_str() << "\t\t" << lArrChanged->Caption.c_str() << "\t\t" << lArrAccess->Caption.c_str() << "\t\t" << lSortTime->Caption.c_str() << "\n"
+        << lMS1->Caption.c_str() << std::setw(16) << lCompMS1->Caption.c_str() << std::setw(21) << lArrChangedMS1->Caption.c_str() << std::setw(21) << lArrAccessMS1->Caption.c_str() << std::setw(16) << lSortTimeMS1->Caption.c_str() << "\n"
+        << lMSHalf->Caption.c_str() << std::setw(13) << lCompMSHalf->Caption.c_str() << std::setw(21) << lArrChangedMSHalf->Caption.c_str() << std::setw(21) << lArrAccessMSHalf->Caption.c_str() << std::setw(16) << lSortTimeMSHalf->Caption.c_str() << "\n"
+        << lHS->Caption.c_str() << std::setw(23) << lCompHS->Caption.c_str() << std::setw(21) << lArrChangedHS->Caption.c_str() << std::setw(21) << lArrAccessHS->Caption.c_str() << std::setw(16) << lSortTimeHS->Caption.c_str() << "\n"
+        << lQS->Caption.c_str() << std::setw(22) << lCompQS->Caption.c_str() << std::setw(21) << lArrChangedQS->Caption.c_str() << std::setw(21) << lArrAccessQS->Caption.c_str() << std::setw(16) << lSortTimeQS->Caption.c_str() << "\n"
         ;
 
    AnsiString result = str.str().c_str();
@@ -1037,6 +1263,7 @@ void TfEducationalPage::waitSignalOff()
    Repaint();
 }
 //---------------------------------------------------------------------------
+
 
 
 

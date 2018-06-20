@@ -74,7 +74,7 @@ object fAdvancedPage: TfAdvancedPage
           OnClick = mDidClick
         end
         object mEdu: TMenuItem
-          Caption = 'Educational'
+          Caption = 'Testing'
           OnClick = mEduClick
         end
       end

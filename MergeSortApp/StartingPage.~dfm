@@ -27,6 +27,12 @@ object fStartingPage: TfStartingPage
       Width = 177
       Height = 73
       Caption = 'Advanced'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -19
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
       TabOrder = 0
       OnClick = bAdvancedPageClick
     end
@@ -36,15 +42,27 @@ object fStartingPage: TfStartingPage
       Width = 177
       Height = 73
       Caption = 'Didactic'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -19
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
       TabOrder = 1
       OnClick = bDidacticPageClick
     end
     object bEducationPage: TButton
-      Left = 280
+      Left = 288
       Top = 32
       Width = 177
       Height = 73
-      Caption = 'Education'
+      Caption = 'Testing'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -19
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
       TabOrder = 2
       OnClick = bEducationPageClick
     end

@@ -638,7 +638,7 @@ object fDidacticPage: TfDidacticPage
       object mGoTo: TMenuItem
         Caption = 'Go to'
         object mEdu: TMenuItem
-          Caption = 'Educational'
+          Caption = 'Testing'
           OnClick = mEduClick
         end
         object mAdv: TMenuItem
