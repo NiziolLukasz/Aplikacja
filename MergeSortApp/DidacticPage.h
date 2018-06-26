@@ -72,6 +72,7 @@ __published:	// IDE-managed Components
    void __fastcall mAdvClick(TObject *Sender);
    void __fastcall mExitClick(TObject *Sender);
    void __fastcall bSkipClick(TObject *Sender);
+   void __fastcall About1Click(TObject *Sender);
 
 private:	// User declarations
    int max_n; // Maxymalna iloœc s³upków

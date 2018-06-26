@@ -67,8 +67,8 @@ __published:	// IDE-managed Components
     TLabel *lSortTimeMS1;
     TLabel *lSortTimeMSHalf;
     TLabel *lSortTimeQS;
-    TMenuItem *About1;
-   TMenuItem *About2;
+   TMenuItem *mHelp;
+   TMenuItem *About1;
    TPanel *PanelBottom;
    void __fastcall mDydClick(TObject *Sender);
    void __fastcall mAdvClick(TObject *Sender);
@@ -85,6 +85,7 @@ __published:	// IDE-managed Components
    void __fastcall bSaveResultsClick(TObject *Sender);
    void __fastcall eRepeatExit(TObject *Sender);
    void __fastcall eAmountExit(TObject *Sender);
+   void __fastcall About1Click(TObject *Sender);
 private:	// User declarations
    int n; // aktualna wielkoœæ tablicy
    float comparision_sum;

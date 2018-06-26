@@ -22,9 +22,9 @@ object fStartingPage: TfStartingPage
     Height = 153
     TabOrder = 0
     object bAdvancedPage: TButton
-      Left = 528
-      Top = 32
-      Width = 177
+      Left = 525
+      Top = 30
+      Width = 180
       Height = 73
       Caption = 'Advanced'
       Font.Charset = DEFAULT_CHARSET
@@ -37,9 +37,9 @@ object fStartingPage: TfStartingPage
       OnClick = bAdvancedPageClick
     end
     object bDidacticPage: TButton
-      Left = 24
-      Top = 32
-      Width = 177
+      Left = 25
+      Top = 30
+      Width = 180
       Height = 73
       Caption = 'Didactic'
       Font.Charset = DEFAULT_CHARSET
@@ -52,9 +52,9 @@ object fStartingPage: TfStartingPage
       OnClick = bDidacticPageClick
     end
     object bEducationPage: TButton
-      Left = 288
-      Top = 32
-      Width = 177
+      Left = 275
+      Top = 30
+      Width = 180
       Height = 73
       Caption = 'Testing'
       Font.Charset = DEFAULT_CHARSET

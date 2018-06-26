@@ -1,6 +1,6 @@
 object fEducationalPage: TfEducationalPage
-  Left = 835
-  Top = 194
+  Left = 935
+  Top = 238
   BorderStyle = bsToolWindow
   Caption = 'Testing Page'
   ClientHeight = 559
@@ -504,7 +504,7 @@ object fEducationalPage: TfEducationalPage
     object lSaveUnsorted: TLabel
       Left = 25
       Top = 37
-      Width = 120
+      Width = 119
       Height = 20
       Caption = 'Unsorted array: '
       Font.Charset = DEFAULT_CHARSET
@@ -517,7 +517,7 @@ object fEducationalPage: TfEducationalPage
     object lSaveSorted: TLabel
       Left = 25
       Top = 85
-      Width = 120
+      Width = 100
       Height = 20
       Caption = 'Sorted array: '
       Font.Charset = DEFAULT_CHARSET
@@ -583,10 +583,11 @@ object fEducationalPage: TfEducationalPage
         OnClick = mExitClick
       end
     end
-    object About1: TMenuItem
+    object mHelp: TMenuItem
       Caption = 'Help'
-      object About2: TMenuItem
+      object About1: TMenuItem
         Caption = 'About...'
+        OnClick = About1Click
       end
     end
   end

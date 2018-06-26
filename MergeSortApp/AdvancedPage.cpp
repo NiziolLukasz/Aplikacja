@@ -434,3 +434,9 @@ void TfAdvancedPage::startString()
 
 
 
+void __fastcall TfAdvancedPage::About1Click(TObject *Sender)
+{
+   ShowMessage("Program stworzony wraz z licencjatem pt,\n\"Merge Sort, a inne metody sortowania\".\nAutor: £ukasz Nizio³");   
+}
+//---------------------------------------------------------------------------
+

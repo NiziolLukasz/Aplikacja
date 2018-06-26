@@ -87,6 +87,7 @@ object fAdvancedPage: TfAdvancedPage
       Caption = 'Help'
       object About1: TMenuItem
         Caption = 'About...'
+        OnClick = About1Click
       end
     end
   end

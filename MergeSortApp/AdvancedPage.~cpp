@@ -240,7 +240,6 @@ void TfAdvancedPage::checkIsSorted(const T* arr)
 {
    if(!isSorted(arr, n))
    {
-      ShowMessage("The array is not sorted!!");
       SaveDialog->FileName = "Not sorted array";
    }
    else

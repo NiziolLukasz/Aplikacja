@@ -34,6 +34,7 @@ __published:	// IDE-managed Components
    void __fastcall mStartClick(TObject *Sender);
    void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
    void __fastcall bSortFileClick(TObject *Sender);
+   void __fastcall About1Click(TObject *Sender);
 private:	// User declarations
 
     int* tab_int;
